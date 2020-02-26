@@ -2,15 +2,15 @@
 
 ![](./images//Pivotal.png)
 
-# Transforming How The World Builds Software 
------------------------------------------------------
+# Transforming How The World Builds, Runs & Manages Software 
+------------------------------------------------------------
 ## Workshop Contents
-(9:30AM to 3:30PM Breakfast & Lunch Included)
+(1:00PM to 4:00PM on 02/27/2020)
 
-- Pivotal Mission & Applicability to C.A.S.
-     - Value Statement
-     - Case Studies
--  PCF Installation Steps
+- Introduction
+     - What are we going to do today?
+     - What do you need for this workshop?
+-  PCF Installation Steps Overview
      - Operations Manager
      - Tile(s) Installation
 - Demo & Hands-on
@@ -23,12 +23,11 @@
         - Upgrading
      - Pivotal Container Service (Kubernetes) workload deployment
      - Pivotal Application Service for higher level developer productivity
-- Pivotal Data Update and Q&A
 - Next Steps
 -----------------------------------------------------
 ## Technical Pre-Requisites
 - A Mac or PC with internet connection, running a browser that can access https://chess.cfapps.io
-- Ability to access and update this [Workshop Google Sheet](https://drive.google.com/open?id=1YcaNLkBqXHgYZch6yV8Kvf2G2AUG-trKSQQvejpstv8)
+- Ability to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
 - Ability to SSH into an Ubuntu VM (public IP address) using a private-key file
 
   e.g. `ssh -i fuse.pem ubuntu@user1.ourpcf.com`
@@ -40,8 +39,8 @@
 ## Guidelines for this Workshop
 - This workshop includes presentations, demos and hands-on labs. 
 - The labs are interdependent and must be executed in order.
-- Please use the [Workshop Google Sheet](https://drive.google.com/open?id=1YcaNLkBqXHgYZch6yV8Kvf2G2AUG-trKSQQvejpstv8) to claim a user-id for this workshop. For example, Ralph Meira is user1.
-- Update the same [Workshop Google Sheet](https://drive.google.com/open?id=1YcaNLkBqXHgYZch6yV8Kvf2G2AUG-trKSQQvejpstv8) as you progress through the Labs, by placing an "x" in the appropriate column.
+- Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a user-id for this workshop. For example, Ralph Meira is user1.
+- Update the same [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) as you progress through the Labs, by placing an "x" in the appropriate column.
 - When carrying out hands-on labs, you can cut-&-paste the commands shown `in boxes like this one`. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
   - `ssh -i fuse.pem ubuntu@user3.ourpcf.com` is for `user3` 
   - `ssh -i fuse.pem ubuntu@user15.ourpcf.com` is for `user15`
