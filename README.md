@@ -45,7 +45,7 @@
 - When carrying out hands-on labs, you can cut-&-paste the commands shown `in boxes like this one`. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
   - `ssh -i fuse.pem ubuntu@user3.ourpcf.com` is for `user3` 
   - `ssh -i fuse.pem ubuntu@user15.ourpcf.com` is for `user15`
-- Don't get stuck. Ask for help. The goal is to learn concepts and understand how Pivotal can help CAS be successful.
+- Don't get stuck. Ask for help. The goal is to learn concepts and understand how Pivotal/VMware can help L Brands be successful.
 - The PAS and PKS platforms we will be using were created using self-signed certificates, so you will sometimes have to click through warning screens about insecure pages.
 - Each workshop participant will be assigned an Ubuntu VM which has been readied for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
      - SSH'ing into the Ubuntu VM 
