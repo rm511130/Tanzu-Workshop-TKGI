@@ -5,7 +5,7 @@
 # Transforming How The World Builds, Runs & Manages Software 
 ------------------------------------------------------------
 ## Workshop Contents
-(1:00PM to 4:00PM on 02/27/2020)
+(1:00PM to 5:00PM on 03/19/2020)
 
 - Introduction
      - What are we going to do today?
@@ -13,7 +13,8 @@
 -  PCF Installation Steps Overview
      - Operations Manager
      - Tile(s) Installation
-- Demo & Hands-on
+     - Client Tools
+- Demo & Hands-on Labs
      - Developer Experience
         - PAS & PKS
      - Day 2 Operations
