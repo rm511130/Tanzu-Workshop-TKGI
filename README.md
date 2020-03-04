@@ -35,7 +35,7 @@
 
   e.g. `ssh -i fuse.pem ubuntu@user1.pks4u.com`
 - You will need to use [fuse.pem](https://github.com/rm511130/LBRANDS/blob/master/fuse.pem) and it must be set using `chmod 400` to read-only
-- Testing [fuse.pem](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.pem)
+- Testing [fuse.pem](https://github.com/downloads/rm511130/LBrands/fuse.pem)
   
 ### If using a Windows PC
 - If using a Windows PC, the ability to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
