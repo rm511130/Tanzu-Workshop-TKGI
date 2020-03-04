@@ -34,13 +34,13 @@
 - If using a Mac, you need to be able to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
 
   e.g. `ssh -i fuse.pem ubuntu@user1.pks4u.com`
-- You will need to use [fuse.pem](https://github.com/rm511130/LBRANDS/blob/master/fuse.pem) and it must be set using `chmod 400` to read-only
-- Testing [fuse.pem](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem)
+- You will need to use [fuse.pem](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem) and it must be set using `chmod 400` to read-only
+
   
 ### If using a Windows PC
 - If using a Windows PC, the ability to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
-- If you need help installing or using PuTTY with [fuse.ppk](https://github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
-- Testing [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk)
+- If you need help installing or using PuTTY with [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
+
   
 -----------------------------------------------------
 
