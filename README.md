@@ -31,16 +31,19 @@
 - Ability to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
 
 ### If using a Mac
-- If using a Mac, you need to be able to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
-
-  e.g. `ssh -i fuse.pem ubuntu@user1.pks4u.com`
-- You will need to use [fuse.pem](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem) and it must be set using `chmod 400` to read-only
-
+- You need to be able to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
+- You will need to use `fuse.pem` and the file must be set to read-only as follows:
+- `wget --no-check-certificate --content-disposition https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem`
+- `chmod 400 ~/Downloads/fuse.pem`
+- You can now test using:
+- `ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com`
   
 ### If using a Windows PC
-- If using a Windows PC, the ability to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
+- You need to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
+- To download `fuse.ppk` you can use the following commands:
+- `xyz`
 - If you need help installing or using PuTTY with [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
-
+- 
   
 -----------------------------------------------------
 
