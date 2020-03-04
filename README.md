@@ -2,7 +2,7 @@
 
 ![](./images//Pivotal.png)
 
-# Transforming How The World Builds, Runs & Manages Software 
+# VMware PKS Workshop - Enterprise Kubernetes 
 ------------------------------------------------------------
 ## Workshop Contents
 (1:00PM to 5:00PM on 03/19/2020)
@@ -29,12 +29,16 @@
 ## Technical Pre-Requisites
 - A Mac or PC with internet connection, running a browser that can access https://chess.cfapps.io
 - Ability to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
-- If using a Mac, the ability to SSH into a Ubuntu VM (public IP address) using a private-key file
-  e.g. `ssh -i fuse.pem ubuntu@user1.ourpcf.com`
-  - [fuse.pem](https://github.com/rm511130/PCF4CAS/blob/master/fuse.pem) must be set using `chmod 400` to read-only by owner
-- if using a Windows PC, the ability to use PuTTY into a Ubuntu VM (public IP address) using a private-key file
-  e.g.
-  ![](./images/PuTTY_and_PPK.jpg)
+
+### If using a Mac
+- If using a Mac, you need to be able to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
+
+  e.g. `ssh -i fuse.pem ubuntu@user1.pks4u.com`
+- You will need to use [fuse.pem](https://github.com/rm511130/LBRANDS/blob/master/fuse.pem) and it must be set using `chmod 400` to read-only
+  
+### If using a Windows PC
+- If using a Windows PC, the ability to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
+- If you need help installing or using PuTTY with [fuse.ppk](https://github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
   
 -----------------------------------------------------
 
