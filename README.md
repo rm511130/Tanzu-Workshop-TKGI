@@ -29,11 +29,12 @@
 ## Technical Pre-Requisites
 - A Mac or PC with internet connection, running a browser that can access https://chess.cfapps.io
 - Ability to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
-- Ability to SSH into an Ubuntu VM (public IP address) using a private-key file
-
+- If using a Mac, the ability to SSH into a Ubuntu VM (public IP address) using a private-key file
   e.g. `ssh -i fuse.pem ubuntu@user1.ourpcf.com`
   - [fuse.pem](https://github.com/rm511130/PCF4CAS/blob/master/fuse.pem) must be set using `chmod 400` to read-only by owner
-  - If using Powershell on a Windows machine read these [instructions](https://superuser.com/questions/1296024/windows-ssh-permissions-for-private-key-are-too-open)
+- if using a Windows PC, the ability to use PuTTY into a Ubuntu VM (public IP address) using a private-key file
+  e.g.
+  ![](./images/PuTTY_and_PPK.jpg)
   
 -----------------------------------------------------
 
