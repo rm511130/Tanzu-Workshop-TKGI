@@ -43,7 +43,7 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 - Please `exit` from the Ubuntu VM if your test was successful. You are ready for the workshop.
   
 ### If using a Windows PC
-- You will need to use PuTTY to access a Ubuntu VM (public IP address) using a `.ppk` private-key file
+- You will need to use PuTTY to access a Ubuntu VM (public IP address) using a `.ppk` private-key file.
 - To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can install and use [wget](http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe) in a PowerShell window.
 ```
 help wget
