@@ -8,22 +8,19 @@
 (1:00PM to 5:00PM on 03/19/2020)
 
 - Introduction
-     - What are we going to do today?
-     - What do you need for this workshop?
--  PCF Installation Steps Overview
+     - Orientation & Workshop Description
+-  PKS Installation Steps Overview
      - Operations Manager
      - Tile(s) Installation
      - Client Tools
-- Demo & Hands-on Labs
+- Demo & Hands-on Labs on GCP and Azure
      - Developer Experience
-        - PAS & PKS
+        - Deploying Apps using PKS & TAS
      - Day 2 Operations
         - Scaling
         - Health Monitoring
         - Patching
         - Upgrading
-     - Pivotal Container Service (Kubernetes) workload deployment
-     - Pivotal Application Service for higher level developer productivity
 - Next Steps
 -----------------------------------------------------
 ## Technical Pre-Requisites
@@ -40,8 +37,8 @@
   
 ### If using a Windows PC
 - You will need to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
-- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can use [wget](http://gnuwin32.sourceforge.net/packages/wget.htm)
-- `wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk`
+- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can use [wget](http://gnuwin32.sourceforge.net/packages/wget.htm) in a PowerShell window:
+- `wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk -Outfile fuse.ppk`
 - If you need help installing or using PuTTY with [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
   
 -----------------------------------------------------
