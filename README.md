@@ -32,7 +32,7 @@
 - Please execute the following commands to download `fuse.pem` and set the file to read-only:
 ```
 cd ~/Downloads
-wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem`
+wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem
 chmod 400 ~/Downloads/fuse.pem
 ```
 - You can now test whether SSH is working with the `fuse.pem` private key using the following command:
