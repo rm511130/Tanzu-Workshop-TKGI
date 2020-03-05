@@ -25,7 +25,7 @@
 -----------------------------------------------------
 ## Technical Pre-Requisites
 - Your Mac or Windows PC will need internet connection and be able to access https://chess.cfapps.io
-- Ability to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
+- You will need to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
 
 ### If using a Mac
 - You will need to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
