@@ -1,0 +1,20 @@
+## Emnvironment Administration Notes
+
+1. The PAS version used in this lab requires trusted CA-certs. However, we're using Self-Sign Certs, so if Apps Manager
+does not display any ORGs or SPACES, do this:
+
+cf api api.sys.ourpcf.com --skip-ssl-validation
+cf login -u admin -p XGf2Y-L-rVbrbD1deAmw7Hr_YRq1ve1x -o system -s system
+cf a | grep apps-manager-js | grep started | awk '{ print $1; }'
+
+and depending on what you see:
+
+cf set-env apps-manager-js-blue SKIP_SSL_VALIDATION true
+cf restage apps-manager-js-blue
+
+or
+
+cf set-env apps-manager-js-green SKIP_SSL_VALIDATION true
+cf restage apps-manager-js-green
+
+That's it.
