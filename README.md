@@ -28,7 +28,7 @@
     - https://chess.cfapps.io
     - [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
 
-### If using a Mac
+### If using a  Mac 
 - You will need to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
 - Please open a Terminal Window and execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
 ```
