@@ -23,25 +23,6 @@
         - Upgrading
 - Next Steps
 -----------------------------------------------------
-## Technical Pre-Requisites
-- A Mac or PC with internet connection, running a browser that can access https://chess.cfapps.io
-- Ability to access and update this [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
-
-### If using a Mac
-- You will need to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
-- You will need to use `fuse.pem` and the file must be set to read-only as follows:
-- `wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem`
-- `chmod 400 ~/Downloads/fuse.pem`
-- You can now test using:
-- `ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com`
-  
-### If using a Windows PC
-- You will need to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
-- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can use [wget](http://gnuwin32.sourceforge.net/packages/wget.htm) in a PowerShell window:
-- `wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk -Outfile fuse.ppk`
-- If you need help installing or using PuTTY with [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
-  
------------------------------------------------------
 
 ## Guidelines for this Workshop
 - This workshop includes presentations, demos and hands-on labs. 
@@ -49,14 +30,14 @@
 - Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a user-id for this workshop. For example, Ralph Meira is user1.
 - Update the same [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) as you progress through the Labs, by placing an "x" in the appropriate column.
 - When carrying out hands-on labs, you can cut-&-paste the commands shown `in boxes like this one`. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
-  - `ssh -i fuse.pem ubuntu@user3.ourpcf.com` is for `user3` 
-  - `ssh -i fuse.pem ubuntu@user15.ourpcf.com` is for `user15`
+  - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
+  - `ssh -i fuse.pem ubuntu@user15.pks4u.com` is for `user15`
 - Don't get stuck. Ask for help. The goal is to learn concepts and understand how Pivotal/VMware can help L Brands be successful.
-- The PAS and PKS platforms we will be using were created using self-signed certificates, so you will sometimes have to click through warning screens about insecure pages.
-- Each workshop participant will be assigned an Ubuntu VM which has been readied for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
+- The PAS and PKS platforms we will be using were created using Let's Encrypt certificates, so you we don't expect to see any Certificates or SSL warning screens.
+- Each workshop participant will be assigned a Ubuntu VM which has been readied for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
      - SSH'ing into the Ubuntu VM 
      - Browsing web pages
-- When it's time for hands-on labs, you will see the following icon:
+- Throughout this document, when it's time for hands-on labs, you will see the following icon:
      
 ![](./images/lab.png)
 
