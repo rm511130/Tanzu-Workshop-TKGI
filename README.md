@@ -43,7 +43,7 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
   
 ### If using a Windows PC
 - You will need to use PuTTY to access a Ubuntu VM (public IP address) using a private-key `.ppk` file
-- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can install and use [wget](http://gnuwin32.sourceforge.net/packages/wget.htm) in a PowerShell window. Pick the "Complete package, excepr sources Setup".
+- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can install and use [wget](http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe) in a PowerShell window.
 ```
 help wget
 cd ~\Downloads
