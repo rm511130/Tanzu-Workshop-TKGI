@@ -51,4 +51,4 @@ wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk -Outfile
 ```
 - If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
 - If you need help installing or using PuTTY with [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
-- If you successfully tested the access to the Ubuntu VM, you are ready for the workshop.
+- If you successfully tested the access to the `ubuntu@user1.pks4u.com` VM, you are ready for the workshop.
