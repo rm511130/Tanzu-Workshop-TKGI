@@ -42,7 +42,7 @@ wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk -Outfile
 
 ### If using a  Mac 
 - You will need to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
-- Please open a Terminal Window and execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
+- Using a Terminal Window, execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
 ```
 cd ~/Downloads
 wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem
