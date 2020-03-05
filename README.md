@@ -37,7 +37,7 @@ chmod 400 ~/Downloads/fuse.pem
 ```
 - You can now test whether SSH is working with the `fuse.pem` private key using the following command:
 ```
-ssh -i ~/Downloads/fuse.pem ubuntu@test.pks4u.com
+ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 ```
 - Please `exit` from the Ubuntu VM if your test was successful. You are ready for the workshop.
   
