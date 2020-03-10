@@ -72,17 +72,18 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 -----------------------------------------------------
 ## A Brief Introduction - VMWare Tanzu
 
+[VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
+
 - Enterprises rely on software to improve business outcomes.
 - A critical factor: the *velocity* of how ideas are converted to new features, new apps, and new services.
 - The ever accelerating pace of change generates a daunting backlog of work for IT leaders.
 - Everyone is under pressure to reduce technology spend and address security vulnerabilities where perimeters encompass mobile, public and private infrastructure.
 - The competing mandates - velocity, security, and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
 
-- [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
 
 -----------------------------------------------------
 
-## PCF Architecture, Installation & Set-up 
+## Architecture, Installation & Set-up 
 
 - [Containers 101](https://drive.google.com/open?id=1vRisBwfNmD22o_d7OC_OWS9g-M2b2p_q)
 
