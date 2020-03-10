@@ -1,6 +1,6 @@
 ##### https://tinyurl.com/PKS4LBRANDS
 
-![](./images//vmware-logo.png = 100x100)
+![](./images//vmware-logo.png)
 
 # VMware PKS Workshop - Enterprise Kubernetes 
 ------------------------------------------------------------
