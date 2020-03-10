@@ -2,25 +2,22 @@
 
 ![](./images//vmware-logo.png)
 
-# VMware PKS Workshop - Enterprise Kubernetes 
+# VMware Tanzu PKS Workshop - Enterprise Kubernetes 
 ------------------------------------------------------------
 ## Workshop Agenda
 (1:00PM to 5:00PM on 03/19/2020)
 
 - Introduction
-     - Orientation & Workshop Description
--  PKS Installation Steps Overview
+     - Workshop Description and Orientation
+     - Tanzu Portfolio of VMware Products 
+- Platform Architecture 
+     - Installation Overview
      - Operations Manager
-     - Tile(s) Installation
+     - Tiles Installation
      - Client Tools
 - Demo & Hands-on Labs on GCP and Azure
      - Developer Experience
-        - Deploying Apps using PKS & TAS
-     - Day 2 Operations
-        - Scaling
-        - Health Monitoring
-        - Patching
-        - Upgrading
+     - Operator Experience
 - Next Steps
 -----------------------------------------------------
 ## Technical Pre-Requisites
