@@ -87,23 +87,23 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 - [Containers 101](https://drive.google.com/open?id=1vRisBwfNmD22o_d7OC_OWS9g-M2b2p_q)
 
-![](./images/CaaS_PaaS_FaaS_OSBAPI.png)
-
-- [PKS 1.4 on vSphere](https://drive.google.com/file/d/1Jwytpm-kO0trS-5vAUKRssSVCXv98G0o/view)
+- [PKS on vSphere](https://drive.google.com/file/d/1Jwytpm-kO0trS-5vAUKRssSVCXv98G0o/view)
 
 
 -----------------------------------------------------
 
-### LAB-1: SSH into your Linux Workshop environment & test the Command Line Interface tools
+### LAB-1: SSH into your Linux Workshop VM environment & test the Command Line Interface tools
 
-Let's start by logging into the Workshop environment from your machine (Mac, PC, Laptop, Desktop, Terminal, VDI). You will need to use the following private key: [fuse.pem](https://github.com/rm511130/PCF4CAS/blob/master/fuse.pem).
+Let's start by logging into the Workshop environment from your machine (Mac, PC, Laptop, Desktop, Terminal, VDI). You will need to use the following private key: 
+- [fuse.pem](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem) if using a Mac.
+- [fuse.ppk](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) if using a Windows PC.
 
-Note that the examples shown below apply to `user1`. If, for example, you are `user11`, your Ubuntu VM will be at `user11.ourpcf.com`.
+Note that the examples shown below apply to `user1`. If, for example, you are `user11`, your Ubuntu VM will be at `user11.pks4u.com`.
 
 ![](./images/lab.png)
 
 ```
-ssh -i ./fuse.pem ubuntu@user1.ourpcf.com
+ssh -i ~/Downloads/fuse.pem ubuntu@user1.ourpcf.com
 ```
 
 Once logged in, you can ignore any messages that ask you to perform a `do-release-upgrade`. Please proceed by executing the following commands:
@@ -129,15 +129,104 @@ git version
 docker --version
 ```
 
+```
+go version
+```
+
 If all the commands shown above displayed their respective CLI versions, you have successfully completed Lab-1.
 
-Please update the [Workshop Google Sheet](https://drive.google.com/open?id=1YcaNLkBqXHgYZch6yV8Kvf2G2AUG-trKSQQvejpstv8) with an "x" in the appropriate column.
-
-Note: if you had to install the pks, kubectl and cf CLIs on a brand-new machine, you would need to download the binary files from [PivNet](http://network.pivotal.io) and place them under `/usr/local/bin` using `chmod +x` to make them executable.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
 Congratulations, you have completed LAB-1.
 
 -----------------------------------------------------
+### LAB-2: Running a simple GoLang Program Locally (in your Linux Workshop VM)
+
+- Using your Linux Workshop VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally on your Linux Workshop VM.
+
+![](./images/lab.png)
+
+- Execute the following commands:
+
+```
+cd ~ 
+git clone https://github.com/rm511130/fact  
+cd ~/fact  
+go run fact.go 
+```
+
+- Leave it the code running and use a browser to access your code at `http://user1.pks4u.com:3000/1500`
+
+- Make sure you are using the URL that corresponds to your User ID. 
+
+- Did it work?
+  - Take a look at the [code](https://github.com/rm511130/fact/blob/master/fact.go). Did you find in the code the additional end-points that you can call: e.g. `http://user1.pks4u.com:3000/version` or `http://user1.pks4u.com:3000/header`
+  - Did you see the logs on the Terminal Window of your VM?
+
+- Use `CTRL-C` to cancel out of the `go run fact.go` command.
+
+**Let's recap:** 
+- You have access to a Linux VM that is able to run GoLang programs. 
+- Your Linux VM has a public IP address.
+- The code you executed provided an http interface accessible using a browser.
+- Logs were display on the terminal window.
+
+Congratulations, you have completed LAB-2. 
+
+-----------------------------------------------------
+### LAB-3: Building a Docker Image
+
+![](./images/lab.png)
+
+- Using your Linux Workshop VM take a look at the `Dockerfile` in the `~/fact` directory. You can use a simple `cat ~/fact/Dockerfile` command.
+
+- Execute the following commands to start with a clean slate and build a docker image of your GoLang factorial program:
+
+```
+docker system prune -a      # answer y 
+cd ~/fact
+docker build -t fact .  
+docker run -d --publish 3000:3000 --name fact --rm fact
+curl http://user1.pks4u.com:3000/5; echo
+```
+
+- Did you notice how many layers were used to create the Docker Image of your GoLang factorial program? Execute the following commands to learn more about your Docker Image:
+
+```
+docker image inspect fact
+docker ps
+```
+
+- Now let's execute an interactive bash shell on your container:
+
+```
+docker exec -it fact bash
+```
+ - You should see a prompt that looks something like this: `root@627ac94efaa7:/go/src/app#`
+ 
+ - Let's keep working now inside the container. Execute the following commands:
+ 
+ ```
+ cat /etc/*release
+ whoami
+ curl http://127.0.0.1:3000/5; echo
+ exit
+ ```
+ 
+**Let's recap:** 
+- Your Linux VM was set-up to run Docker images. 
+- You that is able to run GoLang programs. 
+- Your Linux VM has a public IP address.
+- The code you executed provided an http interface accessible using a browser.
+- Logs were display on the terminal window.
+
+Congratulations, you have completed LAB-2.
+
+
+
+
+
+
 
 ### LAB-2: Connecting to PCF PAS (Pivotal Application Service) 
 
