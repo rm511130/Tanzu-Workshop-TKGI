@@ -2,7 +2,8 @@
 
 ![](./images//vmware-logo.png)
 
-# VMware Tanzu PKS Workshop - Enterprise Kubernetes 
+# VMware Tanzu PKS Workshop
+## Enterprise Class Kubernetes 
 ------------------------------------------------------------
 ## Workshop Agenda
 (1:00PM to 5:00PM on 03/19/2020)
