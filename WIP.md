@@ -1,27 +1,57 @@
 ##### https://tinyurl.com/PKS4LBRANDS
 
-![](./images//Pivotal.png)
+![](./images//vmware-logo.png)
 
-# VMware PKS Workshop - Enterprise Kubernetes 
+# VMware Tanzu PKS Workshop - Enterprise Kubernetes 
 ------------------------------------------------------------
-## Workshop Contents
+## Workshop Agenda
 (1:00PM to 5:00PM on 03/19/2020)
 
 - Introduction
-     - Orientation & Workshop Description
--  PKS Installation Steps Overview
+     - Workshop Description and Orientation
+     - VMware Tanzu Portfolio of Products 
+- Platform Architecture 
+     - Installation Overview
      - Operations Manager
-     - Tile(s) Installation
+     - Tiles Installation
      - Client Tools
 - Demo & Hands-on Labs on GCP and Azure
-     - Developer Experience
-        - Deploying Apps using PKS & TAS
-     - Day 2 Operations
-        - Scaling
-        - Health Monitoring
-        - Patching
-        - Upgrading
+     - Developer Experience: 5 Labs
+     - Operator Experience: 5 Labs
 - Next Steps
+-----------------------------------------------------
+## Technical Pre-Requisites
+- Your Mac or Windows PC should be able to access:
+    - https://chess.cfapps.io
+    - [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
+
+### If using a Windows PC
+- You will need to use [PuTTY](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md) to access a Ubuntu VM (public IP address) using a `.ppk` private-key file.
+- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) you can install and use [wget](http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe) in a PowerShell window.
+```
+help wget
+cd ~\Downloads
+wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk -Outfile fuse.ppk
+```
+- If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
+- If you need help installing or using PuTTY with [fuse.ppk](https://raw.github.com/rm511130/LBRANDS/blob/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/LBRANDS/blob/master/PuTTY_and_SSH.md).
+- If you successfully tested the access to the `ubuntu@user1.pks4u.com` VM, you are ready for the workshop.
+
+### If using a  Mac 
+- You will need to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
+- Using a Terminal Window, execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
+```
+cd ~/Downloads
+wget https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem
+chmod 400 ~/Downloads/fuse.pem
+```
+- You can now test whether SSH is working with the `fuse.pem` private key using the following command:
+```
+ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
+```
+- Please `exit` from the Ubuntu VM if your test was successful. You are ready for the workshop.
+
+
 -----------------------------------------------------
 
 ## Guidelines for this Workshop
@@ -32,9 +62,7 @@
 - When carrying out hands-on labs, you can cut-&-paste the commands shown `in boxes like this one`. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
   - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
   - `ssh -i fuse.pem ubuntu@user15.pks4u.com` is for `user15`
-- Don't get stuck. Ask for help. The goal is to learn concepts and understand how Pivotal/VMware can help L Brands be successful.
-- The PAS and PKS platforms we will be using were created using Let's Encrypt certificates, so you we don't expect to see any Certificates or SSL warning screens.
-- Each workshop participant will be assigned a Ubuntu VM which has been readied for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
+- Each workshop participant will be assigned a Ubuntu VM previously set up for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
      - SSH'ing into the Ubuntu VM 
      - Browsing web pages
 - Throughout this document, when it's time for hands-on labs, you will see the following icon:
@@ -42,37 +70,15 @@
 ![](./images/lab.png)
 
 -----------------------------------------------------
-## Tell us about Chemical Abstracts Services
+## A Brief Introduction - VMWare Tanzu
 
-![](./images/what.png)
-
------------------------------------------------------
-
-## Pivotal's Beliefs and Value Statements
 - Enterprises rely on software to improve business outcomes.
-- They depend on velocity of converting ideas to new features, new applications, new capabilities, and new services.
-- The pace of change is generating a daunting backlog of work for IT leaders, who are also under pressure to reduce technology spend and limit security vulnerabilities.
+- A critical factor: the *velocity* of how ideas are converted to new features, new apps, and new services.
+- The ever accelerating pace of change generates a daunting backlog of work for IT leaders.
+- Everyone is under pressure to reduce technology spend and address security vulnerabilities where perimeters encompass mobile, public and private infrastructure.
 - The competing mandates - velocity, security, and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
-- Pivotal helps enterprises accelerate their transition to continuous delivery, reducing waste (costs and time) through process and automation to achieve world-class efficiency and productivity.
-- Pivotal’s customers are achieving are compelling Business Outcomes.
 
------------------------------------------------------
-
-![](./images/5s.png)
-
------------------------------------------------------
-
-## Case Studies
-
-World-class teams of agile developers, product managers, and designers can adopt the [Pivotal way](https://pivotal.io/labs) of building and deploying software with quality and sustainable velocity in a cost-effective manner. The techniques Pivotal uses and advocates involve Minimum Viable Products (MVPs), Lean experiments, Identifying & testing assumptions, Data driven decisions, User-centered designs, Prototyping, Pair Programming, Test-Driven Development (TDD), Short Iterations, Continuous Integration and Deployment.
-
-The results are amazing:
-- Build working software at a consistent speed and quality in the face of changing requirements.
-- Ensure the software solves a real problem for real users in a desirable and usable product.
-- Reduce the risk of building the wrong thing while comfortably changing direction.
-
-
-https://pivotal.io/customers
+- [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
 
 -----------------------------------------------------
 
