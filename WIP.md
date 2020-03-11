@@ -1,4 +1,4 @@
-##### https://tinyurl.com/PKS4LBRANDS   [LAB1](https://github.com/rm511130/LBRANDS/blob/master/WIP.md#lab-1-ssh-into-your-linux-workshop-vm-environment--test-the-command-line-interface-tools)
+##### https://tinyurl.com/PKS4LBRANDS   Shortcuts: [LAB1](https://github.com/rm511130/LBRANDS/blob/master/WIP.md#lab-1-ssh-into-your-linux-workshop-vm-environment--test-the-command-line-interface-tools)
 
 ![](./images//vmware-logo.png)
 
@@ -225,25 +225,191 @@ Congratulations, you have completed LAB-3.
 -----------------------------------------------------
 ### LAB-4: Connecting to PKS API and Creating a Kubernetes Cluster
 
-- Execute the following commands to log into the PKS control plane: 
+- The creation of a Kubernetes Cluster takes over 10 minutes on GCP (Google Cloud Platform) so we have already created a Kubernetes Cluster for you. 
+
+![](./images/lab.png)
+
+- Execute the following commands to log into the PKS control plane.
+- Please make sure to use the correct `-u user<#>` aligned to your User ID.
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u user1 -p password -k
 pks clusters
 pks plans
 ```
-- Execute the following commands to `pks create-cluster` with a GCP Load Balancer, a DNS entry and a Public IP address.
+- Let's get more detailed information about your cluster.
+- Please make sure to use the correct `-u user<#>` aligned to your User ID.
 
 ```
-cd ~
-git clone https://github.com/rm511130/manage-pks
-cd ~/manage-pks/gcp
-./manage-cluster provision user1 small pks4u-zone
-./monitor-progress.sh user1
-./manage-cluster access user1
+pks cluster user1
+pks get-credentials user1
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+kubectl cluster-info
+kubectl get all --all-namespaces
 ```
 
-- 
+- Let's scale your cluster horizontally by adding an additional K8s worker node:
+
+```
+pks resize user1 --num-nodes 2
+```
+
+- Use the following command to monitor the growth of your cluster:
+
+```
+pks cluster user1
+```
+
+- You should see output similar to the example below:
+
+```
+PKS Version:              1.6.1-build.6
+Name:                     user1
+K8s Version:              1.15.5
+Plan Name:                small
+UUID:                     1210f5d8-c292-4f22-a0d8-0147b87b4ed0
+Last Action:              UPDATE
+Last Action State:        in progress
+Last Action Description:  Instance update in progress
+Kubernetes Master Host:   user1-k8s.pks4u.com
+Kubernetes Master Port:   8443
+Worker Nodes:             2
+Kubernetes Master IP(s):  10.0.11.10
+Network Profile Name:     
+```
+
+- We don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
+
+- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an Operator function.
+
+**Let's recap:** 
+- You logged into the PKS Control Plane and scaled an existing cluster.
+- You executed a few `kubectl` commands against your cluster.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
+Congratulations, you have completed LAB-4.
+
+-----------------------------------------------------
+### LAB-5: Deploying an App on Kubernetes
+
+- A Docker Image identical to the one you created during Lab-3 has been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact). Let's use this image to run the Factorial program on your Kubernetes cluster.
+
+![](./images/lab.png)
+
+- Execute the following commands:
+
+```
+kubectl create deployment fact --image=rmeira/fact
+kubectl get all
+kubectl expose deployment fact --type=LoadBalancer --port=80 --target-port=3000
+```
+- It takes a few seconds to create a load balancer on GCP and to expose a service, so let's first test if the pods are running the `rmeira/fact` container image:
+
+```
+kubectl exec -t -i fact bash
+```
+
+- The previous command have an opened a terminal session on a container running in your cluster with a prompt similar to the example: `root@factorial:/go/src/app#`
+
+- Continue with the following commands to test whether the program is running:
+
+```
+curl 127.0.0.1:3000/40; echo
+exit
+```
+- Back to the command prompt on your Linux VM. Let's check whether your service has been assigned a loadbalancer External-IP address and whether the `pks resize user1 --num-nodes 2` command from the previous lab has completed successfully.
+
+```
+kubectl get service
+pks cluster user1
+```
+- Execute the commands above every 30 seconds until you see:
+   - an `External IP` show up for the `fact` service
+   - a `Last Action State: succeeded` and `Worker Nodes: 2`
+   
+- Using the `External IP` address you see when executing `kubectl get service` execute the following command:
+
+```
+curl http://35.227.49.80/10; echo
+```
+- You should see the results of the `10!` calculation.
+
+**Let's recap:** 
+- You deployed the `rmeira/fact` image from Docker Hub to your K8s cluster and tested using a `bash` session.
+- You exposed the `fact` deployment as a service available on the Internet.
+- You did not get a secured URL accessible from the Internet, but anyone with access to your `External IP` address is able to run your `fact` program.
+
+Congratulations, you have deployed an App on K8s and completed LAB-5.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
+-----------------------------------------------------
+### LAB-6: Scaling an App on Kubernetes
+
+- Now let's scale up and down the number of pods running the `fact` docker image, and then let's also scale your cluster.
+
+![](./images/lab.png)
+
+- For this Lab you will need to open 3 (three) terminal windows that access your Linux Workshop VM. Please arrange them side by side, all simultaneously visible on your screen. 
+
+![](./images/3-terminals-start.png)
+
+- On the first terminal window, execute the following command using the `External IP` from the previous lab:
+```
+while true; do curl http://35.227.49.80/10; sleep 1; echo; done;
+```
+
+- On the second terminal window, execute the following command:
+```
+watch kubectl get pods -o wide
+```
+
+- And on the third window, execute the following commands:
+```
+kubectl scale deployment fact --replicas=20
+```
+
+![](./images/3-terminals-executing.png)
+
+
+- On the second terminal window, you should see an output similar to the example shown below:
+
+```
+NAME                  READY  STATUS    RESTARTS   AGE    IP            NODE                                     
+fact-85774cfbb8-268th  1/1   Running      0       3m29s  10.200.44.8   vm-635fc928-8e80-4c61-7498-142b72106e16
+fact-85774cfbb8-4l4wt  1/1   Running      0       3m29s  10.200.44.15  vm-635fc928-8e80-4c61-7498-142b72106e16
+fact-85774cfbb8-72rqk  1/1   Running      0       3m29s  10.200.85.19  vm-25ed22a9-b268-4ba5-797c-99595d6c5873
+fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22a9-b268-4ba5-797c-99595d6c5873  
+...
+```
+- Note in the output shown above that under `NODE` we see two unique VM identifiers.
+
+- Did you see any error messages on the first terminal window?
+
+```
+curl: (7) Failed to connect to 35.227.49.80 port 80: Connection refused
+```
+
+- If you did see an error message it's due to the fact that additional tuning of the pods is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes.](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+
+- Continuing with the same experiment and using the third terminal window. Execute the following command:
+```
+kubectl scale deployment fact --replicas=1
+```
+
+- This time you should not have seen any error messages on the first terminal window. Kubernetes updates the `fact service` before removing pods.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
