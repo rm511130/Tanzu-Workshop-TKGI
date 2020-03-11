@@ -110,27 +110,18 @@ Once logged in, you can ignore any messages that ask you to perform a `do-releas
 
 ```
 pks --version
-```
-
-```
 kubectl version
 ```
 If you see a connection refused message, don't worry, it is expected and not a problem.
 
 ```
 cf --version
-```
-
-```
 git version
-```
-
-```
 docker --version
-```
-
-```
 go version
+jq --version
+gcloud --version
+python3 --version
 ```
 
 If all the commands shown above displayed their respective CLI versions, you have successfully completed Lab-1.
@@ -140,7 +131,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 Congratulations, you have completed LAB-1.
 
 -----------------------------------------------------
-### LAB-2: Running a simple GoLang Program Locally (in your Linux Workshop VM)
+### LAB-2: Running a simple GoLang Program Locally (on your Linux Workshop VM)
 
 - Using your Linux Workshop VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally on your Linux Workshop VM.
 
@@ -171,6 +162,8 @@ go run fact.go
 - The code you executed provided an http interface accessible using a browser.
 - Logs were display on the terminal window.
 
+- Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
 Congratulations, you have completed LAB-2. 
 
 -----------------------------------------------------
@@ -178,9 +171,13 @@ Congratulations, you have completed LAB-2.
 
 ![](./images/lab.png)
 
-- Using your Linux Workshop VM take a look at the `Dockerfile` in the `~/fact` directory. You can use a simple `cat ~/fact/Dockerfile` command.
+- Using your Linux Workshop VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
 
-- Execute the following commands to start with a clean slate and build a docker image of your GoLang factorial program:
+```
+cat ~/fact/Dockerfile
+```
+
+- Execute the following commands to start with a clean slate and build a Docker Image of your GoLang factorial program:
 
 ```
 docker system prune -a      # answer y 
@@ -190,37 +187,63 @@ docker run -d --publish 3000:3000 --name fact --rm fact
 curl http://user1.pks4u.com:3000/5; echo
 ```
 
-- Did you notice how many layers were used to create the Docker Image of your GoLang factorial program? Execute the following commands to learn more about your Docker Image:
+- Did you notice how many layers were used to create the Docker Image of your GoLang factorial program? 
+- Execute the following commands, one by one, to learn more about your Docker Image:
 
 ```
 docker image inspect fact
+docker history fact
 docker ps
 ```
 
-- Now let's execute an interactive bash shell on your container:
+- Now let's open an interactive bash shell on your container:
 
 ```
 docker exec -it fact bash
 ```
  - You should see a prompt that looks something like this: `root@627ac94efaa7:/go/src/app#`
  
- - Let's keep working now inside the container. Execute the following commands:
+ - Let's keep working inside your container.
+ 
+ - Execute the following commands:
  
  ```
+ curl http://127.0.0.1:3000/5; echo
  cat /etc/*release
  whoami
- curl http://127.0.0.1:3000/5; echo
  exit
  ```
  
 **Let's recap:** 
-- Your Linux VM was set-up to run Docker images. 
-- You that is able to run GoLang programs. 
-- Your Linux VM has a public IP address.
-- The code you executed provided an http interface accessible using a browser.
-- Logs were display on the terminal window.
+- You built and executed a Docker Image on your Linux VM. 
+- Using the various commands on your Linux VM and on a Docker container you were able to see that many layers and software versions were assembled together on your behalf as a result of the `docker build` command.
 
-Congratulations, you have completed LAB-2.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
+Congratulations, you have completed LAB-3.
+
+-----------------------------------------------------
+### LAB-4: Connecting to PKS API and Creating a Kubernetes Cluster
+
+- Execute the following commands to log into the PKS control plane: 
+
+```
+pks login -a https://api.pks.pks4u.com:9021 -u user1 -p password -k
+pks clusters
+pks plans
+```
+- Execute the following commands to `pks create-cluster` with a GCP Load Balancer, a DNS entry and a Public IP address.
+
+```
+cd ~
+git clone https://github.com/rm511130/manage-pks
+cd ~/manage-pks/gcp
+./manage-cluster provision user1 small pks4u-zone
+./monitor-progress.sh user1
+./manage-cluster access user1
+```
+
+- 
 
 
 
