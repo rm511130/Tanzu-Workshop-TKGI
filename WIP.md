@@ -1,4 +1,4 @@
-##### https://tinyurl.com/PKS4LBRANDS   Shortcuts: [LAB1](https://github.com/rm511130/LBRANDS/blob/master/WIP.md#lab-1-ssh-into-your-linux-workshop-vm-environment--test-the-command-line-interface-tools)
+##### https://tinyurl.com/PKS4LBRANDS  --- Shortcuts: [LAB1](https://github.com/rm511130/LBRANDS/blob/master/WIP.md#lab-1-ssh-into-your-linux-workshop-vm-environment--test-the-command-line-interface-tools) [LAB2]()
 
 ![](./images//vmware-logo.png)
 
