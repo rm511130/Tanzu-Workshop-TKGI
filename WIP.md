@@ -1,4 +1,4 @@
-##### https://tinyurl.com/PKS4LBRANDS
+##### https://tinyurl.com/PKS4LBRANDS   [LAB1](https://github.com/rm511130/LBRANDS/blob/master/WIP.md#lab-1-ssh-into-your-linux-workshop-vm-environment--test-the-command-line-interface-tools)
 
 ![](./images//vmware-logo.png)
 
