@@ -1,4 +1,4 @@
-##### https://tinyurl.com/PKS4LBRANDS  --- Shortcuts: [LAB1](https://github.com/rm511130/LBRANDS/blob/master/WIP.md#lab-1-ssh-into-your-linux-workshop-vm-environment--test-the-command-line-interface-tools) [LAB2]()
+##### https://tinyurl.com/PKS4LBRANDS
 
 ![](./images//vmware-logo.png)
 
@@ -223,7 +223,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 Congratulations, you have completed LAB-3.
 
 -----------------------------------------------------
-### LAB-4: Connecting to PKS API and Creating a Kubernetes Cluster
+### LAB-4: Connecting to PKS API and Resizing a Kubernetes Cluster
 
 - The creation of a Kubernetes Cluster takes over 10 minutes on GCP (Google Cloud Platform) so we have already created a Kubernetes Cluster for you. 
 
@@ -347,33 +347,36 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-6: Scaling an App on Kubernetes
 
-- Now let's scale up and down the number of pods running the `fact` docker image, and then let's also scale your cluster.
+- Now let's scale up and down the number of pods running the `fact` docker image.
 
 ![](./images/lab.png)
 
-- For this Lab you will need to open 3 (three) terminal windows that access your Linux Workshop VM. Please arrange them side by side, all simultaneously visible on your screen. 
+- For this Lab you will need to open 3 (three) terminal windows that access your Linux Workshop VM. Please arrange them side by side, per the example below, keeping all simultaneously visible on your screen. 
 
 ![](./images/3-terminals-start.png)
 
-- On the first terminal window, execute the following command using the `External IP` from the previous lab:
+- Let's denominate as Terminal Window #1 the long, narrower terminal window on the right-side of your screen. 
+- Using Terminal Window #1, execute the following command using the `External IP` from the previous lab.
 ```
-while true; do curl http://35.227.49.80/10; sleep 1; echo; done;
+while true; do curl http://35.227.49.80/10; echo; done;
 ```
-
-- On the second terminal window, execute the following command:
+- Let's denominate as Terminal Window #2 the top, wider terminal window on the left-side of your screen.
+- Using Terminal Window #2, execute the following command:
 ```
 watch kubectl get pods -o wide
 ```
 
-- And on the third window, execute the following commands:
+- Using Terminal Window #3, i.e. the remaining terminal window that has an available Linux prompt, execute the following commands:
 ```
 kubectl scale deployment fact --replicas=20
 ```
 
+- Your screen should look like the example shown below:
+
 ![](./images/3-terminals-executing.png)
 
 
-- On the second terminal window, you should see an output similar to the example shown below:
+- On Terrminal Window #2, you should see an output similar to the example shown below:
 
 ```
 NAME                  READY  STATUS    RESTARTS   AGE    IP            NODE                                     
@@ -383,22 +386,179 @@ fact-85774cfbb8-72rqk  1/1   Running      0       3m29s  10.200.85.19  vm-25ed22
 fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22a9-b268-4ba5-797c-99595d6c5873  
 ...
 ```
-- Note in the output shown above that under `NODE` we see two unique VM identifiers.
+- Note in the output shown above that under `NODE` we see two unique VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes during Lab-4.
 
-- Did you see any error messages on the first terminal window?
+- While changing the number of `replicas`, did you see any error messages on On Terminal Window #1?
 
 ```
 curl: (7) Failed to connect to 35.227.49.80 port 80: Connection refused
 ```
 
-- If you did see an error message it's due to the fact that additional tuning of the pods is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes.](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes).
+- If you did see error messages it's because additional tuning of the pods is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) so that Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
 
-- Continuing with the same experiment and using the third terminal window. Execute the following command:
+- Keep Terminal Windows #1 and #2 running. We will come back to them shortly.
+
+- Let's try to fix the `Connection Refused` issue by amending the existing deployment specifications with the yaml snippet shown below:
+
+```
+      containers:
+      - image: rmeira/fact
+        ports:
+          - containerPort: 3000
+            protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 20
+```
+
+- Here are the steps to follow:
+
+```
+cd ~
+kubectl get deployment fact -o yaml > fact-deployment.yml
+```
+
+- You then need to alter the contents of the `fact-deployment.yml` file to include the yaml snippet shown above. 
+- *However*, since it's very easy to get the yaml formatting wrong, and the purpose of this workshop is not to test your editing skills, let's proceed by using the `fact-deployment-with-readiness-probe.yml` file, available in your home directory, to recreate a working deployment of your `fact` program.
+
+- Delete and recreate the `fact` deployment with the following commands:
+
+```
+kubectl delete deployment fact
+kubectl apply -f fact-deployment-with-readiness-probe.yml
+```
+
+- Observe whether the `Connection Refused` issue occurs when scaling up and down the number of pods in your deployment:
+
+```
+kubectl scale deployment fact --replicas=20
+```
+
+- Wait until all the pods are running before proceeding with the scaling down command:
+
 ```
 kubectl scale deployment fact --replicas=1
 ```
 
-- This time you should not have seen any error messages on the first terminal window. Kubernetes updates the `fact service` before removing pods.
+- Clean-up: you can go back to just one Terminal Window to access your Linux Workshop VM.
+
+
+**Let's recap:** 
+- The `rmeira/fact` image, deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be ammended with a `livenessProbe` and a `readinessProbe` to reduce the impact of scaling horizontally the number of running pods. Kubernetes developers need to understand these factors as they develop more complex, microservices based, distributed systems.
+- For the more advanced users, you may wish to experiment with scaling the K8s cluster using the `pks resize <cluster-name> --num-nodes <#>` command while deploying and scaling the `fact` app. Additional commands such as `kubectl drain <node>` and `kubectl uncordon <node>` also demonstrate the power K8s puts at your fingertips for draining workloads from nodes.
+- Advanced workload placement and management using K8s clusters can be a fun area to [explore](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/).
+
+Congratulations, you have completed LAB-6.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
+-----------------------------------------------------
+### LAB-7: PKS RBAC (Role Based Access Control)
+
+![](./images/lab.png)
+
+- Execute the following command to become a PKS Administrator:
+
+```
+pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
+## I used ./manage-cluster-provision-v2 shared-cluster medium pks4u-zone to create a cluster called *shared-cluster*
+```
+
+- Now look at your scope of control by executing the `pks clusters` command. 
+- When logged-in with the scope of a PKS administrator, you can see all K8s Clusters within a given GCP projectID.  
+
+- Go back to your UserID specific scope of control by executing the following command. Make sure to use the correct `-u userID` aligned to the UserID you selected at the beginnig of this workshop.
+
+```
+pks login -a https://api.pks.pks4u.com:9021 -u user1 -p password -k
+pks clusters
+pks get-credentials user1
+```
+- Now try to resize your UserID cluster to 10 worker nodes, or try to delete (not yours, but) a colleague's cluster:
+```
+pks resize user1 --num-nodes 10
+pks delete-cluster user2
+```
+- Now let's take a look at K8s Namespaces by deploying a slightly differeny Docker Image to a new Namespace in your cluster:
+```
+kubectl create namespace factorial
+kubectl run factorial --image=rmeira/factoid -n factorial
+kubectl expose deployment factorial --type=LoadBalancer --port=80 --target-port=3000 -n factorial
+watch pks get-credentials user1
+```
+- Use `CTRL-C` to stop the `watch` command once the `External-IP` address has been provided.
+- You can now test the `rmeira/factoid` image. In the example below I'm using the `External-IP` address assigned to me:
+```
+curl http://35.231.171.75/65
+[Factoid] Calculating Factorials: 65! = 9223372036854775808
+```
+
+- So now we have two versions of programs that calculate the factorial of integers. Once running in the `default` namespace and the other running in the `factorial` namespace:
+```
+kubectl get pods --all-namespaces | grep -v system
+```
+
+
+
+**Let's recap:** 
+- PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters (but not all K8s clusters) within the limits set by the operators who set up the PKS control plane. In this way, separation of responsibilities is viable without the risk of overconsuming resources beyond what is approved or available.
+
+Congratulations, you have completed LAB-7.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
+
+-----------------------------------------------------
+### LAB-8: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
+
+- Tanzu Application Service for K8s is a Platform as a Service solution that takes advantage of the power afforded by Kubernetes, while keeping to the simplicity of a `cf push`. No IP addresses, no complex YAML files, TAS effectively simplifies and streamlines developer tasks, enabling productivity, while enforcing security best practices and development techniques that deliver signficant gains in speed to market.
+
+- As you may recall in:
+  - Lab-1: we tested various CLI (Command Line Interfaces) and conmectivity to VMs
+  - Lab-2: we cloned and executed a [`fact.go`](https://github.com/rm511130/fact/blob/master/fact.go) program locally
+  - Lab-3: we built and tested a Docker Image of the `fact.go` program using default settings for software versions 
+  - Lab-4: we established connectivity to a Kubernetes Cluster using both PKS CLI and Kubectl CLI
+  - Lab-5: we deployed and tested a copy of the `fact` App from a Public Docker Hub to a Kubernetes Cluster
+           we had to create a service `--type LoadBalancer` to make the `fact` App accessible on the Internet
+  - Lab-6: we added probes to our Kubernetes deployment of the `fact` App to allow for smoother horizontal scaling
+           we saw that `kubectl` can be a powerful CLI with signficant control and customization capabilities
+  - Lab-7: we looked at multi-tenancy using PKS clusters scopes and Kubectl Namespacing.
+
+- 
+
+
+- This workshop is primarily focused on VMware Tanzu Kubernetes solutions such as PKS, [Tanzu Mission Control](https://cloud.vmware.com/tanzu-mission-control), and [Tanzu Obervability by Wavefront](https://cloud.vmware.com/tanzu-observability), but the Tanzu Application Service for K8s is a Platform as a Service solution that achieves much  
+
+![](./images/lab.png)
+
+- Execute the following command to become a PKS Administrator:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
