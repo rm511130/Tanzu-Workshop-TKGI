@@ -95,8 +95,8 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 ### LAB-1: SSH into your Linux Workshop VM environment & test the Command Line Interface tools
 
 Let's start by logging into the Workshop environment from your machine (Mac, PC, Laptop, Desktop, Terminal, VDI). You will need to use the following private key: 
-- [fuse.pem](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.pem) if using a Mac.
-- [fuse.ppk](https://raw.githubusercontent.com/rm511130/LBRANDS/master/fuse.ppk) if using a Windows PC.
+- [fuse.pem](./fuse.pem) if using a Mac.
+- [fuse.ppk](./fuse.ppk) if using a Windows PC.
 
 Note that the examples shown below apply to `user1`. If, for example, you are `user11`, your Ubuntu VM will be at `user11.pks4u.com`.
 
