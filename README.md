@@ -249,6 +249,7 @@ pks plans
 
 ```
 pks cluster user1-cluster
+rm ~/.kube/config
 pks get-credentials user1-cluster
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 kubectl cluster-info
