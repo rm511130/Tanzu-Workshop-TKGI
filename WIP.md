@@ -128,14 +128,14 @@ python3 --version
 
 If all the commands shown above displayed their respective CLI versions, you have successfully completed Lab-1.
 
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
-
 Congratulations, you have completed LAB-1.
 
------------------------------------------------------
-### LAB-2: Running a simple GoLang Program Locally (on your Linux Workshop VM)
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
-- Using your Linux Workshop VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally on your Linux Workshop VM.
+-----------------------------------------------------
+### LAB-2: Running a simple GoLang Program Locally (on your Ubuntu VM)
+
+- Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
 
 ![](./images/lab.png)
 
@@ -149,6 +149,7 @@ go run fact.go
 ```
 
 - Leave it the code running and use a browser to access your code at `http://user1.pks4u.com:3000/1500`
+- Remember to use the proper FQDN: for example, `user20` shoud use `user20.pks4u.com`. 
 
 - Make sure you are using the URL that corresponds to your User ID. 
 
