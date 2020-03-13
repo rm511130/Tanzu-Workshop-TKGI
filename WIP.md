@@ -152,7 +152,10 @@ go run fact.go
 - Remember to use the proper FQDN that corresponds to your UserID: e.g. `user20` shoud use `user20.pks4u.com`. 
 
 - Did it work?
-  - Take a look at the [code](https://github.com/rm511130/fact/blob/master/fact.go). Did you find in the code the additional end-points that you can call: e.g. `http://user1.pks4u.com:3000/version` or `http://user1.pks4u.com:3000/header`
+  - Take a look at the [code](https://github.com/rm511130/fact/blob/master/fact.go). 
+  - Did you find in the code the additional end-points that you can call: 
+     - `http://user1.pks4u.com:3000/version` 
+     - `http://user1.pks4u.com:3000/header`
   - Did you see the logs on the Terminal Window of your VM?
 
 - Use `CTRL-C` to cancel out of the `go run fact.go` command.
@@ -163,7 +166,7 @@ go run fact.go
 - The code you executed provided an http interface accessible using a browser.
 - Logs were display on the terminal window.
 
-- Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+- Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 Congratulations, you have completed LAB-2. 
 
@@ -172,7 +175,7 @@ Congratulations, you have completed LAB-2.
 
 ![](./images/lab.png)
 
-- Using your Linux Workshop VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
+- Using your Ubuntu VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
 
 ```
 cat ~/fact/Dockerfile
@@ -188,8 +191,8 @@ docker run -d --publish 3000:3000 --name fact --rm fact
 curl http://user1.pks4u.com:3000/5; echo
 ```
 
-- Did you notice how many layers were used to create the Docker Image of your GoLang factorial program? 
-- Execute the following commands, one by one, to learn more about your Docker Image:
+- Did you notice in the build logs how many layers were used to create the Docker Image of your GoLang factorial program? 
+- Execute the following commands, one-by-one, to learn more about your Docker Image:
 
 ```
 docker image inspect fact
@@ -216,17 +219,21 @@ docker exec -it fact bash
  ```
  
 **Let's recap:** 
-- You built and executed a Docker Image on your Linux VM. 
-- Using the various commands on your Linux VM and on a Docker container you were able to see that many layers and software versions were assembled together on your behalf as a result of the `docker build` command.
-
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+- You built and executed a Docker Image on your Ubuntu VM. 
+- Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers and software versions were assembled together on your behalf as a result of the `docker build` command.
 
 Congratulations, you have completed LAB-3.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
 ### LAB-4: Connecting to PKS API and Resizing a Kubernetes Cluster
 
 - The creation of a Kubernetes Cluster takes over 10 minutes on GCP (Google Cloud Platform) so we have already created a Kubernetes Cluster for you. 
+
+![](./images/bosh_pks_k8s_on_public_cloud.png)
+
+- Let's proceed with the hands-on lab.
 
 ![](./images/lab.png)
 
