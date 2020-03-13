@@ -11,15 +11,15 @@
     - [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
 
 ### If using a Windows PC
-- You will need to use [PuTTY](https://github.com/rm511130/Tanzu-PKS-Workshop/blob/master/PuTTY_and_SSH.md) to access a Ubuntu VM (public IP address) using a `.ppk` private-key file.
-- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/Tanzu-PKS-Workshop/master/fuse.ppk) you can install and use [wget](http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe) in a PowerShell window.
+- You will need to use [PuTTY](https://github.com/rm511130/Tanzu-Workshop-PKS/blob/master/PuTTY_and_SSH.md) to access a Ubuntu VM (public IP address) using a `.ppk` private-key file.
+- To download [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.ppk) you can install and use [wget](http://downloads.sourceforge.net/gnuwin32/wget-1.11.4-1-setup.exe) in a PowerShell window.
 ```
 help wget
 cd ~\Downloads
-wget https://raw.githubusercontent.com/rm511130/Tanzu-PKS-Workshop/master/fuse.ppk -Outfile fuse.ppk
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.ppk -Outfile fuse.ppk
 ```
-- If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/Tanzu-PKS-Workshop/master/fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
-- If you need help installing or using PuTTY with [fuse.ppk](https://raw.githubusercontent.com/rm511130/Tanzu-PKS-Workshop/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/Tanzu-PKS-Workshop/blob/master/PuTTY_and_SSH.md).
+- If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
+- If you need help installing or using PuTTY with [fuse.ppk](https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.ppk) check these [detailed instructions](https://github.com/rm511130/Tanzu-Workshop-PKS/blob/master/PuTTY_and_SSH.md).
 - If you successfully tested the access to the `ubuntu@user1.pks4u.com` VM, you are ready for the workshop.
 
 ### If using a  Mac 
@@ -27,7 +27,7 @@ wget https://raw.githubusercontent.com/rm511130/Tanzu-PKS-Workshop/master/fuse.p
 - Using a Terminal Window, execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
 ```
 cd ~/Downloads
-wget https://raw.githubusercontent.com/rm511130/Tanzu-PKS-Workshop/master/fuse.pem
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.pem
 chmod 400 ~/Downloads/fuse.pem
 ```
 - You can now test whether SSH is working with the `fuse.pem` private key using the following command:
