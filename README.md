@@ -16,7 +16,7 @@
 ```
 help wget
 cd ~\Downloads
-wget https://github.com/rm511130/Tanzu-Workshop-PKS/blob/master/fuse.ppk -Outfile fuse.ppk
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.ppk -Outfile fuse.ppk
 ```
 - If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](./fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
 - If you need help installing or using PuTTY with [fuse.ppk](./fuse.ppk) check these [detailed instructions](./PuTTY_and_SSH.md).
