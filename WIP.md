@@ -1,5 +1,3 @@
-##### https://tinyurl.com/PKS4LBRANDS
-
 ![](./images//vmware-logo.png)
 
 # VMware Tanzu PKS Workshop - Enterprise Kubernetes 
