@@ -235,7 +235,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- During this lab you are going to assume the role of a Platform DevOps user: e.g. `devops15`.
+- During this lab you are going to assume the role of a Platform DevOps user.
 - Execute the following commands to log into the PKS Control Plane. 
 - Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
