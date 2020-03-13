@@ -149,9 +149,7 @@ go run fact.go
 ```
 
 - Leave it the code running and use a browser to access your code at `http://user1.pks4u.com:3000/1500`
-- Remember to use the proper FQDN: for example, `user20` shoud use `user20.pks4u.com`. 
-
-- Make sure you are using the URL that corresponds to your User ID. 
+- Remember to use the proper FQDN that corresponds to your UserID: e.g. `user20` shoud use `user20.pks4u.com`. 
 
 - Did it work?
   - Take a look at the [code](https://github.com/rm511130/fact/blob/master/fact.go). Did you find in the code the additional end-points that you can call: e.g. `http://user1.pks4u.com:3000/version` or `http://user1.pks4u.com:3000/header`
