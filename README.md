@@ -9,15 +9,15 @@
 
 - Introduction
      - Workshop Description and Orientation
-     - VMware Tanzu Portfolio of Products 
+        - VMware Tanzu Portfolio of Products 
 - Platform Architecture 
      - Installation Overview
      - Operations Manager
      - Tiles Installation
      - Client Tools
-- Demo & Hands-on Labs on GCP and Azure
-     - Developer Experience: 5 Labs
-     - Operator Experience: 5 Labs
+- Demo & Hands-on Labs
+     - Developer Experience
+     - Operator Experience
 - Next Steps
 -----------------------------------------------------
 ## Technical Pre-Requisites
