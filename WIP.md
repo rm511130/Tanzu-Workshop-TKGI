@@ -105,7 +105,7 @@ Note that the examples shown below apply to `user1`. If, for example, you are `u
 In the pre-requisites section of this workshop, you were asked to use `ssh` or `PuTTY` to access the Ubuntu VM that has been assigned to your [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Please go ahead and create a Terminal Session into your VM. The example shown below applies to `user1` if he or she had downloaded the `fuse.pem` key to a Mac. If you need, the `PuTTY` instructions for Windows PC users can be found [here](./PuTTY_and_SSH.md).
 
 ```
-ssh -i ~/Downloads/fuse.pem ubuntu@user1.ourpcf.com
+ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 ```
 
 Once logged in, you can ignore any messages that ask you to perform a `do-release-upgrade`. Please proceed by executing the following commands:
