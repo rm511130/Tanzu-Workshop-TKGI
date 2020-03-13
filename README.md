@@ -251,9 +251,15 @@ pks plans
 pks cluster user1-cluster
 rm ~/.kube/config
 pks get-credentials user1-cluster
-echo "source <(kubectl completion bash)" >> ~/.bashrc
 kubectl cluster-info
 kubectl get all --all-namespaces
+```
+
+- If kubectl auto-completion is not switched-on for your Ubuntu VM, you can execute the following commands to activate it:
+```
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+exit
+# and log back into your Ubuntu VM using PuTTY or SSH 
 ```
 
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
