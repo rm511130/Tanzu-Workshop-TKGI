@@ -470,13 +470,10 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
-## I used ./manage-cluster-provision-v2 shared-cluster medium pks4u-zone to create a cluster called *shared-cluster*
 ```
-
 - Now look at your scope of control by executing the `pks clusters` command. 
 - When logged-in with the scope of a PKS administrator, you can see all K8s Clusters within a given GCP projectID.  
-
-- Go back to your UserID specific scope of control by executing the following command. Make sure to use the correct `-u userID` aligned to the UserID you selected at the beginnig of this workshop.
+- Go back to your UserID specific scope of control by executing the following command, and please make sure to use the correct `-u userID` aligned to the UserID you selected at the beginnig of this workshop.
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u user1 -p password -k
@@ -488,6 +485,11 @@ pks get-credentials user1
 pks resize user1 --num-nodes 10
 pks delete-cluster user2
 ```
+- As you can see Operations has placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
+
+
+
+
 - Now let's take a look at K8s Namespaces by deploying a slightly differeny Docker Image to a new Namespace in your cluster:
 ```
 kubectl create namespace factorial
