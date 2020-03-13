@@ -229,19 +229,17 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-4: Connecting to PKS API and Resizing a Kubernetes Cluster
 
-- The creation of a Kubernetes Cluster takes over 10 minutes on GCP (Google Cloud Platform) so we have already created a Kubernetes Cluster for you. 
+- The creation of a Kubernetes Cluster takes over 10 minutes so we have already created a Kubernetes Cluster for you. 
 
 ![](./images/bosh_pks_k8s_on_public_cloud.png)
 
-- Let's proceed with the hands-on lab.
-
 ![](./images/lab.png)
 
-- Execute the following commands to log into the PKS control plane.
-- Please make sure to use the correct `-u user<#>` aligned to your User ID.
+- Execute the following commands to log into the PKS Control Plane.
+- Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -u user1 -p password -k
+pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
 pks clusters
 pks plans
 ```
