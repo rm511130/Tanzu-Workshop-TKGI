@@ -235,7 +235,8 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Execute the following commands to log into the PKS Control Plane.
+- During this lab you are going to assume the role of a Platform DevOps user: e.g. `devops15`.
+- Execute the following commands to log into the PKS Control Plane. 
 - Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
 ```
@@ -244,11 +245,11 @@ pks clusters
 pks plans
 ```
 - Let's get more detailed information about your cluster.
-- Please make sure to use the correct `-u user<#>` aligned to your User ID.
+- Please make sure to use the correct `env<#>` aligned to your User ID.
 
 ```
-pks cluster user1
-pks get-credentials user1
+pks cluster env1
+pks get-credentials env1
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 kubectl cluster-info
 kubectl get all --all-namespaces
@@ -257,13 +258,13 @@ kubectl get all --all-namespaces
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
 
 ```
-pks resize user1 --num-nodes 2
+pks resize env1 --num-nodes 2
 ```
 
 - Use the following command to monitor the growth of your cluster:
 
 ```
-pks cluster user1
+pks cluster env1
 ```
 
 - You should see output similar to the example below:
@@ -275,7 +276,7 @@ K8s Version:              1.15.5
 Plan Name:                small
 UUID:                     1210f5d8-c292-4f22-a0d8-0147b87b4ed0
 Last Action:              UPDATE
-Last Action State:        in progress
+Last Action State:        **in progress**
 Last Action Description:  Instance update in progress
 Kubernetes Master Host:   user1-k8s.pks4u.com
 Kubernetes Master Port:   8443
@@ -284,15 +285,15 @@ Kubernetes Master IP(s):  10.0.11.10
 Network Profile Name:     
 ```
 
-- We don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
+- You don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
 
-- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an Operator function.
+- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an PKS Operator function.
 
 **Let's recap:** 
 - You logged into the PKS Control Plane and scaled an existing cluster.
-- You executed a few `kubectl` commands against your cluster.
+- You executed a few `kubectl` commands against your cluster as a DevOps PKS Manager.
 
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 Congratulations, you have completed LAB-4.
 
