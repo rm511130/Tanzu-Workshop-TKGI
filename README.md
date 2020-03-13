@@ -283,7 +283,7 @@ K8s Version:              1.15.5
 Plan Name:                small
 UUID:                     1210f5d8-c292-4f22-a0d8-0147b87b4ed0
 Last Action:              UPDATE
-Last Action State:        **in progress**
+Last Action State:        in progress
 Last Action Description:  Instance update in progress
 Kubernetes Master Host:   user1-cluster-k8s.pks4u.com
 Kubernetes Master Port:   8443
@@ -291,13 +291,18 @@ Worker Nodes:             2
 Kubernetes Master IP(s):  10.0.11.10
 Network Profile Name:     
 ```
+- Note in the output shown above the line that indicates the active resizing of your cluster:
 
+```
+Last Action State:        in progress
+```
 - You don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
 
 - Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an PKS Operator function.
 
 **Let's recap:** 
-- You logged into the PKS Control Plane and scaled an existing cluster.
+- You logged into the PKS Control Plane as a DevOps user, and scaled an existing cluster.
+- Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the PKS platform.
 - You executed a few `kubectl` commands against your cluster as a DevOps PKS Manager.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
@@ -307,7 +312,7 @@ Congratulations, you have completed LAB-4.
 -----------------------------------------------------
 ### LAB-5: Deploying an App on Kubernetes
 
-- A Docker Image identical to the one you created during Lab-3 has been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact). Let's use this image to run the Factorial program on your Kubernetes cluster.
+- A Docker Image identical to the one you created during Lab-3 has been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact). This URL also contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. Let's use the [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) image to run the Factorial program on your Kubernetes cluster.
 
 ![](./images/lab.png)
 
@@ -318,25 +323,26 @@ kubectl create deployment fact --image=rmeira/fact
 kubectl get all
 kubectl expose deployment fact --type=LoadBalancer --port=80 --target-port=3000
 ```
-- It takes a few seconds to create a load balancer on GCP and to expose a service, so let's first test if the pods are running the `rmeira/fact` container image:
+- It takes a minute to create a load balancer and to expose a K8s service, so let's first test if the pods are running the `rmeira/fact` container image:
 
 ```
-kubectl exec -t -i fact bash
+pod_name=$(kubectl get pods | grep fact | awk '{ print $1 }'); echo $pod_name
+kubectl exec -t -i $pod_name bash
 ```
 
-- The previous command have an opened a terminal session on a container running in your cluster with a prompt similar to the example: `root@factorial:/go/src/app#`
+- The `kubectl exec` command opens a terminal session on a container that is running the `fact` Docker Image in your cluster. You should see a prompt similar to the example: `root@factorial:/go/src/app#`
 
-- Continue with the following commands to test whether the program is running:
+- Continue with the following commands to test whether the `fact` program is running:
 
 ```
 curl 127.0.0.1:3000/40; echo
 exit
 ```
-- Back to the command prompt on your Linux VM. Let's check whether your service has been assigned a loadbalancer External-IP address and whether the `pks resize user1 --num-nodes 2` command from the previous lab has completed successfully.
+- Back to the command prompt on your Ubuntu VM. Let's check whether your service has been assigned a loadbalancer External-IP address, and whether the `pks resize user1 --num-nodes 2` command from the previous lab has completed successfully.
 
 ```
 kubectl get service
-pks cluster user1
+pks cluster user1-cluster
 ```
 - Execute the commands above every 30 seconds until you see:
    - an `External IP` show up for the `fact` service
@@ -350,13 +356,14 @@ curl http://35.227.49.80/10; echo
 - You should see the results of the `10!` calculation.
 
 **Let's recap:** 
-- You deployed the `rmeira/fact` image from Docker Hub to your K8s cluster and tested using a `bash` session.
+- You deployed the `rmeira/fact` image from Docker Hub to your K8s cluster and used a `bash` session to test the deployment.
 - You exposed the `fact` deployment as a service available on the Internet.
 - You did not get a secured URL accessible from the Internet, but anyone with access to your `External IP` address is able to run your `fact` program.
+- If you did wish to secure your `fact` program with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
 
 Congratulations, you have deployed an App on K8s and completed LAB-5.
 
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
 ### LAB-6: Scaling an App on Kubernetes
@@ -365,7 +372,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- For this Lab you will need to open 3 (three) terminal windows that access your Linux Workshop VM. Please arrange them side by side, per the example below, keeping all simultaneously visible on your screen. 
+- For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu VM. Please arrange them side by side, per the example below, keeping all simultaneously visible on your screen. 
 
 ![](./images/3-terminals-start.png)
 
@@ -408,7 +415,7 @@ fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22
 curl: (7) Failed to connect to 35.227.49.80 port 80: Connection refused
 ```
 
-- If you did see error messages it's because additional tuning of the pods is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) so that Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
+- If you did see error messages it's because additional tuning of the containers is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) so that Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
 
 - Keep Terminal Windows #1 and #2 running. We will come back to them shortly.
 
@@ -444,12 +451,16 @@ kubectl get deployment fact -o yaml > fact-deployment.yml
 - You then need to alter the contents of the `fact-deployment.yml` file to include the yaml snippet shown above. 
 - *However*, since it's very easy to get the yaml formatting wrong, and the purpose of this workshop is not to test your editing skills, let's proceed by using the `fact-deployment-with-readiness-probe.yml` file, available in your home directory, to recreate a working deployment of your `fact` program.
 
-- Delete and recreate the `fact` deployment with the following commands:
+- Delete and recreate, using `fact-deployment-with-readiness-probe.yml`, your `fact` deployment with the following commands:
 
 ```
 kubectl delete deployment fact
 kubectl apply -f fact-deployment-with-readiness-probe.yml
 ```
+
+- It will take K8s a few seconds to achieve the desired state described in the `fact-deployment-with-readiness-probe.yml`.
+
+- When you will see the `10!` calculations on Terminal Window #1, you can proceed ahead to the next step.
 
 - Observe whether the `Connection Refused` issue occurs when scaling up and down the number of pods in your deployment:
 
@@ -463,7 +474,7 @@ kubectl scale deployment fact --replicas=20
 kubectl scale deployment fact --replicas=1
 ```
 
-- Clean-up: you can go back to just one Terminal Window to access your Linux Workshop VM.
+- Clean-up: you can go back to just one Terminal Window to access your Ubuntu VM.
 
 
 **Let's recap:** 
@@ -473,7 +484,7 @@ kubectl scale deployment fact --replicas=1
 
 Congratulations, you have completed LAB-6.
 
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
 ### LAB-7: PKS RBAC (Role Based Access Control)
