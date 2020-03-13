@@ -229,7 +229,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-4: Connecting to PKS API and Resizing a Kubernetes Cluster
 
-- The creation of a Kubernetes Cluster takes over 10 minutes so we have already created a Kubernetes Cluster for you. 
+- The creation of a Kubernetes Cluster takes over 10 minutes so we created a Kubernetes Cluster for you in preparation for this workshop. 
 
 ![](./images/bosh_pks_k8s_on_public_cloud.png)
 
@@ -245,11 +245,11 @@ pks clusters
 pks plans
 ```
 - Let's get more detailed information about your cluster.
-- Please make sure to use the correct `env<#>` aligned to your User ID.
+- Please make sure to use the correct `user<#>-cluster` aligned to your User ID.
 
 ```
-pks cluster env1
-pks get-credentials env1
+pks cluster user1-cluster
+pks get-credentials user1-cluster
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 kubectl cluster-info
 kubectl get all --all-namespaces
@@ -258,27 +258,27 @@ kubectl get all --all-namespaces
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
 
 ```
-pks resize env1 --num-nodes 2
+pks resize user1-cluster --num-nodes 2
 ```
 
 - Use the following command to monitor the growth of your cluster:
 
 ```
-pks cluster env1
+pks cluster user1-cluster
 ```
 
 - You should see output similar to the example below:
 
 ```
 PKS Version:              1.6.1-build.6
-Name:                     user1
+Name:                     user1-cluster
 K8s Version:              1.15.5
 Plan Name:                small
 UUID:                     1210f5d8-c292-4f22-a0d8-0147b87b4ed0
 Last Action:              UPDATE
 Last Action State:        **in progress**
 Last Action Description:  Instance update in progress
-Kubernetes Master Host:   user1-k8s.pks4u.com
+Kubernetes Master Host:   user1-cluster-k8s.pks4u.com
 Kubernetes Master Port:   8443
 Worker Nodes:             2
 Kubernetes Master IP(s):  10.0.11.10
