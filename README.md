@@ -496,26 +496,29 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
 ```
-- Now look at your scope of control by executing the `pks clusters` command. 
-- When logged-in with the scope of a PKS administrator, you can see all K8s Clusters within a given GCP projectID.  
-- Go back to your UserID specific scope of control by executing the following command, and please make sure to use the correct `-u userID` aligned to the UserID you selected at the beginnig of this workshop.
+- Now look at your scope of control by executing the following command:
+```
+pks clusters
+```
+- When logged-in with the scope of a PKS Administrator, you can see all K8s Clusters created by your PKS Control Plane.
+
+- Go back to your UserID specific scope of control by executing the following command, and please make sure to use the correct `-u devops<#>` aligned to the UserID you selected at the beginnig of this workshop.
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -u user1 -p password -k
+pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
 pks clusters
-pks get-credentials user1
+pks get-credentials user1-cluster
 ```
 - Now try to resize your UserID cluster to 10 worker nodes, or try to delete (not yours, but) a colleague's cluster:
 ```
-pks resize user1 --num-nodes 10
-pks delete-cluster user2
+pks resize user1-cluster --num-nodes 10
+pks delete-cluster user2-cluster
 ```
 - As you can see Operations has placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
 
+- Now let's take a look at K8s Namespaces as a way of implementing soft-tenancy.
 
-
-
-- Now let's take a look at K8s Namespaces by deploying a slightly differeny Docker Image to a new Namespace in your cluster:
+- by deploying a slightly differeny Docker Image to a new Namespace in your cluster:
 ```
 kubectl create namespace factorial
 kubectl run factorial --image=rmeira/factoid -n factorial
@@ -533,8 +536,6 @@ curl http://35.231.171.75/65
 ```
 kubectl get pods --all-namespaces | grep -v system
 ```
-
-
 
 **Let's recap:** 
 - PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters (but not all K8s clusters) within the limits set by the operators who set up the PKS control plane. In this way, separation of responsibilities is viable without the risk of overconsuming resources beyond what is approved or available.
