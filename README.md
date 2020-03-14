@@ -124,6 +124,7 @@ go version
 jq --version
 gcloud --version
 python3 --version
+helm version
 ```
 
 If all the commands shown above displayed their respective CLI versions, you have successfully completed Lab-1.
