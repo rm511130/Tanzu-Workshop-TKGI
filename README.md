@@ -373,6 +373,8 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/lab.png)
 
 - For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu VM. Please arrange them side by side, per the example below, keeping all simultaneously visible on your screen. 
+- If using PuTTY, you can right-click on the top border of your existing terminal window and use the "Duplicate Session" option. 
+- If using a Mac, you can open more terminal windows using ⌘ N, command-N.
 
 ![](./images/3-terminals-start.png)
 
@@ -474,11 +476,19 @@ kubectl scale deployment fact --replicas=20
 kubectl scale deployment fact --replicas=1
 ```
 
-- Clean-up: you can go back to just one Terminal Window to access your Ubuntu VM.
-
+- Clean-up: 
+    - We will need three Terminal Windows during the next Lab, so don't close any Terminal Windows just yet.
+    - please use CTRL-C to halt any loops that may still be actively creating output to any of your Terminal Windows. 
+    - please execute the following commands:
+    
+    ```
+    kubectl delete deployment fact
+    kubectl delete service fact
+    ```
 
 **Let's recap:** 
-- The `rmeira/fact` image, deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be ammended with a `livenessProbe` and a `readinessProbe` to reduce the impact of scaling horizontally the number of running pods. Kubernetes developers need to understand these factors as they develop more complex, microservices based, distributed systems.
+- The `rmeira/fact` image, deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be ammended with a `livenessProbe` and a `readinessProbe` to reduce the impact of scaling horizontally the number of running pods. 
+- Kubernetes developers need to understand their environment quite well from a DevOps perspective when developing more complex, microservices based, distributed systems. Order Entry systems, for example, can't afford to suffer from hiccups when the platform is auto-scaling to handle increases in demand.
 - For the more advanced users, you may wish to experiment with scaling the K8s cluster using the `pks resize <cluster-name> --num-nodes <#>` command while deploying and scaling the `fact` app. Additional commands such as `kubectl drain <node>` and `kubectl uncordon <node>` also demonstrate the power K8s puts at your fingertips for draining workloads from nodes.
 - Advanced workload placement and management using K8s clusters can be a fun area to [explore](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/).
 
@@ -487,62 +497,108 @@ Congratulations, you have completed LAB-6.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-7: PKS RBAC (Role Based Access Control)
+### LAB-7: PKS Soft vs. Hard Tenancy
 
 ![](./images/lab.png)
 
-- Execute the following command to become a PKS Administrator:
-
-```
-pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
-```
-- Now look at your scope of control by executing the following command:
-```
-pks clusters
-```
-- When logged-in with the scope of a PKS Administrator, you can see all K8s Clusters created by your PKS Control Plane.
-
-- Go back to your UserID specific scope of control by executing the following command, and please make sure to use the correct `-u devops<#>` aligned to the UserID you selected at the beginnig of this workshop.
+- We have to be extra-cautious during this Lab because it can be destructive depending on the username you employ.
+- Let's make sure you are using the correct `-u devops<#>` aligned to the UserID you claimed at the begining of this workshop.
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
 pks clusters
 pks get-credentials user1-cluster
 ```
-- Now try to resize your UserID cluster to 10 worker nodes, or try to delete (not yours, but) a colleague's cluster:
+- Your `devops<#>` user is only allowed to see and managed the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the PKS Administrator.
+
+- Try to resize your `user<#>-cluster` to 10 worker nodes, and then try to delete (*not yours, but*) a colleague's cluster:
 ```
 pks resize user1-cluster --num-nodes 10
-pks delete-cluster user2-cluster
-```
-- As you can see Operations has placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
-
-- Now let's take a look at K8s Namespaces as a way of implementing soft-tenancy.
-
-- by deploying a slightly differeny Docker Image to a new Namespace in your cluster:
-```
-kubectl create namespace factorial
-kubectl run factorial --image=rmeira/factoid -n factorial
-kubectl expose deployment factorial --type=LoadBalancer --port=80 --target-port=3000 -n factorial
-watch pks get-credentials user1
-```
-- Use `CTRL-C` to stop the `watch` command once the `External-IP` address has been provided.
-- You can now test the `rmeira/factoid` image. In the example below I'm using the `External-IP` address assigned to me:
-```
-curl http://35.231.171.75/65
-[Factoid] Calculating Factorials: 65! = 9223372036854775808
+pks delete-cluster user2-cluster   # make sure you know what you are doing before proceeding with this step
 ```
 
-- So now we have two versions of programs that calculate the factorial of integers. Once running in the `default` namespace and the other running in the `factorial` namespace:
+- As you can see PKS Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
+
+- Let's deploy a new App to your `user<#>-cluster`:
+
 ```
-kubectl get pods --all-namespaces | grep -v system
+kubectl create deployment timer-test --image=rmeira/timer-test
+kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000
 ```
+- Execute the command below until you see an `External IP` address assigned to your service:
+
+```
+kubectl get service timer-test
+```
+
+- Using the `External IP` address, execute the following command and leave it running.
+
+```
+while true; do curl http://<External-IP>/5000000000; echo; done
+```
+- Go back from time to time to this Terminal Window to see how your `timer-test` is responding. 
+- Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
+- We will come back to it in a little while.
+
+- Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a PKS Administrator:
+
+```
+pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
+```
+- Now take a look at your scope of control by executing the following command:
+```
+pks clusters
+```
+- When logged-in with the scope of a PKS Administrator, you can see and manage all K8s Clusters created via the PKS Control Plane. Please make sure not to delete or resize any clusters.
+
+- Note that we have a `shared-cluster` that has not been used by anyone yet. Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within a Namespace that is unique to you. Make sure to use a namespace name that uses your UserID:
+
+```
+pks get-credentials shared-cluster
+kubectl cluster-info
+kubectl create namespace namespace<your-UserId>.     # these commands will fail if you do not correct the namespace name
+kubectl create deployment timer-test --image=rmeira/timer-test -n namespace<your-UserID>
+kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000 -n namespace<your-UserID>
+```
+- Wait until you have an `External IP` assigned to your service:
+
+```
+kubectl get service timer-test -n namespace<your-UserID>
+```
+
+- Once you have an `Extermal IP` for your service in the correct namespace, proceed with the following commands:
+
+```
+while true; do curl http://<External IP>/5000000000; echo; done
+```
+
+- As more of your colleagues start their `timer-test` programs in their respective namespaces, you should see that namespace isolation of workloads is called soft-isolation for a reason.
+
+- Leave your Terminal Window open running your `timer-test` program. You can check whether other `timer-test` programs are running by executing the following command on the Terminal Window that is not busy running `timer-test`:
+
+```
+kubectl get pods --all-namespaces | grep timer
+```
+- Leave the Terminal Windows running. We will get back to them in a few minutes.
 
 **Let's recap:** 
-- PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters (but not all K8s clusters) within the limits set by the operators who set up the PKS control plane. In this way, separation of responsibilities is viable without the risk of overconsuming resources beyond what is approved or available.
+- PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
+- PKS enables the separation of responsibilities without the risk of overconsuming resources beyond what is approved or available.
 
 Congratulations, you have completed LAB-7.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
+
+-----------------------------------------------------
+### LAB-8: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
+
+- In this Lab we will 
+
+
+
+
+
 
 
 -----------------------------------------------------
@@ -559,10 +615,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
            we had to create a service `--type LoadBalancer` to make the `fact` App accessible on the Internet
   - Lab-6: we added probes to our Kubernetes deployment of the `fact` App to allow for smoother horizontal scaling
            we saw that `kubectl` can be a powerful CLI with signficant control and customization capabilities
-  - Lab-7: we looked at multi-tenancy using PKS clusters scopes and Kubectl Namespacing.
-
-- 
-
+  - Lab-7: we looked at multi-tenancy using PKS clusters scopes and hard-vs-soft tenancy using namespacing.
 
 - This workshop is primarily focused on VMware Tanzu Kubernetes solutions such as PKS, [Tanzu Mission Control](https://cloud.vmware.com/tanzu-mission-control), and [Tanzu Obervability by Wavefront](https://cloud.vmware.com/tanzu-observability), but the Tanzu Application Service for K8s is a Platform as a Service solution that achieves much  
 
