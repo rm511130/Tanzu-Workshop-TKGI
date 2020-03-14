@@ -594,7 +594,31 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-8: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
 
-- In this Lab we will 
+- In this Lab we will take a look at how easy it is to integrate PKS with Wavefront:
+
+- If you were following the Labs one-by-one and in sequence, you should have three Terminal Windows up and running. Two of them should have `timer-test` running in a loop, demonstrating the difference between workload isolation by cluster vs. workload isolatio by namespacing.
+
+- Using the third Terminal Window, let's go back to your `user<#>-cluster` as the `devops<#>` user - both aligned to your UserID.
+
+```
+pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
+pks clusters    # you should only see one
+pks get-credentials user1-cluster
+kubectl cluster-info
+helm repo add wavefront https://wavefronthq.github.io/helm/
+helm repo update
+kubectl create namespace wavefront
+```
+- The next command is one long line:
+
+```
+helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --set wavefront.token=caa821fa-f2e5-4524-9374-19667f830f00 --set clusterName=rmeira --namespace wavefront
+```
+
+- Now open a Browser Window at: `https://surf.wavefront.com/integration/kubernetes/content`
+
+
+
 
 
 
