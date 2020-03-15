@@ -122,7 +122,6 @@ git version
 docker --version
 go version
 jq --version
-gcloud --version
 python3 --version
 helm version
 ```
