@@ -126,7 +126,7 @@ python3 --version
 helm version
 ```
 
-If all the commands shown above displayed their respective CLI versions, you have successfully completed Lab-1.
+If any of the commands shown above did not work, please let alert the workshop organizers.
 
 Congratulations, you have completed LAB-1.
 
