@@ -126,7 +126,7 @@ python3 --version
 helm version
 ```
 
-If any of the commands shown above did not work, please let alert the workshop organizers.
+If any of the commands shown above did not work, please alert the workshop organizers.
 
 Congratulations, you have completed LAB-1.
 
