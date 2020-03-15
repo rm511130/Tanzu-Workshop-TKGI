@@ -37,7 +37,7 @@ wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.p
 - If you need help installing or using PuTTY with [fuse.ppk](./fuse.ppk) check these [detailed instructions](./PuTTY_and_SSH.md).
 - If you successfully tested the access to the `ubuntu@user1.pks4u.com` VM, you are ready for the workshop.
 
-### If using a  Mac 
+### If using a Mac 
 - You will need to SSH into a Ubuntu VM (public IP address) using a private-key `.pem` file
 - Using a Terminal Window, execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
 ```
