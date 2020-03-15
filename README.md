@@ -619,7 +619,7 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
 
 
 -----------------------------------------------------
-### LAB-9: A quick look at [TMC (Tanzu Mission Control)](https://cloud.vmware.com/tanzu-mission-control) 
+### LAB-9: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
 
 - VMware's Vision for Tanzu Mission Control is to enable your enterprise:
     - To Manage Any K8s Cluster on Any Public/Private IaaS
@@ -630,16 +630,23 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
     - Attaching any K8s Cluster from any Cloud for monitoring, auditing, and enforcing policies.
     - Life-cyle management of K8s Clusters created on AWS and vSphere. Azure and GCP to follow shortly.
     
-.[](/images/tmc-001.png)
+![](/images/TMC-001.png)
+
+- Let's start this lab by looking at a [short demo of TMC](https://bcove.video/2VCXSmk)
+
+- In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file to complete the following command line `kubectl apply -f`. Ask the workshop organizer for your unique YAML file.
+
+- The command you will execute will look something like this:
+
+```
+kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c98'
+```
+
+- Once the connection has been verified the presenter will be able to show you your cluster attached to TMC.
 
 
     
-    
-    
-    
-    
 
-- To start this lab please watch the
 
 
 
@@ -670,7 +677,7 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
 
 ![](./images/lab.png)
 
-- Execute the following command to become a PKS Administrator:
+- Execute the following commands to become a PKS Administrator:
 
 
 
