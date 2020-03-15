@@ -112,7 +112,7 @@ Once logged in, you can ignore any messages that ask you to perform a `do-releas
 
 ```
 pks --version
-kubectl version
+kubectl version -o json
 ```
 If you see a connection refused message, don't worry, it is expected and not a problem.
 
