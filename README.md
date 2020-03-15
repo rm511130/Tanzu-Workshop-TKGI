@@ -618,6 +618,31 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
 
 
 
+-----------------------------------------------------
+### LAB-9: A quick look at [TMC (Tanzu Mission Control)](https://cloud.vmware.com/tanzu-mission-control) 
+
+- VMware's Vision for Tanzu Mission Control is to enable your enterprise:
+    - To Manage Any K8s Cluster on Any Public/Private IaaS
+    - To Manage Many K8s Clusters across Many Public/Private IaaS
+    - Where "Manage" means audit, enforce policies, create, delete, upgrade, ...
+    
+- VMware's Tanzu Mission Control v1.0 is Generally Available with an initial implementation that covers:
+    - Attaching any K8s Cluster from any Cloud for monitoring, auditing, and enforcing policies.
+    - Life-cyle management of K8s Clusters created on AWS and vSphere. Azure and GCP to follow shortly.
+    
+.[](/images/tmc-001.png)
+
+
+    
+    
+    
+    
+    
+
+- To start this lab please watch the
+
+
+
 
 
 
