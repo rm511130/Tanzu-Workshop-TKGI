@@ -589,9 +589,47 @@ Congratulations, you have completed LAB-7.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
+-----------------------------------------------------
+### LAB-8: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
+
+- VMware's Vision for Tanzu Mission Control is to enable your enterprise:
+    - To Manage Any K8s Cluster on Any Public/Private IaaS
+    - To Manage Many K8s Clusters across Many Public/Private IaaS
+    - Where "Manage" means audit, enforce policies, create, delete, upgrade, ...
+    
+- VMware's Tanzu Mission Control v1.0 is Generally Available with an initial implementation that covers:
+    - Attaching any K8s Cluster from any Cloud for monitoring, auditing, and enforcing policies.
+    - Life-cyle management of K8s Clusters created on AWS and vSphere. Azure and GCP to follow shortly.
+    
+![](/images/TMC-001.png)
+
+![](./images/lab.png)
+
+- Let's start this lab by looking at a [short demo of TMC](https://bcove.video/2VCXSmk)
+
+- In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file to complete the following command line `kubectl apply -f`. Ask the workshop organizer for your unique YAML file.
+
+- The command you will execute will look something like this:
+
+```
+kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c98'
+```
+
+- Once the connection has been verified the presenter will be able to demo you your cluster attached to TMC.
+
+**Let's recap:** 
+- TMC is a leap forward in simplification and breadth of control for the world of Kubernetes.
+- TMC 1.0 ...
+
+Congratulations, you have completed LAB-8.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+
 
 -----------------------------------------------------
-### LAB-8: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
+### LAB-9: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
+
+- Obervability goes beyond the scope of Tanzu Mission Control, so VMware bfring 
 
 - In this Lab we will take a look at how easy it is to integrate PKS with Wavefront:
 
@@ -618,31 +656,7 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
 
 
 
------------------------------------------------------
-### LAB-9: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
 
-- VMware's Vision for Tanzu Mission Control is to enable your enterprise:
-    - To Manage Any K8s Cluster on Any Public/Private IaaS
-    - To Manage Many K8s Clusters across Many Public/Private IaaS
-    - Where "Manage" means audit, enforce policies, create, delete, upgrade, ...
-    
-- VMware's Tanzu Mission Control v1.0 is Generally Available with an initial implementation that covers:
-    - Attaching any K8s Cluster from any Cloud for monitoring, auditing, and enforcing policies.
-    - Life-cyle management of K8s Clusters created on AWS and vSphere. Azure and GCP to follow shortly.
-    
-![](/images/TMC-001.png)
-
-- Let's start this lab by looking at a [short demo of TMC](https://bcove.video/2VCXSmk)
-
-- In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file to complete the following command line `kubectl apply -f`. Ask the workshop organizer for your unique YAML file.
-
-- The command you will execute will look something like this:
-
-```
-kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c98'
-```
-
-- Once the connection has been verified the presenter will be able to show you your cluster attached to TMC.
 
 
     
