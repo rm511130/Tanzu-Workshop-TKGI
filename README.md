@@ -744,6 +744,8 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Tanzu Application Service for K8s is a Platform as a Service solution that takes advantage of the power afforded by Kubernetes, while keeping to the simplicity of a `cf push`. 
 - No IP addresses, no complex YAML files, TAS effectively simplifies and streamlines developer tasks, enabling productivity, while enforcing security best practices and development techniques that deliver significant gains in speed to market.  
 
+![](./ezgif-7-05118e39b3ee.gif)
+
 ![](./images/lab.png)
 
 - Execute the following commands from your Ubuntu VM to eliminate all the superfluous files:
