@@ -14,8 +14,9 @@
      - Tiles Installation
      - Client Tools
 - Demo & Hands-on Labs on GCP and Azure
-     - Developer Experience: 5 Labs
-     - Operator Experience: 5 Labs
+     - Operator Experience
+     - Developer Experience
+     - Observability & Management Tools
 - Next Steps
 -----------------------------------------------------
 ## Technical Pre-Requisites
