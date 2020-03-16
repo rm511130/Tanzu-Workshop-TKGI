@@ -11,7 +11,7 @@
 - Platform Architecture 
      - Installation Overview
      - Operations Manager
-     - Tiles Installation
+     - Tile Installation
      - Client Tools
 - Demo & Hands-on PKS Labs on the cloud
      - Operator Experience
