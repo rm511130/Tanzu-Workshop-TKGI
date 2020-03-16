@@ -13,10 +13,11 @@
      - Operations Manager
      - Tiles Installation
      - Client Tools
-- Demo & Hands-on Labs on GCP and Azure
+- Demo & Hands-on PKS Labs on the cloud
      - Operator Experience
      - Developer Experience
      - Observability & Management Tools
+     - Contrasting with Tanzu Application Service
 - Next Steps
 -----------------------------------------------------
 ## Technical Pre-Requisites
