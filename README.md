@@ -96,8 +96,6 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 - [Kubernetes 101 in 5 minutes](https://www.youtube.com/watch?v=PH-2FfFD2PU)
 
-Kubernetes (k8s) is an open-source container-orchestration system for automating application deployment, scaling, and management. It was originally designed by Google, and is now maintained by the [Cloud Native Computing Foundation](https://www.cncf.io/). Kubernetes is often referred to as a system for building systems.
-
 - [PKS on vSphere, AWS, Azure, and/or GCP](https://docs.pivotal.io/pks/1-6/installing.html)
 
 
@@ -173,7 +171,7 @@ http://user1.pks4u.com:3000/1500
 - Your Linux VM is able to run GoLang programs. 
 - Your Linux VM has a public IP address.
 - The code you executed provided an http interface accessible using a browser.
-- A developer typically starts by writting his/her code locally. It's when he/she pushes the code to a server that diffences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments.
+- A developer typically starts by writting his/her code locally. It's when he/she pushes the code to a server that diffences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. We will see how Docker Images can help in this area.
 
 - Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
@@ -201,7 +199,7 @@ curl http://user1.pks4u.com:3000/5; echo
 ```
 
 - Did you notice in the build logs how many layers were used to create the Docker Image of your GoLang factorial program? 
-- Execute the following commands, one-by-one, to learn more about your Docker Image:
+- Execute the following commands, one-by-one, to learn more about your Docker Image. Pay attention to the layers and how recent they are:
 
 ```
 docker image inspect fact
@@ -224,11 +222,13 @@ docker exec -it fact bash
  whoami
  exit
  ```
+ - What release of the OS was used?
+ - What was the answer to the "whoami" command?
  
 **Let's recap:** 
 - You built and executed a Docker Image on your Ubuntu VM using essentially the same files you had during Lab-1.
 - Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` command.
-- Now that you have a working container image of your `fact` program, your confidence that it will work when pushed to a server is significantly higher. This is one of the main reasons for the success of Docker Images among developers.
+- Now that you have a working, local container image of your `fact` program, as a developer, you should feel reassured that your App will work when pushed to a server. This is one of the main reasons for the success of Docker Images among developers.
 
 Congratulations, you have completed LAB-3.
 
@@ -381,6 +381,45 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 -----------------------------------------------------
 ### LAB-6: Using Harbor, Clair and Notary
+
+- Let's see how Harbor, Clair and Notary enhance Ops and Devs experience.
+
+![](./images/harbor.png)
+
+![](./images/lab.png)
+
+- Harbor was installed next to PKS in Ops Manager, and `user1`, `user2`, ... were created as administrators with password: `Password1`.
+
+- Log into Harbor using a browser: `https://harbor.pks4u.com/`
+
+- Now follow the example below, clicking where the yellow arrows are pointing, so you can get an idea of how Harbor works. Your userID has been given administrator privileges, so please be careful not to change Harbor's configuration.
+
+![](./images/harbor-walk-through.png)
+
+- Now let's log into Harbor from your Ubuntu VM. Execute the following commands:
+
+```
+docker login -u user1 -p Password1 harbor.pks4u.com
+docker images
+
+Mac $ docker pull rmeira/factorial
+
+Mac $ docker tag rmeira/factorial harbor.haas-239.pez.pivotal.io/library/factorial:latest
+
+Mac $ docker images
+REPOSITORY                                         TAG     IMAGE ID        CREATED         SIZE
+rmeira/factorial                                   latest  c4ba1152cd49    11 months ago   704MB
+harbor.haas-239.pez.pivotal.io/library/factorial   latest  c4ba1152cd49    11 months ago   704MB
+
+Mac $ docker push harbor.haas-239.pez.pivotal.io/library/factorial:latest
+The push refers to repository [harbor.haas-239.pez.pivotal.io/library/factorial]
+f5961e782729: Layer 
+…
+latest: digest: sha256:b6465e86c0561e26f0ff0239d619dade73692d6ad07c9315adb1ecae0a353d15 size: 2624
+```
+
+
+
 
 
 -----------------------------------------------------
