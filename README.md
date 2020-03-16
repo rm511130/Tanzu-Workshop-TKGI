@@ -383,7 +383,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-6: Using Harbor, Clair and Notary
 
-- Let's see how Harbor, Clair and Notary enhance Ops and Devs experience.
+- Let's see how Harbor, Clair and Notary enhance the Ops and Devs experience.
 
 ![](./images/harbor.png)
 
