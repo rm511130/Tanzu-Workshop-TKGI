@@ -396,30 +396,40 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/harbor-walk-through.png)
 
-- Now let's log into Harbor from your Ubuntu VM. Execute the following commands:
+- Keep Harbor open. You will come back to it in a few minutes.
+
+- Let's log into Harbor from your Ubuntu VM. Execute the following commands:
 
 ```
 docker login -u user1 -p Password1 harbor.pks4u.com
 docker images
+docker tag fact harbor.pks4u.com/library/user1-fact:latest
+docker images
+docker push harbor.pks4u.com/library/user1-fact:latest
+```
+- Now look for your program in the Harbor browser session you were asked to leave open.
 
-Mac $ docker pull rmeira/factorial
+- How many CVEs is your `fact` program exposed to?
 
-Mac $ docker tag rmeira/factorial harbor.haas-239.pez.pivotal.io/library/factorial:latest
+- Now execute the following commands on your Ubuntu VM:
 
-Mac $ docker images
-REPOSITORY                                         TAG     IMAGE ID        CREATED         SIZE
-rmeira/factorial                                   latest  c4ba1152cd49    11 months ago   704MB
-harbor.haas-239.pez.pivotal.io/library/factorial   latest  c4ba1152cd49    11 months ago   704MB
-
-Mac $ docker push harbor.haas-239.pez.pivotal.io/library/factorial:latest
-The push refers to repository [harbor.haas-239.pez.pivotal.io/library/factorial]
-f5961e782729: Layer 
-…
-latest: digest: sha256:b6465e86c0561e26f0ff0239d619dade73692d6ad07c9315adb1ecae0a353d15 size: 2624
+```
+docker pull harbor.pks4u.com/library/user1-fact:latest
 ```
 
+- The message you received back is a reflection of Harbor's configuration. Note that the image you pushed to Harbor is also not signed. We can set Harbor's configuration to prevent unsigned images from being pulled as well.
+
+- Execute the following command:
+
+```
+docker pull harbor.pks4u.com/library/chess-cf:1.0
+```
+- This image should have downloaded without problems because it does not expose you to any critical CVEs
 
 
+Congratulations, you have completed LAB-6.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 
 -----------------------------------------------------
@@ -676,7 +686,8 @@ kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c
 
 **Let's recap:** 
 - TMC is a leap forward in simplification and breadth of control for the world of Kubernetes.
-- TMC 1.0 ...
+- TMC allows you to visualize in a single location all the K8s clusters your enterprise is using.
+- TMC allows you to create, upgraded, delete K8s clusters on AWS, and soon on all Public IaaS.
 
 Congratulations, you have completed LAB-9.
 
@@ -686,7 +697,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-10: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
 
-- Obervability goes beyond the scope of Tanzu Mission Control, so VMware bfring 
+- Obervability goes beyond the scope of Tanzu Mission Control, so VMware has Tanzu Observability by Wavefront.
+
+- Please watch this [6 minutes video](https://www.youtube.com/watch?v=nZnbdNHFNyU) to better understand Tanzu Observability by Wavefront.
+
+![](./images/lab.png)
 
 - In this Lab we will take a look at how easy it is to integrate PKS with Wavefront:
 
@@ -703,52 +718,104 @@ helm repo add wavefront https://wavefronthq.github.io/helm/
 helm repo update
 kubectl create namespace wavefront
 ```
-- The next command is one long line:
+- Ask the workshop organizers for your `wavefront.token` and use it in the command shown below:
 
 ```
-helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --set wavefront.token=caa821fa-f2e5-4524-9374-19667f830f00 --set clusterName=rmeira --namespace wavefront
+helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --set wavefront.token=caa821fa-f2e5-4524-9374-19667f830f00 --set clusterName=user1-cluster --namespace wavefront
 ```
 
-- Now open a Browser Window at: `https://surf.wavefront.com/integration/kubernetes/content`
+- Now ask the workshop organizer to show your cluster data on Wavefront.
 
 
+**Let's recap:** 
+- Tanzu Observability by Wavefront is often reffered to as TO.
+- TO requires the execution of a simple helm chart to integrate with any K8s cluster.
+- Wavefront provides a SaaS based approach to handle terabytes of data in the most cost effective way.
 
+Congratulations, you have completed LAB-10.
 
-
-
-    
-
-
-
-
-
-
-
-
-
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
 
 -----------------------------------------------------
-### LAB-Extra: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
+### Bonus-LAB: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
 
-- Tanzu Application Service for K8s is a Platform as a Service solution that takes advantage of the power afforded by Kubernetes, while keeping to the simplicity of a `cf push`. No IP addresses, no complex YAML files, TAS effectively simplifies and streamlines developer tasks, enabling productivity, while enforcing security best practices and development techniques that deliver signficant gains in speed to market.
-
-- As you may recall in:
-  - Lab-1: we tested various CLI (Command Line Interfaces) and conmectivity to VMs
-  - Lab-2: we cloned and executed a [`fact.go`](https://github.com/rm511130/fact/blob/master/fact.go) program locally
-  - Lab-3: we built and tested a Docker Image of the `fact.go` program using default settings for software versions 
-  - Lab-4: we established connectivity to a Kubernetes Cluster using both PKS CLI and Kubectl CLI
-  - Lab-5: we deployed and tested a copy of the `fact` App from a Public Docker Hub to a Kubernetes Cluster
-           we had to create a service `--type LoadBalancer` to make the `fact` App accessible on the Internet
-  - Lab-6: we added probes to our Kubernetes deployment of the `fact` App to allow for smoother horizontal scaling
-           we saw that `kubectl` can be a powerful CLI with signficant control and customization capabilities
-  - Lab-7: we looked at multi-tenancy using PKS clusters scopes and hard-vs-soft tenancy using namespacing.
-
-- This workshop is primarily focused on VMware Tanzu Kubernetes solutions such as PKS, [Tanzu Mission Control](https://cloud.vmware.com/tanzu-mission-control), and [Tanzu Obervability by Wavefront](https://cloud.vmware.com/tanzu-observability), but the Tanzu Application Service for K8s is a Platform as a Service solution that achieves much  
+- Tanzu Application Service for K8s is a Platform as a Service solution that takes advantage of the power afforded by Kubernetes, while keeping to the simplicity of a `cf push`. 
+- No IP addresses, no complex YAML files, TAS effectively simplifies and streamlines developer tasks, enabling productivity, while enforcing security best practices and development techniques that deliver signficant gains in speed to market.  
 
 ![](./images/lab.png)
 
-- Execute the following commands to become a PKS Administrator:
+- Execute the following commands from your Ubuntu VM to eliminate all the superfluous files:
+
+```
+cd ~/fact
+rm Dockerfile Procfile README.md .git
+ls -las
+```
+- Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use a unique name based on your UserID:
+
+```
+cf login -a api.run.pivotal.io -u rmeira@pivotal.io
+cf push fact-user1 -m 128M -b go_buildpack
+```
+
+- Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following commands:
+
+```
+curl https://fact-user1.cfapps.io/100; echo 
+```
+
+- You just deployed and tested your App using the latest sanitized versions of all the docker image layers necessary to run your App.
+- Your App has an SSL encrypted human-readable URL that routes user requests automatically to your App.
+- Your App is running in the Cloud on Highly Available infrastructure.
+- Your App has been instrumented for APM (Application Performance Monitoring) and Log aggregation.
+- Now let's scale your App horizontally and then vertically:
+
+```      
+cf scale fact-user1 -i 5
+cf app fact-user1
+cf scale fact-user1 -m 64M
+cf app fact-user1
+```
+- Now let's create a shell into one of your App containers and let's make it crash on-purpose:
+
+```
+cf ssh fact-user1                      # to create an ssh session into a container
+cat /etc/*release | head -4            # to verify which version of Linux is being used
+whoami                                 # to validate that you are not root
+```
+- Continuing to use the shell session you started with the `cf ssh` command execute the following:
+
+```
+for i in {2..50}; do kill -9 $i; done         # to force your container to crash
+```
+
+- Now let's check the status of your App:
+
+```
+cf app fact-user1                      # to check the status of your App and all its instances
+```
+
+- Now let's check log aggregation. Execute the command shown below and open a browser to access your App's URL `https://fact-user1.cfapps.io`
+
+```
+cf logs fact-user1
+```
+
+- We could go on with App auto-scaling, or using `cf bind-service` to bind your App to a database, but I think we've made the point clearly: if you are developing modern Apps, there's already a Tanzu Application Service PaaS available to you.
+
+
+Congratulations, you have completed all the LABs in this Workshop.
+
+------------------------
+#Wrapping-up
+
+We covered a lot of ground today. Lots of new concepts and hopefully lots of valuable learning opportunities. We've only scratched the surface. VMware has a robust set of services and documented best practices to help you get started with greenfield projects and/or brownfield modernizations from old architectures to modern cloud native solutions.
+
+Thank you for your time and attention. We look forward to next steps.
+
+
+
 
 
 
