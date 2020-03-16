@@ -85,38 +85,44 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 ## Architecture, Installation & Set-up 
 
-- [Containers 101](https://drive.google.com/open?id=1vRisBwfNmD22o_d7OC_OWS9g-M2b2p_q)
+- The videos in this section are great for brushing up on your understanding of the technologies we will be working with during this workshop. 
 
-- [PKS on vSphere](https://drive.google.com/file/d/1Jwytpm-kO0trS-5vAUKRssSVCXv98G0o/view)
+- If you are confortable with Containers, Docker and Kubernetes, then please move ahead to Lab-1.
+
+- [Containers vs. VMs 101 in 8 minutes](https://www.youtube.com/watch?v=L1ie8negCjc)
+
+- [Containers - Deep Dive in 18 minutes](https://www.youtube.com/watch?v=EnJ7qX9fkcU)
+
+- [Kubernetes 101 in 5 minutes](https://www.youtube.com/watch?v=PH-2FfFD2PU)
+
+Kubernetes (k8s) is an open-source container-orchestration system for automating application deployment, scaling, and management. It was originally designed by Google, and is now maintained by the [Cloud Native Computing Foundation](https://www.cncf.io/). Kubernetes is often referred to as a system for building systems.
+
+- [PKS on vSphere, AWS, Azure, and/or GCP](https://docs.pivotal.io/pks/1-6/installing.html)
 
 
 -----------------------------------------------------
 
 ### LAB-1: SSH into your Linux Workshop VM environment & test the Command Line Interface tools
 
-Let's start by logging into the Workshop environment from your machine (Mac, PC, Laptop, Desktop, Terminal, VDI). You will need to use the following private key: 
-- [fuse.pem](./fuse.pem) if using a Mac.
-- [fuse.ppk](./fuse.ppk) if using a Windows PC.
+- Let's start by logging into the Workshop environment from your machine (Mac, PC, Laptop, Desktop, Terminal, VDI). You will need to use the following private key: 
+   - [fuse.pem](./fuse.pem) if using a Mac.
+   - [fuse.ppk](./fuse.ppk) if using a Windows PC.
 
-Note that the examples shown below apply to `user1`. If, for example, you are `user11`, your Ubuntu VM will be at `user11.pks4u.com`.
+- Note that the examples shown below apply to `user1`. If, for example, you are `user11`, your Ubuntu VM will be at `user11.pks4u.com`.
 
 ![](./images/lab.png)
 
-In the pre-requisites section of this workshop, you were asked to use `ssh` or `PuTTY` to access the Ubuntu VM that has been assigned to your [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Please go ahead and create a Terminal Session into your VM. The example shown below applies to `user1` if he or she had downloaded the `fuse.pem` key to a Mac. If you need, the `PuTTY` instructions for Windows PC users can be found [here](./PuTTY_and_SSH.md).
+- In the pre-requisites section of this workshop, you were asked to use `ssh` or `PuTTY` to access the Ubuntu VM that has been assigned to your [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Please go ahead and create a Terminal Session into your VM. The example shown below applies to `user1` if he or she had downloaded the `fuse.pem` key to a Mac. If you need, the `PuTTY` instructions for Windows PC users can be found [here](./PuTTY_and_SSH.md).
 
 ```
 ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 ```
 
-Once logged in, you can ignore any messages that ask you to perform a `do-release-upgrade`. Please proceed by executing the following commands:
+- Once logged in, you can ignore any messages that ask you to perform a `do-release-upgrade`. Please proceed by executing the following commands:
 
 ```
 pks --version
-kubectl version -o json
-```
-If you see a connection refused message, don't worry, it is expected and not a problem.
-
-```
+kubectl version -o json # If you see a connection refused message, don't worry, it is expected and not a problem
 cf --version
 git version
 docker --version
@@ -126,7 +132,7 @@ python3 --version
 helm version
 ```
 
-If any of the commands shown above did not work, please alert the workshop organizers.
+- If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
 
 Congratulations, you have completed LAB-1.
 
@@ -148,8 +154,10 @@ cd ~/fact
 go run fact.go 
 ```
 
-- Leave it the code running and use a browser to access your code at `http://user1.pks4u.com:3000/1500`
-- Remember to use the proper FQDN that corresponds to your UserID: e.g. `user20` shoud use `user20.pks4u.com`. 
+- Leave the code running and use a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user20` shoud use `http://user20.pks4u.com`.
+```
+http://user1.pks4u.com:3000/1500
+``` 
 
 - Did it work?
   - Take a look at the [code](https://github.com/rm511130/fact/blob/master/fact.go). 
@@ -161,10 +169,10 @@ go run fact.go
 - Use `CTRL-C` to cancel out of the `go run fact.go` command.
 
 **Let's recap:** 
-- You have access to a Linux VM that is able to run GoLang programs. 
+- Your Linux VM is able to run GoLang programs. 
 - Your Linux VM has a public IP address.
 - The code you executed provided an http interface accessible using a browser.
-- Logs were display on the terminal window.
+- A developer typically starts by writting his/her code locally. It's when he/she pushes the code to a server that diffences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments.
 
 - Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
@@ -186,7 +194,7 @@ cat ~/fact/Dockerfile
 ```
 docker system prune -a      # answer y 
 cd ~/fact
-docker build -t fact .  
+docker build -t fact .      # the dot is important 
 docker run -d --publish 3000:3000 --name fact --rm fact
 curl http://user1.pks4u.com:3000/5; echo
 ```
@@ -206,9 +214,7 @@ docker ps
 docker exec -it fact bash
 ```
  - You should see a prompt that looks something like this: `root@627ac94efaa7:/go/src/app#`
- 
  - Let's keep working inside your container.
- 
  - Execute the following commands:
  
  ```
@@ -219,8 +225,9 @@ docker exec -it fact bash
  ```
  
 **Let's recap:** 
-- You built and executed a Docker Image on your Ubuntu VM. 
-- Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers and software versions were assembled together on your behalf as a result of the `docker build` command.
+- You built and executed a Docker Image on your Ubuntu VM using essentially the same files you had during Lab-1.
+- Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` command.
+- Now that you have a working container image of your `fact` program, your confidence that it will work when pushed to a server is significantly higher. This is one of the main reasons for the success of Docker Images among developers.
 
 Congratulations, you have completed LAB-3.
 
@@ -229,18 +236,22 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-4: Connecting to PKS API and Resizing a Kubernetes Cluster
 
-- The creation of a Kubernetes Cluster takes over 10 minutes so we created a Kubernetes Cluster for you in preparation for this workshop. 
+- The creation of a Kubernetes Cluster takes some time, so we created a Kubernetes Cluster for you in preparation for this workshop. The command used was:
+
+```
+# pks create-cluster user1-cluster -e example.hostname --plan small --num-nodes 1  # do not execute
+```
 
 ![](./images/bosh_pks_k8s_on_public_cloud.png)
 
 ![](./images/lab.png)
 
-- During this lab you are going to assume the role of a Platform DevOps user.
+- During this lab you are going to assume the role of a Platform DevOps person.
 - Execute the following commands to log into the PKS Control Plane. 
 - Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1
 pks clusters
 pks plans
 ```
@@ -312,7 +323,8 @@ Congratulations, you have completed LAB-4.
 -----------------------------------------------------
 ### LAB-5: Deploying an App on Kubernetes
 
-- A Docker Image identical to the one you created during Lab-3 has been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact). This URL also contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. Let's use the [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) image to run the Factorial program on your Kubernetes cluster.
+- A Docker Image identical to the one you created during Lab-3 has been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact). The short documentation found at[rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
+- Let's use the [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) image to run the Factorial program on your Kubernetes cluster.
 
 ![](./images/lab.png)
 
@@ -351,12 +363,13 @@ pks cluster user1-cluster
 - Using the `External IP` address you see when executing `kubectl get service` execute the following command:
 
 ```
-curl http://35.227.49.80/10; echo
+curl http://<External-IP>/10; echo
 ```
 - You should see the results of the `10!` calculation.
 
 **Let's recap:** 
 - You deployed the `rmeira/fact` image from Docker Hub to your K8s cluster and used a `bash` session to test the deployment.
+- Kubernetes fetches images from a registry. We will see in the next Lab how to use Harbor, an Enterprise ready registry.
 - You exposed the `fact` deployment as a service available on the Internet.
 - You did not get a secured URL accessible from the Internet, but anyone with access to your `External IP` address is able to run your `fact` program.
 - If you did wish to secure your `fact` program with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
@@ -366,7 +379,11 @@ Congratulations, you have deployed an App on K8s and completed LAB-5.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-6: Scaling an App on Kubernetes
+### LAB-6: Using Harbor, Clair and Notary
+
+
+-----------------------------------------------------
+### LAB-7: Scaling an App on Kubernetes
 
 - Now let's scale up and down the number of pods running the `fact` docker image.
 
@@ -492,12 +509,12 @@ kubectl scale deployment fact --replicas=1
 - For the more advanced users, you may wish to experiment with scaling the K8s cluster using the `pks resize <cluster-name> --num-nodes <#>` command while deploying and scaling the `fact` app. Additional commands such as `kubectl drain <node>` and `kubectl uncordon <node>` also demonstrate the power K8s puts at your fingertips for draining workloads from nodes.
 - Advanced workload placement and management using K8s clusters can be a fun area to [explore](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/).
 
-Congratulations, you have completed LAB-6.
+Congratulations, you have completed LAB-7.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-7: PKS Soft vs. Hard Tenancy
+### LAB-8: PKS Soft vs. Hard Tenancy
 
 ![](./images/lab.png)
 
@@ -585,12 +602,12 @@ kubectl get pods --all-namespaces | grep timer
 - PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
 - PKS enables the separation of responsibilities without the risk of overconsuming resources beyond what is approved or available.
 
-Congratulations, you have completed LAB-7.
+Congratulations, you have completed LAB-8.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-8: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
+### LAB-9: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
 
 - VMware's Vision for Tanzu Mission Control is to enable your enterprise:
     - To Manage Any K8s Cluster on Any Public/Private IaaS
@@ -621,13 +638,13 @@ kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c
 - TMC is a leap forward in simplification and breadth of control for the world of Kubernetes.
 - TMC 1.0 ...
 
-Congratulations, you have completed LAB-8.
+Congratulations, you have completed LAB-9.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
 
 -----------------------------------------------------
-### LAB-9: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
+### LAB-10: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
 
 - Obervability goes beyond the scope of Tanzu Mission Control, so VMware bfring 
 
@@ -672,7 +689,7 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
 
 
 -----------------------------------------------------
-### LAB-8: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
+### LAB-Extra: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
 
 - Tanzu Application Service for K8s is a Platform as a Service solution that takes advantage of the power afforded by Kubernetes, while keeping to the simplicity of a `cf push`. No IP addresses, no complex YAML files, TAS effectively simplifies and streamlines developer tasks, enabling productivity, while enforcing security best practices and development techniques that deliver signficant gains in speed to market.
 
