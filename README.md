@@ -753,7 +753,7 @@ cd ~/fact
 rm Dockerfile Procfile README.md .git
 ls -las
 ```
-- Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use a unique name based on your UserID:
+- Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use a unique name based on your UserID: 
 
 ```
 cf login -a api.run.pivotal.io -u rmeira@pivotal.io
