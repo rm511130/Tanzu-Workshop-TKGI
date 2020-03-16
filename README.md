@@ -389,7 +389,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Harbor was installed next to PKS in Ops Manager, and `user1`, `user2`, ... were created as administrators with password: `Password1`.
+- Harbor was installed next to PKS in Ops Manager, and `user1`, `user2`, ... were created with password: `Password1`.
 
 - Log into Harbor using a browser: `https://harbor.pks4u.com/`
 
