@@ -673,7 +673,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Let's start this lab by looking at a [short demo of TMC](https://bcove.video/2VCXSmk)
+- Let's start this lab by looking at a [short 4-minute demo of TMC](https://bcove.video/2VCXSmk)
 
 - In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file to complete the following command line `kubectl apply -f`. Ask the workshop organizer for your unique YAML file.
 
