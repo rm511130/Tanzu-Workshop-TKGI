@@ -565,7 +565,7 @@ Congratulations, you have completed LAB-7.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-8: PKS Soft vs. Hard Tenancy
+### LAB-8: K8s Soft and PKS Hard Tenancy
 
 ![](./images/lab.png)
 
