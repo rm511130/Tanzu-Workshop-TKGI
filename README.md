@@ -86,7 +86,7 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 - Applications and the underlying infrastructure need to be self-monitoring and self-healing, while remaining highly available.
 - The competing mandates - velocity, security, scalability, stability and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
 
-VMware is your trusted partner to help address these challenges using Tanzu.
+VMware is your trusted partner to help address all of these challenges.
 
 ![](./images/tanzu.png)
 
