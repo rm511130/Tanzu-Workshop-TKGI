@@ -570,19 +570,20 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/lab.png)
 
 - We have to be extra-cautious during this Lab because it can be destructive depending on the username you employ.
-- Let's make sure you are using the correct `-u devops<#>` aligned to the UserID you claimed at the beginning of this workshop.
+- Make sure to use the correct `-u devops<#>` and `-u user<#>` aligned to the UserID you claimed at the beginning of this workshop.
+
+- Your `devops<#>` user is only allowed to see and managed the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the PKS Administrator. Please execute the following commands:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
 pks clusters
 pks get-credentials user1-cluster
 ```
-- Your `devops<#>` user is only allowed to see and managed the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the PKS Administrator.
 
-- Try to resize your `user<#>-cluster` to 10 worker nodes, and then try to delete (*not yours, but*) a colleague's cluster:
+- Now, let's try to resize your `user<#>-cluster` to 10 worker nodes, and then let's try to delete (*not yours, but*) a colleague's cluster:
 ```
 pks resize user1-cluster --num-nodes 10
-pks delete-cluster user2-cluster   # make sure you know what you are doing before proceeding with this step
+pks delete-cluster user25-cluster   # make sure you know what you are doing before proceeding with this step
 ```
 
 - As you can see PKS Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
@@ -593,10 +594,10 @@ pks delete-cluster user2-cluster   # make sure you know what you are doing befor
 kubectl create deployment timer-test --image=rmeira/timer-test
 kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000
 ```
-- Execute the command below until you see an `External IP` address assigned to your service:
+- Execute the command below until you see an `External IP` address assigned to your service. You can then use `CTRL-C` to cancel the `watch` loop:
 
 ```
-kubectl get service timer-test
+watch kubectl get service timer-test
 ```
 
 - Using the `External IP` address, execute the following command and leave it running.
@@ -606,7 +607,7 @@ while true; do curl http://<External-IP>/5000000000; echo; done
 ```
 - Go back from time to time to this Terminal Window to see how your `timer-test` is responding. 
 - Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
-- We will come back to it in a little while.
+- We will come back to it in a little while, but the main concept here is that your cluster is a PKS-tenant with hard isolation from other PKS-tenants. Their workloads should not affect your `timer-test` response times.
 
 - Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a PKS Administrator:
 
@@ -619,39 +620,61 @@ pks clusters
 ```
 - When logged-in with the scope of a PKS Administrator, you can see and manage all K8s Clusters created via the PKS Control Plane. Please make sure not to delete or resize any clusters.
 
-- Note that we have a `shared-cluster` that has not been used by anyone yet. Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within a Namespace that is unique to you. Make sure to use a namespace name that uses your UserID:
+- We have a `shared-cluster` that has not been used by any labs. Execute the following command to learn more about this `shared-cluster`:
 
 ```
-pks get-credentials shared-cluster
+pks get-credentials shared-cluster                 # if asked for a password, it's password
+pks cluster shared-cluster
 kubectl cluster-info
-kubectl create namespace namespace<your-UserId>.     # these commands will fail if you do not correct the namespace name
-kubectl create deployment timer-test --image=rmeira/timer-test -n namespace<your-UserID>
-kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000 -n namespace<your-UserID>
+kubectl get namespaces
+```
+
+- Now, using your UserID number for the `vmware-role<#>` and the `namespace<#>` execute the following commands:
+
+```
+kubectl get role vmware-role1 -n namespace1 -o yaml
+kubectl get rolebinding vmware-role1 -n namespace1 -o yaml
+```
+
+- The `role` and `rolebinding` define that your `user<#>` is only able to perform commands within the scope of his/her `namespace<#>`.
+
+- Let's switch to playing the role of a developer. We will switch to being `user<#>` instead of `pks_admin` or `devops<#>`. Please execue the following commands making sure to use the correct `user<#>` aligned to your userID.
+
+```
+rm ~/.kube/config            # this eliminates all previously used login token information on your Ubuntu VM
+./get-pks-k8s-config.sh --API=api.pks.pks4u.com --CLUSTER=shared-cluster-k8s.pks4u.com --USER=user1     # password = password
+cat ~/.kube/config
+kubectl cluster-info
+```
+
+- You are now logged-in as the `user<#>` you selected. You are also limited to the role assigned to `user<#>`. 
+- Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within your `namespace<#>` that has been limited to only allow `user<#>` access and control. Make sure to use the correct `namespace<#>` aligned to your UserID.
+
+```
+kubectl create deployment timer-test --image=rmeira/timer-test -n namespace1
+kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000 -n namespace1
 ```
 - Wait until you have an `External IP` assigned to your service:
 
 ```
-kubectl get service timer-test -n namespace<your-UserID>
+watch kubectl get service timer-test -n namespace1
 ```
 
-- Once you have an `External IP` for your service in the correct namespace, proceed with the following commands:
+- Once you have an `External IP` for your service in the correct namespace, use `CRTL-C` to stop the `watch` loop and proceed with the following commands:
 
 ```
 while true; do curl http://<External IP>/5000000000; echo; done
 ```
 
-- As more of your colleagues start their `timer-test` programs in their respective namespaces, you should see that namespace isolation of workloads is called soft-isolation for a reason.
+- As more of your colleagues start their `timer-test` programs in their respective namespaces, you will start to see why namespace-based isolation of workloads is called soft-isolation.
 
-- Leave your Terminal Window open running your `timer-test` program. You can check whether other `timer-test` programs are running by executing the following command on the Terminal Window that is not busy running `timer-test`:
-
-```
-kubectl get pods --all-namespaces | grep timer
-```
-- Leave the Terminal Windows running. We will get back to them in a few minutes.
+- Leave your Terminal Window open running your `timer-test` program. We will get back to them in a few minutes.
 
 **Let's recap:** 
 - PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
 - PKS enables the separation of responsibilities without the risk of overconsuming resources beyond what is approved or available.
+- K8s roles and rolebindings are an effective way to limit the scope of control for individual or group of users to specific namespaces.
+- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects.
 
 Congratulations, you have completed LAB-8.
 
