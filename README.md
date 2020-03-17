@@ -107,6 +107,8 @@ VMware is your trusted partner to help address all of these challenges.
 - [PKS on vSphere, AWS, Azure, and/or GCP](https://docs.pivotal.io/pks/1-6/installing.html)
 
 
+![](./images/k8s_and_pks.png)
+
 -----------------------------------------------------
 
 ### LAB-1: SSH into your Linux Workshop VM environment & test the Command Line Interface tools
