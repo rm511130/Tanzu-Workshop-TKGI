@@ -705,14 +705,18 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Let's start this lab by looking at a [short 4-minute demo of TMC](https://bcove.video/2VCXSmk)
 
-- In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file to complete the following command line `kubectl apply -f`. Ask the workshop organizer for your unique YAML file.
+- In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file.
 
-- The command you will execute will look something like this:
+- *Ask* the workshop organizer for your unique YAML file.
+
+- The commands you will execute will look something like this:
 
 ```
-kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c98'
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1 
+pks clusters
+pks get-credentials user1-cluster        # if asked, password = password
+kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c98' 
 ```
-
 - Once the connection has been verified the presenter will be able to demo you your cluster attached to TMC.
 
 **Let's recap:** 
@@ -730,13 +734,15 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Observability goes beyond the scope of Tanzu Mission Control, so VMware has Tanzu Observability by Wavefront.
 
+![](./images/from_monitoring_to_observability.png)
+
 - Please watch this [6 minutes video](https://www.youtube.com/watch?v=nZnbdNHFNyU) to better understand Tanzu Observability by Wavefront.
 
 ![](./images/lab.png)
 
 - In this Lab we will take a look at how easy it is to integrate PKS with Wavefront:
 
-- If you were following the Labs one-by-one and in sequence, you should have three Terminal Windows up and running. Two of them should have `timer-test` running in a loop, demonstrating the difference between workload isolation by cluster vs. workload isolation by namespacing.
+- If you were following the Labs one-by-one and in sequence, you should still have three Terminal Windows up and running. Two of them should have `timer-test` running in a loop, demonstrating the difference between workload isolation by cluster vs. workload isolation by namespacing.
 
 - Using the third Terminal Window, let's go back to your `user<#>-cluster` as the `devops<#>` user - both aligned to your UserID.
 
@@ -749,10 +755,10 @@ helm repo add wavefront https://wavefronthq.github.io/helm/
 helm repo update
 kubectl create namespace wavefront
 ```
-- Ask the workshop organizers for your `wavefront.token` and use it in the command shown below:
+- *Ask* the workshop organizers for your individual `wavefront.token` and use it in the command shown below:
 
 ```
-helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --set wavefront.token=caa821fa-f2e5-4524-9374-19667f830f00 --set clusterName=user1-cluster --namespace wavefront
+helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --namespace wavefront --set wavefront.token=caa821fa-f2e5-4524-9374-19667f830f00 --set clusterName=user1-cluster
 ```
 
 - Now ask the workshop organizer to show your cluster data on Wavefront.
@@ -771,9 +777,10 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### Bonus-LAB: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
 
-- Tanzu Application Service for K8s is a Platform as a Service that takes advantage of the power afforded by Kubernetes' orchestration of contaimers, while keeping to the simplicity of a `cf push`.
-- TAS is loved by developers because there are no IP addresses, no complex YAML files, no need to understand load balancing, routing, SSL certificates, or specifics of any given Public IaaS.
-- TAS effectively simplifies and streamlines developer tasks, enabling productivity, while enforcing security best practices and development techniques that deliver significant gains in speed to market.  
+- Tanzu Application Service for K8s is a Platform as a Service that builds and manages secure container images while taking advantage of the power afforded by Kubernetes' orchestration of contaimers. 
+- Developers love TAS because there are no IP addresses, no complex YAML files, no need to understand load balancing, routing, SSL certificates, or specifics of any given Public IaaS. TAS is all about getting from source code to production via a simple `cf push`.
+- Operators love TAS because it is self-monitoring and self-healing. Through TAS, Ops can enforce policies, carry out updates/upgrades of O/S and middleware layers, add database and other services to the developer's marketplace, expand the environment horizontally and vertically, while maintaining high-availability. 
+- TAS effectively simplifies and streamlines developer and operator tasks, enabling productivity, while enforcing security best practices and development techniques that deliver significant gains in speed to market.  
 
 ![](./images/ezgif-7-05118e39b3ee.gif)
 
@@ -782,9 +789,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Execute the following commands from your Ubuntu VM to eliminate all the superfluous files:
 
 ```
-cd ~/fact
-rm Dockerfile Procfile README.md .git
-ls -las
+cd ~/fact;   rm Dockerfile Procfile README.md .git;  ls -las
 ```
 - Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use a unique name based on your UserID: 
 
@@ -793,16 +798,17 @@ cf login -a api.run.pivotal.io -u rmeira@pivotal.io
 cf push fact-user1 -m 128M -b go_buildpack
 ```
 
-- Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following commands:
+- Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following command:
 
 ```
 curl https://fact-user1.cfapps.io/100; echo 
 ```
 
-- You just deployed and tested your App using the latest sanitized versions of all the docker image layers necessary to run your App.
-- Your App has an SSL encrypted human-readable URL that routes user requests automatically to your App.
-- Your App is running in the Cloud on Highly Available infrastructure.
-- Your App has been instrumented for APM (Application Performance Monitoring) and Log aggregation.
+- You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
+- Your App has an SSL encrypted, human-readable URL that routes user requests automatically to your App instance(s).
+- Your App is running in the Cloud on Highly Available, self-monitoring, self-healing, multi-zone infrastructure.
+- Your App has been auto-instrumented for APM (Application Performance Monitoring) and Log aggregation.
+
 - Now let's scale your App horizontally and then vertically:
 
 ```      
@@ -811,7 +817,7 @@ cf app fact-user1
 cf scale fact-user1 -m 64M
 cf app fact-user1
 ```
-- Now let's create a shell into one of your App containers and let's make it crash on-purpose:
+- Now let's create a shell into one of your App containers and learn more about it:
 
 ```
 cf ssh fact-user1                      # to create an ssh session into a container
@@ -836,7 +842,7 @@ cf app fact-user1                      # to check the status of your App and all
 cf logs fact-user1
 ```
 
-- We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database, but I think we've made the point that, if you are developing modern Apps, there's already a Tanzu Application Service PaaS available to help you significantly change your developer's experience.
+- We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database, but I think we've made the point that, if you are developing modern Apps, Tanzu Application Service will help you significantly change the developer's experience.
 
 
 Congratulations, you have completed all the LABs in this Workshop.
