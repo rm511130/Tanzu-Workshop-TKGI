@@ -572,12 +572,12 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - We have to be extra-cautious during this Lab because it can be destructive depending on the username you employ.
 - Make sure to use the correct `-u devops<#>` and `-u user<#>` aligned to the UserID you claimed at the beginning of this workshop.
 
-- Your `devops<#>` user is only allowed to see and managed the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the PKS Administrator. Please execute the following commands:
+- Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the PKS Administrator. Please execute the following commands:
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1 
 pks clusters
-pks get-credentials user1-cluster
+pks get-credentials user1-cluster        # if asked, password = password
 ```
 
 - Now, let's try to resize your `user<#>-cluster` to 10 worker nodes, and then let's try to delete (*not yours, but*) a colleague's cluster:
@@ -607,20 +607,20 @@ while true; do curl http://<External-IP>/5000000000; echo; done
 ```
 - Go back from time to time to this Terminal Window to see how your `timer-test` is responding. 
 - Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
-- We will come back to it in a little while, but the main concept here is that your cluster is a PKS-tenant with hard isolation from other PKS-tenants. Their workloads should not affect your `timer-test` response times.
+- We will come back to it in a little while, but the main concept here is that your cluster is a PKS-tenant with hard isolation from other PKS-tenants. Workloads running in separate clusters will not affect your `timer-test` response times.
 
 - Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a PKS Administrator:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
 ```
-- Now take a look at your scope of control by executing the following command:
+- Now take a look at the scope of control of the `pks_admin` user, by executing the following command:
 ```
 pks clusters
 ```
 - When logged-in with the scope of a PKS Administrator, you can see and manage all K8s Clusters created via the PKS Control Plane. Please make sure not to delete or resize any clusters.
 
-- We have a `shared-cluster` that has not been used by any labs. Execute the following command to learn more about this `shared-cluster`:
+- We have a `shared-cluster` that has not been used in any labs. Execute the following command to learn more about this `shared-cluster`:
 
 ```
 pks get-credentials shared-cluster                 # if asked for a password, it's password
@@ -636,9 +636,9 @@ kubectl get role vmware-role1 -n namespace1 -o yaml
 kubectl get rolebinding vmware-role1 -n namespace1 -o yaml
 ```
 
-- The `role` and `rolebinding` define that your `user<#>` is only able to perform commands within the scope of his/her `namespace<#>`.
+- The `role` and `rolebinding` shown above, limit your `user<#>` to only be able to perform commands within the scope of your `namespace<#>`.
 
-- Let's switch to playing the role of a developer. We will switch to being `user<#>` instead of `pks_admin` or `devops<#>`. Please execue the following commands making sure to use the correct `user<#>` aligned to your userID.
+- Let's switch to playing the role of a developer. We will switch to being `user<#>` instead of `pks_admin` or `devops<#>`. Please execute the following commands making sure to use the correct `user<#>` aligned to your userID.
 
 ```
 rm ~/.kube/config            # this eliminates all previously used login token information on your Ubuntu VM
@@ -647,7 +647,7 @@ cat ~/.kube/config
 kubectl cluster-info
 ```
 
-- You are now logged-in as the `user<#>` you selected. You are also limited to the role assigned to `user<#>`. 
+- You are now logged into the `shared-cluster` as the `user<#>` you selected. You are also limited to the role assigned to `user<#>`. 
 - Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within your `namespace<#>` that has been limited to only allow `user<#>` access and control. Make sure to use the correct `namespace<#>` aligned to your UserID.
 
 ```
@@ -668,13 +668,13 @@ while true; do curl http://<External IP>/5000000000; echo; done
 
 - As more of your colleagues start their `timer-test` programs in their respective namespaces, you will start to see why namespace-based isolation of workloads is called soft-isolation.
 
-- Leave your Terminal Window open running your `timer-test` program. We will get back to them in a few minutes.
+- Leave open all your Terminal Windows that are running the `timer-test` program. We will get back to them in a few minutes.
 
 **Let's recap:** 
-- PKS allows for isolation of workloads in a multi-tenant environment where users with `management` scope can create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
-- PKS enables the separation of responsibilities without the risk of overconsuming resources beyond what is approved or available.
-- K8s roles and rolebindings are an effective way to limit the scope of control for individual or group of users to specific namespaces.
-- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects.
+- PKS allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
+- PKS enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to ooverconsume resources beyond what is approved or available.
+- K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
+- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits to workloads, but the sharing and utilization of resources has to be monitored carefully.
 
 Congratulations, you have completed LAB-8.
 
