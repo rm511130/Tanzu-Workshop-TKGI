@@ -57,15 +57,16 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 -----------------------------------------------------
 
 ## Guidelines for this Workshop
-- This workshop includes presentations, demos and hands-on labs. 
+- This self-paced workshop includes presentations, videos, demos and hands-on labs. 
 - The labs are interdependent and must be executed in order.
 - Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a userID for this workshop. For example, Ralph Meira is user1.
 - Update the same [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) as you progress through the Labs, by placing an "x" in the appropriate column.
 - When carrying out hands-on labs, you can cut-&-paste the commands shown `in boxes like this one`. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
   - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
-  - `ssh -i fuse.pem ubuntu@user15.pks4u.com` is for `user15`
+  - `pks get-credentials user15-cluster` is for `user15`
+  - `kubectl get pods -n namespace7` is for `user7`
 - Each workshop participant will be assigned a Ubuntu VM previously set up for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
-     - SSH'ing into the Ubuntu VM 
+     - SSH'ing or PuTTY'ing into the Ubuntu VM 
      - Browsing web pages
 - Throughout this document, when it's time for hands-on labs, you will see the following icon:
      
@@ -76,12 +77,18 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
 
-- Enterprises rely on software to improve business outcomes.
-- A critical factor: the *velocity* of how ideas are converted to new features, new apps, and new services.
+- Enterprises rely on software and scalable environments to improve business outcomes.
+- A critical factor is the *velocity* of:
+    - how ideas are converted to new features, new apps, and new services.
+    - how you can expand your infrastructure to make use of private/public/hybrid clouds.
 - The ever-accelerating pace of change generates a daunting backlog of work for IT leaders.
-- Everyone is under pressure to reduce technology spend and address security vulnerabilities where perimeters encompass mobile, public and private infrastructure.
-- The competing mandates - velocity, security, and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
+- Operations are under pressure to reduce technology spend while addressing security vulnerabilities where perimeters encompass mobile, public and private infrastructure. 
+- Applications and the underlying infrastructure need to be self-monitoring and self-healing, while remaining highly available.
+- The competing mandates - velocity, security, scalability, stability and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
 
+VMware is your trusted partner to help address these challenges using Tanzu.
+
+![](./images/tanzu.png)
 
 -----------------------------------------------------
 
