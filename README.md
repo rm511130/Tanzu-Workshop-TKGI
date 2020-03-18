@@ -850,7 +850,7 @@ cf logs fact-user1
 Congratulations, you have completed all the LABs in this Workshop.
 
 ------------------------
-#Wrapping-up
+## Wrapping-up
 
 We covered a lot of ground today. Lots of new concepts and hopefully lots of valuable learning opportunities. We've only scratched the surface. VMware has a robust set of services and documented best practices to help you get started with greenfield projects and/or brownfield modernizations from old architectures to modern cloud native solutions.
 
