@@ -681,7 +681,7 @@ while true; do curl http://<External IP>/5000000000; echo; done
 
 **Let's recap:** 
 - PKS allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
-- PKS enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to ooverconsume resources beyond what is approved or available.
+- PKS enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
 - K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
 - K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits to workloads, but the sharing and utilization of resources has to be monitored carefully.
 
