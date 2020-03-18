@@ -793,21 +793,21 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ```
 cd ~/fact;   rm Dockerfile Procfile README.md .git;  ls -las
 ```
-- Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use a unique name based on your UserID: 
+- Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use `user<#>` and `fact-user<#>` aligned to your UserID: 
 
 ```
-cf login -a api.run.pivotal.io -u rmeira@pivotal.io
-cf push fact-user1 -m 128M -b go_buildpack
+cf login -a api.sys.13.91.194.182.cf.pcfazure.com -p password -u user1
+cf push -m 128M -b go_buildpack fact-user1
 ```
 
 - Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following command:
 
 ```
-curl https://fact-user1.cfapps.io/100; echo 
+curl https://fact-user1.apps.13.91.194.182.cf.pcfazure.com/100; echo 
 ```
 
 - You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
-- Your App has an SSL encrypted, human-readable URL that routes user requests automatically to your App instance(s).
+- Your App has an SSL encrypted URL that routes and load-balances user requests automatically to your App instance(s).
 - Your App is running in the Cloud on Highly Available, self-monitoring, self-healing, multi-zone infrastructure.
 - Your App has been auto-instrumented for APM (Application Performance Monitoring) and Log aggregation.
 
