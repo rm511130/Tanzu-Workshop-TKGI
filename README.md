@@ -767,7 +767,7 @@ helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wave
 
 
 **Let's recap:** 
-- Tanzu Observability by Wavefront is often refered to as *TO*.
+- Tanzu Observability by Wavefront is often referred to as *TO*.
 - TO requires the execution of a simple helm chart to integrate with any K8s cluster.
 - Wavefront provides a SaaS based approach to handle terabytes of data in the most cost-effective way.
 
