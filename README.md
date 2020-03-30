@@ -233,7 +233,7 @@ docker exec -it fact bash
  exit
  ```
  - What release of the OS was used?
- - What was the answer to the "whoami" command?
+ - What was the answer to the `whoami` command?
  
 **Let's recap:** 
 - You built and executed a Docker Image on your Ubuntu VM using essentially the same files you had during Lab-1.
