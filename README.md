@@ -217,7 +217,7 @@ docker history fact
 docker ps
 ```
 
-- Now let's open an interactive bash shell on your container:
+- Now let's start an interactive bash shell on your container:
 
 ```
 docker exec -it fact bash
