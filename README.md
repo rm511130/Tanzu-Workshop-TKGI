@@ -172,9 +172,9 @@ go run fact.go
 http://user1.pks4u.com:3000/1500
 ``` 
 
-- Did it work?
+- Did it work? 
   - Take a look at the [code](https://github.com/rm511130/fact/blob/master/fact.go). 
-  - Did you find in the code the additional endpoints that you can call?
+  - Did you find in the code the additional endpoints that you can call? Try them out:
      - `http://user1.pks4u.com:3000/version` 
      - `http://user1.pks4u.com:3000/header`
   - Did you see the logs on the Terminal Window of your VM?
@@ -183,9 +183,9 @@ http://user1.pks4u.com:3000/1500
 
 **Let's recap:** 
 - Your Linux VM is able to run GoLang programs. 
-- Your Linux VM has a public IP address.
-- The code you executed provided an http interface accessible using a browser.
-- A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. We will see how Docker Images can help in this area.
+- Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that let's you test (locally) your code.
+- The code you executed provided an http interface accessible from a browser.
+- A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous statement "...but it worked on my machine..." comments. We will see how Docker Images can help in this area.
 
 - Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
