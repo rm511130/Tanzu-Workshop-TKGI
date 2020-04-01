@@ -429,7 +429,7 @@ docker push harbor.pks4u.com/library/user1-fact:latest
 - Now execute the following commands on your Ubuntu VM:
 
 ```
-docker pull harbor.pks4u.com/library/user1-fact:latest
+docker pull harbor.pks4u.com/library/fact-alpine:latest
 ```
 
 - The message you received back is a reflection of Harbor's configuration. Note that the image you pushed to Harbor is also not signed. We can set Harbor's configuration to prevent unsigned images from being pulled as well.
