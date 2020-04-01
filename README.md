@@ -73,9 +73,13 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 ![](./images/lab.png)
 
 -----------------------------------------------------
-## A Brief Introduction - VMWare Tanzu
+## A Brief Introduction - VMware Tanzu
 
-[VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
+- [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
+
+- [VMware Customer Stories](https://tanzu.vmware.com/customers)
+
+- ["Simply put, we're here to help you build, run, manage, connect and protect any cloud environment", Pat Gelsinger, CEP VMWare](https://www.youtube.com/watch?v=6uQu3ZKJ28o)
 
 - Enterprises rely on software and scalable environments to improve business outcomes.
 - A critical factor is the *velocity* of:
