@@ -405,7 +405,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Harbor was installed next to PKS in Ops Manager, and `user1`, `user2`, ... were created with password: `Password1`.
 
-- Log into Harbor using a browser: `https://harbor.pks4u.com/`
+- Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
 
 - Now follow the example below, clicking where the yellow arrows are pointing, so you can get an idea of how Harbor works. Your userID has been given administrator privileges, so please be careful not to change Harbor's configuration.
 
