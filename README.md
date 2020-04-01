@@ -365,7 +365,7 @@ kubectl exec -t -i $pod_name bash
 curl 127.0.0.1:3000/40; echo
 exit
 ```
-- Back to the command prompt on your Ubuntu VM. Let's check whether your service has been assigned a load balancer External-IP address, and whether the `pks resize user1 --num-nodes 2` command from the previous lab has completed successfully.
+- Back to the command prompt on your Ubuntu VM. Let's check whether your service has been assigned a load balancer External-IP address, and whether the `pks resize` command from the previous lab has completed successfully.
 
 ```
 kubectl get service
@@ -375,7 +375,7 @@ pks cluster user1-cluster
    - an `External IP` show up for the `fact` service
    - a `Last Action State: succeeded` and `Worker Nodes: 2`
    
-- Using the `External IP` address you see when executing `kubectl get service` execute the following command:
+- As soon as the `External IP` address you see when executing `kubectl get service` is available, no matter whether or not the `pks resize` command is still `in progress`, execute the following command:
 
 ```
 curl http://<External-IP>/10; echo
@@ -384,6 +384,7 @@ curl http://<External-IP>/10; echo
 
 **Let's recap:** 
 - You deployed the `rmeira/fact` image from Docker Hub to your K8s cluster and used a `bash` session to test the deployment.
+- Even though the `pks resize` command was still `in progress`, you were able to carry out an App deployment.
 - Kubernetes fetches images from a registry. We will see in the next Lab how to use Harbor, an Enterprise ready registry.
 - You exposed the `fact` deployment as a service available on the Internet.
 - You did not get a secured URL accessible from the Internet, but anyone with access to your `External IP` address is able to run your `fact` program.
