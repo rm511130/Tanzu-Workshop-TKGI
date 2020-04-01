@@ -240,7 +240,7 @@ docker exec -it fact bash
  - What was the answer to the `whoami` command?
  
 **Let's recap:** 
-- You built and executed a Docker Image on your Ubuntu VM using essentially the same files you had during Lab-1.
+- You built and executed a Docker Image on your Ubuntu VM using essentially the same files you had during Lab-2.
 - Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` command.
 - Now that you have a working, local container image of your `fact` program, as a developer, you should feel reassured that your App will work when pushed to a server. This is one of the main reasons for the success of Docker Images among developers.
 
