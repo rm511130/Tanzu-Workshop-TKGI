@@ -416,7 +416,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Let's log into Harbor from your Ubuntu VM. Execute the following commands:
 
 ```
-docker login -u user1 -p Password1 harbor.pks4u.com
+docker login -p Password1 harbor.pks4u.com -u user1
 docker images
 docker tag fact harbor.pks4u.com/library/user1-fact:latest
 docker images
