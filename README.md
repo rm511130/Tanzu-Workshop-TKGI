@@ -468,7 +468,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 while true; do curl http://<External IP>/10; echo; done;
 
 ```
-- Let's denominate as Terminal Window #2 the top, wider terminal window on the left-side of your screen.
+- Let's denominate as Terminal Window #2 the top, wider terminal window.
 - Using Terminal Window #2, execute the following command:
 ```
 watch kubectl get pods -o wide
