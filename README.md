@@ -852,16 +852,22 @@ for i in {2..50}; do kill -9 $i; done         # to force your container to crash
 cf app fact-user1                      # to check the status of your App and all its instances
 ```
 
-- Now let's check events & log aggregation. Execute the command shown below and open a browser to access your App's URL `https://fact-user1.cfapps.io`
+- Now let's check events & log aggregation. Execute the commands shown below:
 
 ```
 cf events fact-user1
 cf logs fact-user1 --recent
 ```
 
-- We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database, but I think we've made the point that, if you are developing modern Apps, Tanzu Application Service will help you significantly change the developer's experience.
+- We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database. Execute the following command to see the types of services that can be made available as self-service options to developers:
 
-- TAS for Kubernetes automates all the k8s complexities away, deliverying container images to K8s clusters with the proven efficiency of a `cf push` dial-tone.
+```
+cf marketplace
+```
+
+- If you are developing modern Apps, Tanzu Application Service can significantly change the developer's experience.
+
+- By deliverying TAS for Kubernetes, VMware automates all the k8s complexities away, deliverying curated container images to run on k8s clusters with the proven efficiency of a `cf push` dial-tone.
 
 Congratulations, you have completed all the LABs in this Workshop.
 
