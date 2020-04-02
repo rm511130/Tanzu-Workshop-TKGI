@@ -667,10 +667,10 @@ kubectl get rolebinding vmware-role1 -n namespace1 -o yaml
 rm ~/.kube/config            # this eliminates all previously used login token information on your Ubuntu VM
 ./get-pks-k8s-config.sh --API=api.pks.pks4u.com --CLUSTER=shared-cluster-k8s.pks4u.com --USER=user1     # password = password
 cat ~/.kube/config
-kubectl cluster-info
 ```
 
-- You are now logged into the `shared-cluster` as the `user<#>` you selected. You are also limited to the role assigned to `user<#>`. 
+- You are now logged into the `shared-cluster` as the `user<#>` you selected. You are also limited to the role assigned to `user<#>` which is only allowed to operate within a single `namespace<#>`.
+
 - Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within your `namespace<#>` that has been limited to only allow `user<#>` access and control. Make sure to use the correct `namespace<#>` aligned to your UserID.
 
 ```
