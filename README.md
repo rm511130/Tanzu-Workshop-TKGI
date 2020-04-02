@@ -723,15 +723,15 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file.
 
-- *Ask* the workshop organizer for your unique YAML file.
+- Your unique YAML file can be found in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Scroll to the right and look under column R for your YAML file information.
 
 - The commands you will execute will look something like this:
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1 
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1       # user the appropriate devops<#>
 pks clusters
 pks get-credentials user1-cluster        # if asked, password = password
-kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c98' 
+kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?<use your assigned code from spreadsheet>' 
 ```
 - Once the connection has been verified the presenter will be able to demo you your cluster attached to TMC.
 
@@ -742,7 +742,7 @@ kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?84f9abcdef4c
 
 Congratulations, you have completed LAB-9.
 
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 
 -----------------------------------------------------
