@@ -463,7 +463,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Let's denominate as Terminal Window #1 the long, narrower terminal window on the right-side of your screen. 
 - Using Terminal Window #1, execute the following command using the `External IP` from the previous lab.
 ```
-# example: while true; do curl http://<External IP>35.227.49.80/10; echo; done; #
+# example: while true; do curl http://35.227.49.80/10; echo; done; #
 
 while true; do curl http://<External IP>/10; echo; done;
 
