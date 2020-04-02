@@ -461,13 +461,19 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/3-terminals-start.png)
 
 - Let's denominate as Terminal Window #1 the long, narrower terminal window on the right-side of your screen. 
-- Using Terminal Window #1, execute the following command using the `External IP` from the previous lab.
+- Using Terminal Window #1, execute the following command to retrieve the `External IP` address of your `fact` service.
+```
+kubectl get service
+```
+- Using Terminal Window #1, execute the following command using the `External IP` of your `fact` service.
 ```
 # example: while true; do curl http://35.227.49.80/10; echo; done; #
 
 while true; do curl http://<External IP>/10; echo; done;
-
 ```
+- You should see a never ending flow of `10!` calculations. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service.
+- Practice using `CTRL-C` on Terminal Window #1 to stop the processing of `10!` and then `<arrow up>` to re-issue the `while true` command that will restart the _canary query_ test cycle.
+
 - Let's denominate as Terminal Window #2 the top, wider terminal window.
 - Using Terminal Window #2, execute the following command:
 ```
