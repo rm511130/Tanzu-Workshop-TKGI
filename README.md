@@ -494,7 +494,7 @@ fact-85774cfbb8-72rqk  1/1   Running      0       3m29s  10.200.85.19  vm-25ed22
 fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22a9-b268-4ba5-797c-99595d6c5873  
 ...
 ```
-- Note in the output shown above that under `NODE` we see two unique VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes during Lab-4.
+- Note in the output shown above that under `NODE` we see two different VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes during Lab-4.
 
 - While changing the number of `replicas`, did you see any error messages on Terminal Window #1?
 
