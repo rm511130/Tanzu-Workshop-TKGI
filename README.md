@@ -867,7 +867,7 @@ cf marketplace
 
 - If you are developing modern Apps, Tanzu Application Service can significantly change the developer's experience.
 
-- By delivering TAS for Kubernetes, VMware effectively automates away all the k8s complexities, and guarantees the consistent creation of curated, secure container images that will run on k8s clusters on any cloud infrastructure, with the proven efficiency of a `cf push` dial-tone.
+- By delivering TAS for Kubernetes, VMware effectively automates away all the k8s complexities and guarantees the consistent creation of curated, secure container images that will run on k8s clusters on any cloud infrastructure, with the proven efficiency of a `cf push` dial-tone.
 
 Congratulations, you have completed all the LABs in this Workshop.
 
