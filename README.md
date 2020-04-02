@@ -472,7 +472,7 @@ kubectl get service
 while true; do curl http://<External IP>/10; echo; done;
 ```
 - You should see a never ending flow of `10!` calculations. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service.
-- Practice using `CTRL-C` on Terminal Window #1 to stop the processing of `10!` and then `<arrow up>` to re-issue the `while true` command that will restart the _canary query_ test cycle.
+- Practice using `CTRL-C` on Terminal Window #1 to stop the processing of `10!`, and then use `<arrow up>` to re-issue the `while true` command to restart the _canary query_ test cycle.
 
 - Let's denominate as Terminal Window #2 the top, wider terminal window.
 - Using Terminal Window #2, execute the following command:
