@@ -623,12 +623,12 @@ kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port
 watch kubectl get service timer-test
 ```
 
-- Using the `External IP` address, execute the following command and leave it running.
+- Using the `External IP` address, execute the following command and leave it running. Use Terminal Window #1 for this step.
 
 ```
 while true; do curl http://<External-IP>/5000000000; echo; done
 ```
-- Go back from time to time to this Terminal Window to see how your `timer-test` is responding. 
+- Go back from time to time to this Terminal Window #1 to see how your `timer-test` is responding. 
 - Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
 - We will come back to it in a little while, but the main concept here is that your cluster is a PKS-tenant with hard isolation from other PKS-tenants. Workloads running in separate clusters will not affect your `timer-test` response times.
 
