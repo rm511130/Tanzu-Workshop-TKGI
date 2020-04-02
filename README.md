@@ -1,4 +1,4 @@
-###[https://tinyurl.com/0402CAH](https://tinyurl.com/0402CAH)
+### [https://tinyurl.com/0402CAH](https://tinyurl.com/0402CAH)
 
 ![](./images//vmware-logo.png)
 
