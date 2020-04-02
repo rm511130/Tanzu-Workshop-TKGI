@@ -544,7 +544,7 @@ kubectl get deployment fact -o yaml > fact-deployment.yml
 - You then need to alter the contents of the `fact-deployment.yml` file to include the yaml snippet shown above. 
 - *However*, since it's very easy to get the yaml formatting wrong, and the purpose of this workshop is not to test your editing skills, let's proceed by using the `fact-deployment-with-readiness-probe.yml` file, available in your home directory, to recreate a working deployment of your `fact` program.
 
-- Delete and recreate, using `fact-deployment-with-readiness-probe.yml`, your `fact` deployment with the following commands:
+- Delete and recreate, using [`fact-deployment-with-readiness-probe.yml`](./fact-deployment-with-readiness-probe.yml), your `fact` deployment with the following commands:
 
 ```
 kubectl delete deployment fact
