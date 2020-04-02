@@ -771,12 +771,12 @@ helm repo add wavefront https://wavefronthq.github.io/helm/
 helm repo update
 kubectl create namespace wavefront
 ```
-- For the next command you will need your individual `wavefront.token` which can be found under Column S of [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
+- For the next command you will need your individual `Helm` command which can be found under Column S of the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
 
-- Make sure to use the correct `wavefront.token` and `clusterName=user<#>-cluster` in the command shown below.
+- Check to make sure to use the correct `wavefront.token` and `clusterName=user<#>-cluster` in the command shown below.
 
 ```
-helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --namespace wavefront --set wavefront.token=caa821fa-f2e5-4524-9374-19667f830f00 --set clusterName=user1-cluster
+helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --namespace wavefront --set wavefront.token=<your-own-wavefront-token> --set clusterName=user1-cluster
 ```
 
 - Now ask the workshop organizer to show your cluster data on Wavefront.
