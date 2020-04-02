@@ -817,10 +817,8 @@ cf push -m 128M -b go_buildpack fact-user1
 - Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following command:
 
 ```
-curl http://fact-user1.apps.13.86.190.177.cf.pcfazure.com/100; echo 
+curl -k https://fact-user1.apps.13.86.190.177.cf.pcfazure.com/100; echo 
 ```
-
-- You can also use a browser to access: `http://fact-user1.apps.13.86.190.177.cf.pcfazure.com/100`. This installation of Tanzu Application Service is using a self-signed certificate, so you may see a screen that says `Your connection is not private` before being taken to the actual results of `100!`.
 
 - You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
 - Your App has an SSL encrypted URL that routes and load-balances user requests automatically to your App instance(s).
