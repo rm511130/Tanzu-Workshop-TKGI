@@ -810,7 +810,7 @@ cd ~/fact;   rm Dockerfile Procfile README.md .git;  ls -las
 - Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use `user<#>` and `fact-user<#>` aligned to your UserID: 
 
 ```
-cf login -a api.sys.13.86.190.177.cf.pcfazure.com -p password -u user1
+cf login -a api.sys.13.86.190.177.cf.pcfazure.com -p password --skip-ssl-validation -u user1
 cf push -m 128M -b go_buildpack fact-user1
 ```
 
