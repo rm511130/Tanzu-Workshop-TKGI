@@ -3,10 +3,10 @@
 # VMware Tanzu PKS Workshop - Enterprise Kubernetes 
 ------------------------------------------------------------
 ## Workshop Agenda
-(1:00PM to 5:00PM on 03/19/2020)
+(1:00PM to 5:00PM on 04/21/2020)
 
 - Introduction
-     - Workshop Description and Orientation
+     - Workshop Orientation
      - VMware Tanzu Portfolio of Products 
 - Platform Architecture 
      - Installation Overview
