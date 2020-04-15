@@ -1,8 +1,8 @@
 ![](./images//vmware-logo.png)
 
-# VMware Tanzu PKS Workshop - Enterprise Kubernetes 
-------------------------------------------------------------
-## Workshop Agenda
+# VMware TKG-i (Tanzu Kubernetes Grid Integrated) Workshop 
+----------------------------------------------------------
+## Enterprise Kubernetes Workshop Agenda
 (1:00PM to 5:00PM on 04/21/2020)
 
 - Introduction
@@ -13,7 +13,7 @@
      - Operations Manager
      - Tile Installation
      - Client Tools
-- Demo & Hands-on PKS Labs on the cloud
+- Demo & Hands-on TKG-i Labs on the cloud
      - Operator Experience
      - Developer Experience
      - Observability & Management Tools
@@ -33,7 +33,7 @@
 ```
 help wget
 cd ~\Downloads
-wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.ppk -Outfile fuse.ppk
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKG-i/master/fuse.ppk -Outfile fuse.ppk
 ```
 - If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](./fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
 - If you need help installing or using PuTTY with [fuse.ppk](./fuse.ppk) check these [detailed instructions](./PuTTY_and_SSH.md).
@@ -44,7 +44,7 @@ wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.p
 - Using a Terminal Window, execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
 ```
 cd ~/Downloads
-wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-PKS/master/fuse.pem
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKG-i/master/fuse.pem
 chmod 400 ~/Downloads/fuse.pem
 ```
 - You can now test whether SSH is working with the `fuse.pem` private key using the following command:
@@ -55,8 +55,8 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 
 -----------------------------------------------------
-
-## Guidelines for this Workshop
+## Guidelines & Conventions for this Workshop 
+- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKG-i‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKG-i used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface).
 - This self-paced workshop includes presentations, videos, demos and hands-on labs. 
 - The labs are interdependent and must be executed in order.
 - Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a userID for this workshop. For example, Ralph Meira is user1.
@@ -249,7 +249,7 @@ Congratulations, you have completed LAB-3.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-4: Connecting to PKS API and Resizing a Kubernetes Cluster
+### LAB-4: Connecting to TKG-i API and Resizing a Kubernetes Cluster
 
 - The creation of a Kubernetes Cluster takes some time, so we created a Kubernetes Cluster for you in preparation for this workshop. The command used was:
 
@@ -262,7 +262,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/lab.png)
 
 - During this lab you are going to assume the role of a Platform DevOps person.
-- Execute the following commands to log into the PKS Control Plane. 
+- Execute the following commands to log into the TKG-i Control Plane. 
 - Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
 ```
@@ -324,12 +324,12 @@ Last Action State:        in progress
 ```
 - You don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
 
-- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an PKS Operator function.
+- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an TKG-i Operator function.
 
 **Let's recap:** 
-- You logged into the PKS Control Plane as a DevOps user, and scaled an existing cluster.
-- Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the PKS platform.
-- You executed a few `kubectl` commands against your cluster as a DevOps PKS Manager.
+- You logged into the TKG-i Control Plane as a DevOps user, and scaled an existing cluster.
+- Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the TKG-i platform.
+- You executed a few `kubectl` commands against your cluster as a DevOps TKG-i Manager.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
@@ -403,7 +403,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Harbor was installed next to PKS in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. Note: *Don't* change `Password1` to `Password<#>` because you are `user<#>`, every user was created with the same password: `Password1`. 
+- Harbor was installed next to TKG-i in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. Note: *Don't* change `Password1` to `Password<#>` because you are `user<#>`, every user was created with the same password: `Password1`. 
 
 - Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
 
@@ -588,14 +588,14 @@ Congratulations, you have completed LAB-7.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-8: K8s Soft and PKS Hard Tenancy
+### LAB-8: K8s Soft and TKG-i Hard Tenancy
 
 ![](./images/lab.png)
 
 - We have to be extra-cautious during this Lab because it can be destructive depending on the username you employ.
 - Make sure to use the correct `-u devops<#>` and `-u user<#>` aligned to the UserID you claimed at the beginning of this workshop.
 
-- Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the PKS Administrator. Please execute the following commands:
+- Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the TKG-i Administrator. Please execute the following commands:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1 
@@ -609,7 +609,7 @@ pks resize user1-cluster --num-nodes 10
 pks delete-cluster user25-cluster   # make sure you know what you are doing before proceeding with this step
 ```
 
-- As you can see PKS Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
+- As you can see TKG-i Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
 
 - Let's deploy a new App to your `user<#>-cluster`:
 
@@ -630,9 +630,9 @@ while true; do curl http://<External-IP>/5000000000; echo; done
 ```
 - Go back from time to time to this Terminal Window #1 to see how your `timer-test` is responding. 
 - Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
-- We will come back to it in a little while, but the main concept here is that your cluster is a PKS-tenant with hard isolation from other PKS-tenants. Workloads running in separate clusters will not affect your `timer-test` response times.
+- We will come back to it in a little while, but the main concept here is that your cluster is a TKG-i tenant with hard isolation from other TKG-i tenants. Workloads running in separate clusters will not affect your `timer-test` response times.
 
-- Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a PKS Administrator:
+- Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a TKG-i Administrator:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
@@ -641,7 +641,7 @@ pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
 ```
 pks clusters
 ```
-- When logged-in with the scope of a PKS Administrator, you can see and manage all K8s Clusters created via the PKS Control Plane. Please make sure not to delete or resize any clusters.
+- When logged-in with the scope of a TKG-i Administrator, you can see and manage all K8s Clusters created via the TKG-i Control Plane. Please make sure not to delete or resize any clusters.
 
 - We have a `shared-cluster` that has not been used in any labs. Execute the following command to learn more about this `shared-cluster`:
 
@@ -694,8 +694,8 @@ while true; do curl http://<External IP>/5000000000; echo; done
 - Leave open all your Terminal Windows that are running the `timer-test` program. We will get back to them in a few minutes.
 
 **Let's recap:** 
-- PKS allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the PKS control plane. 
-- PKS enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
+- TKG-i allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKG-i control plane. 
+- TKG-i enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
 - K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
 - K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits to workloads, but the sharing and utilization of resources has to be monitored carefully.
 
@@ -756,7 +756,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- In this Lab we will take a look at how easy it is to integrate PKS with Wavefront:
+- In this Lab we will take a look at how easy it is to integrate TKG-i with Wavefront:
 
 - If you were following the Labs one-by-one and in sequence, you should still have three Terminal Windows up and running. Two of them should have `timer-test` running in a loop, demonstrating the difference between workload isolation by cluster vs. workload isolation by namespacing.
 
