@@ -2,7 +2,7 @@
 
 # VMware TKG-i Workshop 
 ----------------------------------------------------------
-## Tanzu Kubernetes Grid Integrated                        Workshop Agenda
+## Tanzu Kubernetes Grid - Workshop Agenda
 (1:00PM to 5:00PM on 04/21/2020)
 
 - Introduction
