@@ -190,8 +190,8 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
 
-#### LAB-2A 
 #
+#### LAB-2A 
 ![](./images/golang-tiny.png) ![](./images/lab.png)
 
 - Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
@@ -219,10 +219,9 @@ http://user1.pks4u.com:3000/1500
 
 - Use `CTRL-C` to cancel out of the `go run fact.go` command.
 
-.
 
-#### LAB-2B 
 #
+#### LAB-2B 
 ![](./images/java-spring-tiny.png) ![](./images/lab.png)   
 
 - Execute the following commands:
