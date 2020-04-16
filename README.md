@@ -161,11 +161,23 @@ go version
 jq --version
 python3 --version
 helm version
+java -version
+mvn -version
 ```
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
 
-Congratulations, you have completed LAB-1.
+- Let's now set-up environment variables aligned to the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed. Please make sure to change the UserID to the one that applies to you before executing the commands shown below:
+
+```
+echo "export user=user1" >> ~/.bashrc
+echo "export devops=devops1" >> ~/.bashrc
+source ~/.bashrc
+echo "Your UserID is $user"
+echo "Your DevopsID is $devops"
+```
+
+- If the output of the commands shown above look correct and match the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed then congratulations, you have completed LAB-1.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
