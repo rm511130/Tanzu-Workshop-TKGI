@@ -74,11 +74,11 @@ _- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its 
      - Browsing web pages
 - When carrying out hands-on labs, you will be asked to cut-&-paste the commands shown `in boxes like this one` from this github page to your Ubuntu VM Terminal Window. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
   - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
-  - `pks get-credentials user15-cluster` is for `user15`
-  - `kubectl get pods -n namespace7` is for `user7`
-- To simplify the cut-&-paste-&-replace steps described above, when possible, we will define environment variables that will hold your specific login name as claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
-  - `export user=user3`
+  - `ssh -i fuse.pem ubuntu@user15.pks4u.com` is for `user15` 
+- In order to simplify the cut-&-paste-&-replace steps described above, once you are operating on your Ubuntu VM Terminal, we will define environment variables that will hold your specific login name as claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). In this way, the cut-&-paste steps will not require you to edit the command line before pressing `return`. For example:
+
   - ```
+    export user=user3
     echo $user
     pks get-credentials $user-cluster
     ```
@@ -111,6 +111,10 @@ VMware is your trusted partner to help address all of these challenges.
 -----------------------------------------------------
 
 ## Architecture, Installation & Set-up 
+
+- The diagram below shows the general layout of the VMs, K8s Clusters and Platforms that we will be using during this workshop.
+
+![](./images/BigDiagram.png)
 
 - The videos in this section are great for brushing up on your understanding of the technologies we will be working with during this workshop. 
 
