@@ -259,8 +259,6 @@ http://user1.pks4u.com:8080
 - The code examples you executed provided an http interface accessible from a browser.
 - A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. In the following hands-on labs, we will see how Container Images can help in this area.
 
-![](./images/itworksonmymachine.png)
-
 - Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 Congratulations, you have completed LAB-2. 
