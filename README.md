@@ -186,9 +186,9 @@ echo "Your DevopsID is $devops"
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-2: Running a simple GoLang/Java Program Locally (on your Ubuntu VM)
+### LAB-2: Running a simple GoLang and a Spring/Java Program Locally (on your Ubuntu VM)
 
-- This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) for you to choose from. You can always try both languages.
+- This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
 
 ![](./images/golang-tiny.png) ![](./images/lab.png)
 
