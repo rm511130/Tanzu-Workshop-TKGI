@@ -232,7 +232,7 @@ cd spring-petclinic
 ./mvnw -Dmaven.test.skip=true package
 ```
 ```
-java -jar target/*.jar
+./mvnw spring-boot:run
 ```
 
 - Once you see in your logs that `Tomcat started on port(s): 8080` you can proceed to test your `Pet Clinic` program.
