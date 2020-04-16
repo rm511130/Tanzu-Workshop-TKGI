@@ -223,7 +223,11 @@ http://user1.pks4u.com:3000/1500
 cd ~ 
 git clone https://github.com/rm511130/spring-petclinic.git
 cd spring-petclinic
-./mvnw package
+```
+```
+./mvnw -Dmaven.test.skip=true package
+```
+```
 java -jar target/*.jar
 ```
 
