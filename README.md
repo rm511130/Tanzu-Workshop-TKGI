@@ -69,6 +69,9 @@ _- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its 
 - The labs are interdependent and must be executed in order.
 - Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a userID for this workshop. For example, Ralph Meira is user1.
 - Update the same [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) as you progress through the Labs, by placing an "X" in the appropriate column.
+- Each workshop participant will be assigned a Ubuntu VM previously set up for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
+     - SSH'ing or PuTTY'ing into the Ubuntu VM 
+     - Browsing web pages
 - When carrying out hands-on labs, you will be asked to cut-&-paste the commands shown `in boxes like this one` from this github page to your Ubuntu VM Terminal Window. However, when issuing commands, please make sure to alter the userID to match the one you have claimed, e.g.:
   - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
   - `pks get-credentials user15-cluster` is for `user15`
@@ -77,12 +80,8 @@ _- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its 
   - `export user=user3`
   - ```
     echo $user
-    user3
     pks get-credentials $user-cluster
     ```
-- Each workshop participant will be assigned a Ubuntu VM previously set up for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
-     - SSH'ing or PuTTY'ing into the Ubuntu VM 
-     - Browsing web pages
 - Throughout this document, when it's time for hands-on labs, you will see the following icon:
      
 ![](./images/lab.png)
