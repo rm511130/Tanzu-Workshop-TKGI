@@ -188,7 +188,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-2: Running a simple GoLang and a Spring/Java Program Locally (on your Ubuntu VM)
 
-- This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
+- During this Lab, we will experiment with [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
 
 #
 #### LAB-2A 
@@ -217,7 +217,7 @@ http://user1.pks4u.com:3000/1500
      - `http://user1.pks4u.com:3000/header`
   - Did you see the logs on the Terminal Window of your VM?
 
-- Use `CTRL-C` to cancel out of the `go run fact.go` command.
+- Use `CTRL-C` ton your Ubuntu VM to cancel out of the `go run fact.go` command.
 
 
 #
@@ -251,11 +251,11 @@ http://user1.pks4u.com:8080
 ```
 - If the `Pet Clinic` App is running you have a good Spring/Java example to work with.
 
-- You can use `CRTL-C` to cancel out of the `java -jar target/*.jar` command.
+- You can use `CRTL-C` on your Ubuntu VM to cancel out of the `java -jar target/*.jar` command.
 
 **Let's recap:** 
 - Your Linux VM is able to run GoLang and Spring/Java programs. 
-- Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that let's you test (locally) your code.
+- Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that lets your friends access and test your Apps. You can also test locally (using localhost or 127.0.0.1) your code.
 - The code examples you executed provided an http interface accessible from a browser.
 - A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. In the following hands-on labs, we will see how Container Images can help in this area.
 
@@ -268,6 +268,8 @@ Congratulations, you have completed LAB-2.
 -----------------------------------------------------
 ### LAB-3: Building a Docker Image
 
+#
+#### LAB-3A
 ![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Using your Ubuntu VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
@@ -279,10 +281,10 @@ cat ~/fact/Dockerfile
 - Execute the following commands to start with a clean slate and build a Docker Image of your GoLang factorial program:
 
 ```
-docker system prune -a -f                                                                # deletes old container images
-if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi;    # stops any running containers
+docker system prune -a -f     # deletes old container images
+if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi; # stops any running containers
 cd ~/fact
-docker build -t fact .      # the dot is important 
+docker build -t fact .        # the dot is important 
 ```
 
 - Execute the following command to run the `Fact` docker image locally on your Ubuntu VM using `port 3000`:
@@ -331,10 +333,11 @@ docker exec -it fact bash
  - What release of the OS was used?
  - What was the answer to the `whoami` command?
  
- 
+#
+#### LAB-3B
 ![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-- Now let's create a Docker Image from the Petclinic Jar file we created in Lab-2. 
+- Now let's create a Docker Image from the Petclinic Jar file you created during Lab-2. 
 - Execute the following commands to take a look at the `Dockerfile` we will be using:
 
 ```
@@ -364,9 +367,11 @@ docker history petclinic
 docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 
+- As you can see, as a developer, you have a lot of control over what layers and operating systems are employed in building a container image.
+
 **Let's recap:** 
 - You built and executed a couple of Docker Images on your Ubuntu VM using essentially the same files you had during Lab-2.
-- Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` command.
+- Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` commands.
 - Now that you have a working, local container image of your `fact` and `petclinic` programs, as a developer, you should feel reassured that your Apps have a good chance of working in their containerized image format, when pushed to a server. This is one of the main reasons for the success of Container Images among developers.
 
 Congratulations, you have completed LAB-3.
