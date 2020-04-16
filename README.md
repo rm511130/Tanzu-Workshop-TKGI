@@ -292,7 +292,11 @@ curl http://user1.pks4u.com:3000/5; echo
 
 ```
 docker image inspect fact
+```
+```
 docker history fact
+```
+```
 docker ps
 ```
 
@@ -307,7 +311,11 @@ docker exec -it fact bash
  
  ```
  curl http://127.0.0.1:3000/5; echo
+ ```
+ ```
  cat /etc/*release
+ ```
+ ```
  whoami
  exit
  ```
