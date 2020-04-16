@@ -71,6 +71,13 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
   - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
   - `pks get-credentials user15-cluster` is for `user15`
   - `kubectl get pods -n namespace7` is for `user7`
+- To simplify the cut-&-paste-&-replace steps described above, when possible, we will define environment variables that will hold your specific login name as claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
+  - `export user=user3`
+  - ```
+    echo $user
+    user3
+    pks get-credentials $user-cluster
+    ```
 - Each workshop participant will be assigned a Ubuntu VM previously set up for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
      - SSH'ing or PuTTY'ing into the Ubuntu VM 
      - Browsing web pages
