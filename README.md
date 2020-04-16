@@ -254,7 +254,7 @@ http://user1.pks4u.com:8080
 - Your Linux VM is able to run GoLang and Spring/Java programs. 
 - Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that let's you test (locally) your code.
 - The code examples you executed provided an http interface accessible from a browser.
-- A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. We will see how Docker Images can help in this area.
+- A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. In the following hands-on labs, we will see how Container Images can help in this area.
 
 ![](./images/itworksonmymachine.png)
 
