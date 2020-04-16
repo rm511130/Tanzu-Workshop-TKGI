@@ -186,7 +186,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-2: Running a simple GoLang/Java Program Locally (on your Ubuntu VM)
 
-- This workshop is designed to cover multiple programing languages. We initially have GoLang and Java for you to choose from.
+- This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) for you to choose from. You can always try both languages.
 
 - Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
 
