@@ -265,7 +265,7 @@ Congratulations, you have completed LAB-2.
 -----------------------------------------------------
 ### LAB-3: Building a Docker Image
 
-![](./images/golang-tiny.png) ![](./images/docker-tiny.png) ![](./images/lab.png)
+![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Using your Ubuntu VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
 
