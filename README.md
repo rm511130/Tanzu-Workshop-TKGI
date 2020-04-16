@@ -276,19 +276,25 @@ cat ~/fact/Dockerfile
 - Execute the following commands to start with a clean slate and build a Docker Image of your GoLang factorial program:
 
 ```
-docker system prune -a -f
+docker system prune -a -f                                                                # deletes old container images
+if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi;    # stops any running containers
 cd ~/fact
 docker build -t fact .      # the dot is important 
 ```
+
+- Execute the following command to run the `Fact` docker image locally on your Ubuntu VM using `port 3000`:
+
 ```
 docker run -d --publish 3000:3000 --name fact --rm fact
 ```
+
+- Using `curl` on your Ubuntu VM, or if you'd like, using a browser, access the following URL to test your `Fact` program:
+
 ```
 curl http://user1.pks4u.com:3000/5; echo
 ```
 
-- Did you notice in the build logs how many layers were used to create the Docker Image of your GoLang factorial program? 
-- Execute the following commands, one-by-one, to learn more about your Docker Image. Pay attention to the layers and how recent they are:
+- During the `docker build` phase, did you notice how many layers were used to create the Docker Image of your GoLang factorial program? Execute the following commands, one-by-one, to learn more about your Docker Image. Pay attention to the layers and how recent they are:
 
 ```
 docker image inspect fact
