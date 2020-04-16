@@ -191,6 +191,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
 
 #### LAB-2A 
+-----------------------------------------------------
 ![](./images/golang-tiny.png) ![](./images/lab.png)
 
 - Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
