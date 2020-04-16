@@ -62,7 +62,9 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 -----------------------------------------------------
 ## Guidelines & Conventions for this Workshop 
-- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKG-i‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKG-i used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface).
+
+_- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKG-i‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKG-i used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface)._
+
 - This self-paced workshop includes presentations, videos, demos and hands-on labs. 
 - The labs are interdependent and must be executed in order.
 - Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a userID for this workshop. For example, Ralph Meira is user1.
