@@ -265,7 +265,7 @@ Congratulations, you have completed LAB-2.
 -----------------------------------------------------
 ### LAB-3: Building a Docker Image
 
-![](./images/lab.png)
+![](./images/golang-tiny.png) ![](./images/docker-tiny.png) ![](./images/lab.png)
 
 - Using your Ubuntu VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
 
@@ -279,7 +279,11 @@ cat ~/fact/Dockerfile
 docker system prune -a -f
 cd ~/fact
 docker build -t fact .      # the dot is important 
+```
+```
 docker run -d --publish 3000:3000 --name fact --rm fact
+```
+```
 curl http://user1.pks4u.com:3000/5; echo
 ```
 
