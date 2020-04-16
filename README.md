@@ -177,12 +177,16 @@ echo "Your UserID is $user"
 echo "Your DevopsID is $devops"
 ```
 
-- If the output of the commands shown above look correct and match the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed then congratulations, you have completed LAB-1.
+- If the output of the commands shown above don't match the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed, please inform the workshop organizers. Do not proceed until the environment variables are correctly set.
+
+- Congratulations, you have completed LAB-1.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-2: Running a simple GoLang Program Locally (on your Ubuntu VM)
+### LAB-2: Running a simple GoLang/Java Program Locally (on your Ubuntu VM)
+
+- This workshop is designed to cover multiple programing languages. We initially have GoLang and Java for you to choose from.
 
 - Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
 
