@@ -276,7 +276,7 @@ cat ~/fact/Dockerfile
 - Execute the following commands to start with a clean slate and build a Docker Image of your GoLang factorial program:
 
 ```
-docker system prune -a      # answer y 
+docker system prune -a -f
 cd ~/fact
 docker build -t fact .      # the dot is important 
 docker run -d --publish 3000:3000 --name fact --rm fact
