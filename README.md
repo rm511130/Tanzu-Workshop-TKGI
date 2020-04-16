@@ -188,13 +188,9 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - This workshop is designed to cover multiple programing languages. We currently offer [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) for you to choose from. You can always try both languages.
 
-- Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
-
 ![](./images/golang-tiny.png) ![](./images/lab.png)
 
-- Hello world
-
-![](./images/java-spring-tiny.png) ![](./images/lab.png)   
+- Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
 
 - Execute the following commands:
 
@@ -218,6 +214,18 @@ http://user1.pks4u.com:3000/1500
   - Did you see the logs on the Terminal Window of your VM?
 
 - Use `CTRL-C` to cancel out of the `go run fact.go` command.
+
+![](./images/java-spring-tiny.png) ![](./images/lab.png)   
+
+- Execute the following commands:
+
+```
+cd ~ 
+git clone https://github.com/rm511130/spring-petclinic.git
+cd spring-petclinic
+./mvnw package
+java -jar target/*.jar
+```
 
 **Let's recap:** 
 - Your Linux VM is able to run GoLang programs. 
