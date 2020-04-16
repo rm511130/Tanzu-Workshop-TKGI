@@ -190,7 +190,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
 
-![](./images/lab.png)
+![](./images/lab.png).  ![](./images/golang-small.png)  ![](./images/golang-tiny.png) 
+
+- Hello world
+
+![](./images/lab.png).  ![](./images/java-spring-small.png)  ![](./images/java-spring-tiny.png)
 
 - Execute the following commands:
 
