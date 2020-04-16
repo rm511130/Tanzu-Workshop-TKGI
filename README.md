@@ -328,10 +328,43 @@ docker exec -it fact bash
  - What release of the OS was used?
  - What was the answer to the `whoami` command?
  
+ 
+![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
+
+- Now let's create a Docker Image from the Petclinic Jar file we created in Lab-2. 
+- Execute the following commands to take a look at the `Dockerfile` we will be using:
+
+```
+cd ~/spring-petclinic
+cat Dockerfile
+```
+
+- Let's build a Docker Container Image and run it locally on your Ubuntu VM. Use the following commands:
+
+```
+docker build -t petclinic . 
+docker run -d --publish 80:8080 --name petclinic --rm petclinic
+```
+
+- It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at:
+
+```
+http://user1.pks4u.com      # use your userID in the URL instead of user1 
+```
+
+- Let's now take a look at the layers used in the creation of your Petclinic container image:
+
+```
+docker history petclinic
+```
+```
+docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
+```
+
 **Let's recap:** 
-- You built and executed a Docker Image on your Ubuntu VM using essentially the same files you had during Lab-2.
+- You built and executed a couple of Docker Images on your Ubuntu VM using essentially the same files you had during Lab-2.
 - Using the various commands on your Ubuntu VM and on a Docker container you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` command.
-- Now that you have a working, local container image of your `fact` program, as a developer, you should feel reassured that your App will work when pushed to a server. This is one of the main reasons for the success of Docker Images among developers.
+- Now that you have a working, local container image of your `fact` and `petclinic` programs, as a developer, you should feel reassured that your Apps have a good chance of working in their containerized image format, when pushed to a server. This is one of the main reasons for the success of Container Images among developers.
 
 Congratulations, you have completed LAB-3.
 
