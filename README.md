@@ -172,9 +172,11 @@ mvn -version
 ```
 echo "export user=user1" >> ~/.bashrc
 echo "export devops=devops1" >> ~/.bashrc
+echo "export JAVA_HOME=/usr" >> ~/.bashrc
 source ~/.bashrc
 echo "Your UserID is $user"
 echo "Your DevopsID is $devops"
+$JAVA_HOME/bin/java -version
 ```
 
 - If the output of the commands shown above don't match the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed, please inform the workshop organizers. Do not proceed until the environment variables are correctly set.
@@ -215,6 +217,8 @@ http://user1.pks4u.com:3000/1500
 
 - Use `CTRL-C` to cancel out of the `go run fact.go` command.
 
+
+
 ![](./images/java-spring-tiny.png) ![](./images/lab.png)   
 
 - Execute the following commands:
@@ -230,6 +234,21 @@ cd spring-petclinic
 ```
 java -jar target/*.jar
 ```
+
+- Once you see in your logs that `Tomcat started on port(s): 8080` you can proceed to test your `Pet Clinic` program.
+
+```
+2020-04-16 02:40:41.118  INFO 29262 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-04-16 02:40:41.123  INFO 29262 --- [           main] o.s.s.petclinic.PetClinicApplication     : Started PetClinicApplication in 9.28 seconds (JVM running for 9.956)
+```
+- To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com`.
+
+```
+http://user1.pks4u.com:8080
+```
+- If the `Pet Clinic` App is running you have a good Spring/Java example to work with.
+
+- You can use `CRTL-C` to cancel out of the `java -jar target/*.jar` command.
 
 **Let's recap:** 
 - Your Linux VM is able to run GoLang programs. 
