@@ -1,3 +1,5 @@
+#### [http://tinyurl.com/tkg-i-2020](http://tinyurl.com/tkg-i-2020)
+
 ![](./images//vmware-logo.png)
 
 # VMware TKG-i Workshop 
