@@ -396,17 +396,16 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops
 pks clusters
 pks plans
 ```
 - Let's get more detailed information about your cluster.
-- Please make sure to use the correct `user<#>-cluster` aligned to your User ID.
 
 ```
 pks cluster user1-cluster
 rm ~/.kube/config
-pks get-credentials user1-cluster
+pks get-credentials $user-cluster
 kubectl cluster-info
 kubectl get all --all-namespaces
 ```
@@ -421,13 +420,13 @@ exit
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
 
 ```
-pks resize user1-cluster --num-nodes 2
+pks resize $user-cluster --num-nodes 2
 ```
 
 - Use the following command to monitor the growth of your cluster:
 
 ```
-pks cluster user1-cluster
+pks cluster $user-cluster
 ```
 
 - You should see output similar to the example below:
@@ -499,7 +498,7 @@ exit
 
 ```
 kubectl get service
-pks cluster user1-cluster
+pks cluster $user-cluster
 ```
 - Execute the commands above every 30 seconds until you see:
    - an `External IP` show up for the `fact` service
@@ -546,11 +545,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Let's log into Harbor from your Ubuntu VM. Execute the following commands:
 
 ```
-docker login -p Password1 harbor.pks4u.com -u user1
+docker login -p Password1 harbor.pks4u.com -u $user
 docker images
-docker tag fact harbor.pks4u.com/library/user1-fact:latest
+docker tag fact harbor.pks4u.com/library/$user-fact:latest
 docker images
-docker push harbor.pks4u.com/library/user1-fact:latest
+docker push harbor.pks4u.com/library/$user-fact:latest
 ```
 - Now look for your program in the Harbor browser session you were asked to leave open.
 
@@ -559,7 +558,7 @@ docker push harbor.pks4u.com/library/user1-fact:latest
 - Now execute the following commands on your Ubuntu VM:
 
 ```
-docker pull harbor.pks4u.com/library/user1-fact:latest
+docker pull harbor.pks4u.com/library/$user-fact:latest
 ```
 
 - The message you received back is a reflection of Harbor's configuration. Note that the image you pushed to Harbor is also not signed. We can set Harbor's configuration to prevent unsigned images from being pulled as well.
@@ -728,14 +727,17 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the TKG-i Administrator. Please execute the following commands:
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1 
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops 
 pks clusters
-pks get-credentials user1-cluster        # if asked, password = password
+pks get-credentials $user-cluster        # if asked, password = password
 ```
 
-- Now, let's try to resize your `user<#>-cluster` to 10 worker nodes, and then let's try to delete (*not yours, but*) a colleague's cluster:
+- Now, let's try to resize your K8s cluster to 10 worker nodes:
 ```
-pks resize user1-cluster --num-nodes 10
+pks resize $user-cluster --num-nodes 10
+```
+- Let's try to delete (*not yours, but*) a colleague's cluster:
+```
 pks delete-cluster user25-cluster   # make sure you know what you are doing before proceeding with this step
 ```
 
