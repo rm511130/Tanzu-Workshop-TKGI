@@ -1,4 +1,4 @@
-#### [http://tinyurl.com/tkg-i-2020](http://tinyurl.com/tkg-i-2020)
+#### [https://tinyurl.com/04212020AF](https://tinyurl.com/04212020AF)
 
 ![](./images//vmware-logo.png)
 
