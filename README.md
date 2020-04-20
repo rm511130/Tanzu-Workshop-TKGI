@@ -301,10 +301,10 @@ docker build -t fact .        # the dot is important
 docker run -d --publish 3000:3000 --name fact --rm fact
 ```
 
-- Using `curl` on your Ubuntu VM, or if you'd like, using a browser, access the following URL to test your `Fact` program:
+- Using `curl` on your Ubuntu VM, or if you'd like, using a browser, access the following URL to test your `Fact` program. Remember to replace `<userID#>` by your correct UserID.
 
 ```
-curl http://user1.pks4u.com:3000/5; echo
+curl http://<userID#>.pks4u.com:3000/5; echo
 ```
 
 - During the `docker build` phase, did you notice how many layers were used to create the Docker Image of your GoLang factorial program? Execute the following commands, one-by-one, to learn more about your Docker Image. Pay attention to the layers and how recent they are:
@@ -360,10 +360,10 @@ docker build -t petclinic .
 docker run -d --publish 80:8080 --name petclinic --rm petclinic
 ```
 
-- It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at:
+- It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
-http://<userID#>.pks4u.com      # use your userID in the URL instead of user1 
+http://<userID#>.pks4u.com
 ```
 
 - Let's now take a look at the layers used in the creation of your Petclinic container image:
