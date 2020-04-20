@@ -4,7 +4,7 @@
 
 # VMware TKGI Workshop 
 ----------------------------------------------------------
-## Tanzu Kubernetes Grid - Workshop Agenda
+## [Tanzu Kubernetes Grid - Workshop Agenda](https://drive.google.com/open?id=1pzVmFNv7hlpOGGuU-C5YopBR9VIRz6FU)
 (1:00PM to 5:00PM on 04/21/2020)
 
 - Introduction
@@ -63,6 +63,33 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 
 -----------------------------------------------------
+## A Brief Introduction - VMware Tanzu
+
+- [VMware Tanzu](https://drive.google.com/open?id=1idNKL_eTxKu5pEc6Z7GwLaJ_W5zaBmOxFecH96gI3ds)
+
+- [Three Types of Code & Shared KPIs](https://drive.google.com/open?id=12yG6cpR6NP12IjATRhrdq3-65ZUBb6ZaZjgS94wZrsk)
+
+- [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
+
+- [VMware Customer Stories](https://tanzu.vmware.com/customers)
+
+- ["Simply put, we're here to help you build, run, manage, connect and protect any cloud environment", Pat Gelsinger, CEP VMWare](https://www.youtube.com/watch?v=6uQu3ZKJ28o)
+
+- Enterprises rely on software and scalable environments to improve business outcomes.
+- A critical factor is the *velocity* of:
+    - how ideas are converted to new features, new apps, and new services.
+    - how you can expand your infrastructure to make use of private/public/hybrid clouds.
+- The ever-accelerating pace of change generates a daunting backlog of work for IT leaders.
+- Operations are under pressure to reduce technology spend while addressing security vulnerabilities where perimeters encompass mobile, public and private infrastructure. 
+- Applications and the underlying infrastructure need to be self-monitoring and self-healing, while remaining highly available.
+- The competing mandates - velocity, security, scalability, stability and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
+
+VMware is your trusted partner to help address all of these challenges.
+
+![](./images/tanzu.png)
+
+
+-----------------------------------------------------
 ## Guidelines & Conventions for this Workshop 
 
 _- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKG-i‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKG-i used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface)._
@@ -89,29 +116,6 @@ _- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its 
 ![](./images/lab.png)
 
 -----------------------------------------------------
-## A Brief Introduction - VMware Tanzu
-
-- [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
-
-- [VMware Customer Stories](https://tanzu.vmware.com/customers)
-
-- ["Simply put, we're here to help you build, run, manage, connect and protect any cloud environment", Pat Gelsinger, CEP VMWare](https://www.youtube.com/watch?v=6uQu3ZKJ28o)
-
-- Enterprises rely on software and scalable environments to improve business outcomes.
-- A critical factor is the *velocity* of:
-    - how ideas are converted to new features, new apps, and new services.
-    - how you can expand your infrastructure to make use of private/public/hybrid clouds.
-- The ever-accelerating pace of change generates a daunting backlog of work for IT leaders.
-- Operations are under pressure to reduce technology spend while addressing security vulnerabilities where perimeters encompass mobile, public and private infrastructure. 
-- Applications and the underlying infrastructure need to be self-monitoring and self-healing, while remaining highly available.
-- The competing mandates - velocity, security, scalability, stability and operational efficiency - force enterprises to re-evaluate how they develop, architect, and operate software. 
-
-VMware is your trusted partner to help address all of these challenges.
-
-![](./images/tanzu.png)
-
------------------------------------------------------
-
 ## Architecture, Installation & Set-up 
 
 - The diagram below shows the general layout of the VMs, K8s Clusters and Platforms that we will be using during this workshop.
