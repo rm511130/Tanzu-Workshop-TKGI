@@ -401,7 +401,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - During this lab you are going to assume the role of a Platform DevOps person.
 - Execute the following commands to log into the TKGI Control Plane. 
-- Please make sure to use the correct `-u devops<#>` aligned to your UserID.
+- The use of `$devops` will align each command to your UserID.
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops
