@@ -517,9 +517,9 @@ pks cluster $user-cluster
 ```
 - Execute the commands above every 30 seconds until you see:
    - an `External IP` show up for the `fact` service
-   - a `Last Action State: succeeded` and `Worker Nodes: 2`
+   - _Note: you may also see a `Last Action State: succeeded` and `Worker Nodes: 2`_
    
-- As soon as the `External IP` address you see when executing `kubectl get service` is available, no matter whether or not the `pks resize` command is still `in progress`, execute the following command to test your `fact` docker image:
+- As soon as the `External IP` address for the `fact` service is available, no matter whether or not the `pks resize` command is still `in progress`, you can proceed by executing the following command to test your `fact` docker image:
 
 ```
 curl http://<External-IP>/10; echo
