@@ -549,11 +549,10 @@ http://<External-IP>:8080
 ```
 - You should see the `Petclinic` App.
 
-
-**Let's recap:** 
-- You deployed the `rmeira/fact` and `rmeira/petclinic` images to your K8s cluster and tested that both were working.
+**Let's recap:**
 - Even though the `pks resize` command was still `in progress`, you were able to carry out App deployments.
-- Kubernetes fetches images from a registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry.
+- You deployed the `fact` and `petclinic` images to your K8s cluster and tested that both were working.
+- Kubernetes fetches images from a registry which, until now, was the public Docker Hub. We will see in the next Lab how to use Harbor, an Enterprise-Class registry.
 - You exposed both `fact` and `petclinic` deployments as services available on the Internet.
 - You did not get SSL encrypted, secure URLs accessible on the Internet, but anyone with access to the correct `External IP` addresses is able to run/access your `fact` and `petclinic` programs.
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
@@ -587,14 +586,18 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 docker login -p Password1 harbor.pks4u.com -u $user
 docker images
 docker tag fact harbor.pks4u.com/library/$user-fact:latest
+docker tag petclinic harbor.pks4u.com/library/$user-petclinic:latest
 docker images
 docker push harbor.pks4u.com/library/$user-fact:latest
+docker push harbor.pks4u.com/library/$user-petclinic:latest
 ```
-- Now look for your program in the Harbor browser session you were asked to leave open.
+- Now look for your programs in the Harbor browser session you were asked to leave open.
 
-- How many CVEs is your `fact` program exposed to?
+- If it hasn't happened yet, go ahead and select your `userID-fact` image and scan it for vulnerabilities. 
+- Do the same for your `userID-petclinic` image.
+- How many CVEs are your `fact` and `petclinic` Apps exposed to?
 
-- Now execute the following commands on your Ubuntu VM:
+- Now execute the following command on your Ubuntu VM:
 
 ```
 docker pull harbor.pks4u.com/library/$user-fact:latest
@@ -607,8 +610,16 @@ docker pull harbor.pks4u.com/library/$user-fact:latest
 ```
 docker pull harbor.pks4u.com/library/fact-alpine:latest
 ```
-- This image should have downloaded without problems because it does not expose you to any critical CVEs
+- This image should have downloaded without problems because it does not expose you to any critical CVEs. Execute the following command to confirm the status of your local Docker images:
 
+```
+docker images
+```
+
+**Let's recap:**
+- You were able to target a Harbor registry.  
+- You uploaded container images and downloaded a container image.
+- You scanned comtainer images and saw that Harbor did not allow you to download images with `high` or `critical` vulnerabilities.
 
 Congratulations, you have completed LAB-6.
 
@@ -746,7 +757,7 @@ kubectl scale deployment fact --replicas=1
     ```
 
 **Let's recap:** 
-- The `rmeira/fact` image deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be amended with a `livenessProbe` and a `readinessProbe` to reduce the impact of scaling horizontally the number of running pods. 
+- The `fact` image deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be amended with a `livenessProbe` and a `readinessProbe` to reduce the impact of scaling horizontally the number of running pods. 
 - Kubernetes developers need to understand their environment quite well from a DevOps perspective when developing more complex, microservices based, distributed systems. Order Entry systems, for example, can't afford to suffer from hiccups when the platform is auto-scaling to handle increases in demand.
 - For the more advanced users, you may wish to experiment with scaling the K8s cluster using the `pks resize <cluster-name> --num-nodes <#>` command while deploying and scaling the `fact` app. Additional commands such as `kubectl drain <node>` and `kubectl uncordon <node>` also demonstrate the power K8s puts at your fingertips for draining workloads from nodes.
 - Advanced workload placement and management using K8s clusters can be a fun area to [explore](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/).
@@ -756,7 +767,7 @@ Congratulations, you have completed LAB-7.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-8: K8s Soft and TKG-i Hard Tenancy
+### LAB-8: K8s Soft and TKGI Hard Tenancy
 
 ![](./images/lab.png)
 
@@ -780,7 +791,7 @@ pks resize $user-cluster --num-nodes 10
 pks delete-cluster user25-cluster   # make sure you know what you are doing before proceeding with this step
 ```
 
-- As you can see TKG-i Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
+- As you can see TKGI Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
 
 - Let's deploy a new App to your `user<#>-cluster`:
 
@@ -865,8 +876,8 @@ while true; do curl http://<External IP>/5000000000; echo; done
 - Leave open all your Terminal Windows that are running the `timer-test` program. We will get back to them in a few minutes.
 
 **Let's recap:** 
-- TKG-i allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKG-i control plane. 
-- TKG-i enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
+- TKGI allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKG-i control plane. 
+- TKGI enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
 - K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
 - K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits to workloads, but the sharing and utilization of resources has to be monitored carefully.
 
@@ -983,14 +994,14 @@ cd ~/fact;   rm Dockerfile Procfile README.md .git;  ls -las
 - Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use `user<#>` and `fact-user<#>` aligned to your UserID: 
 
 ```
-cf login -a api.sys.13.86.190.177.cf.pcfazure.com -p password --skip-ssl-validation -u user1
-cf push -m 128M -b go_buildpack fact-user1
+cf login -a api.sys.13.83.100.157.cf.pcfazure.com -p password --skip-ssl-validation -u $user
+cf push -m 128M -b go_buildpack fact-$user
 ```
 
 - Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following command:
 
 ```
-curl -k https://fact-user1.apps.13.86.190.177.cf.pcfazure.com/100; echo 
+curl -k https://fact-user1.apps.13.83.100.157.cf.pcfazure.com/100; echo 
 ```
 
 - You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
@@ -1001,35 +1012,35 @@ curl -k https://fact-user1.apps.13.86.190.177.cf.pcfazure.com/100; echo
 - Now let's scale your App horizontally and then vertically:
 
 ```      
-cf scale fact-user1 -i 5
-cf app fact-user1
-cf scale fact-user1 -m 64M
-cf app fact-user1
+cf scale fact-$user -i 5
+cf app fact-$user
+cf scale fact-$user -m 64M
+cf app fact-$user
 ```
 - Now let's create a shell into one of your App containers and learn more about it:
 
 ```
-cf ssh fact-user1                      # to create an ssh session into a container
+cf ssh fact-$user.                     # to create an ssh session into a container
 cat /etc/*release | head -4            # to verify which version of Linux is being used
 whoami                                 # to validate that you are not root
 ```
 - Continuing to use the shell session you started with the `cf ssh` command execute the following:
 
 ```
-for i in {2..50}; do kill -9 $i; done         # to force your container to crash
+for i in {2..50}; do kill -9 $i; done         # this will force your container to crash
 ```
 
 - Now let's check the status of your App:
 
 ```
-cf app fact-user1                      # to check the status of your App and all its instances
+cf app fact-$user                      # to check the status of your App and all its instances
 ```
 
 - Now let's check events & log aggregation. Execute the commands shown below:
 
 ```
-cf events fact-user1
-cf logs fact-user1 --recent
+cf events fact-$user
+cf logs fact-$user --recent
 ```
 
 - We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database. Execute the following command to see the types of services that can be made available as self-service options to developers:
