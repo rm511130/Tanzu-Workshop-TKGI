@@ -635,7 +635,7 @@ docker images
 **Let's recap:**
 - You were able to target a Harbor registry.  
 - You uploaded container images and downloaded a container image.
-- You scanned comtainer images and saw that Harbor did not allow you to download images with `high` or `critical` vulnerabilities.
+- You scanned container images and saw that Harbor did not allow you to download images with `high` or `critical` vulnerabilities.
 
 Congratulations, you have completed LAB-6.
 
