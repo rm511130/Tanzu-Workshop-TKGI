@@ -802,6 +802,9 @@ pks get-credentials $user-cluster        # if asked, password = password
 ```
 pks resize $user-cluster --num-nodes 10
 ```
+
+![](./images/peril.png)
+
 - Let's try to delete (*not yours, but*) a colleague's cluster:
 ```
 pks delete-cluster user25-cluster   # make sure you know what you are doing before proceeding with this step
