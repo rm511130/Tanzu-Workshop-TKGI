@@ -414,6 +414,10 @@ pks plans
 pks cluster $user-cluster
 rm ~/.kube/config
 pks get-credentials $user-cluster
+```
+- If prompted for a password, use `password`. Please continue by executing the following commands:
+
+```
 kubectl cluster-info
 kubectl get all --all-namespaces
 ```
