@@ -357,7 +357,7 @@ docker run -d --publish 80:8080 --name petclinic --rm petclinic
 - It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at:
 
 ```
-http://user1.pks4u.com      # use your userID in the URL instead of user1 
+http://<userID#>.pks4u.com      # use your userID in the URL instead of user1 
 ```
 
 - Let's now take a look at the layers used in the creation of your Petclinic container image:
@@ -381,7 +381,7 @@ Congratulations, you have completed LAB-3.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-4: Connecting to TKG-i API and Resizing a Kubernetes Cluster
+### LAB-4: Connecting to TKGI API and Resizing a Kubernetes Cluster
 
 - The creation of a Kubernetes Cluster takes some time, so we created a Kubernetes Cluster for you in preparation for this workshop. The command used was:
 
@@ -405,7 +405,7 @@ pks plans
 - Let's get more detailed information about your cluster.
 
 ```
-pks cluster user1-cluster
+pks cluster $user-cluster
 rm ~/.kube/config
 pks get-credentials $user-cluster
 kubectl cluster-info
@@ -467,12 +467,15 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 Congratulations, you have completed LAB-4.
 
 -----------------------------------------------------
-### LAB-5: Deploying an App on Kubernetes
+### LAB-5: Deploying an Apps to Kubernetes
 
-- A Docker Image identical to the one you created during Lab-3 has been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
+- A Docker Images identical to the ones you created during Lab-3A and Lab-3B have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) and [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
+
+#
+#### LAB-5A
+![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
+
 - Let's use the [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) image to run the Factorial program on your Kubernetes cluster.
-
-![](./images/lab.png)
 
 - Execute the following commands:
 
@@ -481,7 +484,7 @@ kubectl create deployment fact --image=rmeira/fact
 kubectl get all
 kubectl expose deployment fact --type=LoadBalancer --port=80 --target-port=3000
 ```
-- It takes a minute to create a load balancer and to expose a K8s service, so let's first test if the pods are running the `rmeira/fact` container image:
+- It takes a minute to create a load balancer and to expose a K8s service, so let's first test if there is a pod running the `rmeira/fact` container image using the following commands:
 
 ```
 pod_name=$(kubectl get pods | grep fact | awk '{ print $1 }'); echo $pod_name
@@ -506,22 +509,56 @@ pks cluster $user-cluster
    - an `External IP` show up for the `fact` service
    - a `Last Action State: succeeded` and `Worker Nodes: 2`
    
-- As soon as the `External IP` address you see when executing `kubectl get service` is available, no matter whether or not the `pks resize` command is still `in progress`, execute the following command:
+- As soon as the `External IP` address you see when executing `kubectl get service` is available, no matter whether or not the `pks resize` command is still `in progress`, execute the following command to test your `fact` docker image:
 
 ```
 curl http://<External-IP>/10; echo
 ```
 - You should see the results of the `10!` calculation.
 
-**Let's recap:** 
-- You deployed the `rmeira/fact` image from Docker Hub to your K8s cluster and used a `bash` session to test the deployment.
-- Even though the `pks resize` command was still `in progress`, you were able to carry out an App deployment.
-- Kubernetes fetches images from a registry. We will see in the next Lab how to use Harbor, an Enterprise ready registry.
-- You exposed the `fact` deployment as a service available on the Internet.
-- You did not get a secured URL accessible from the Internet, but anyone with access to your `External IP` address is able to run your `fact` program.
-- If you did wish to secure your `fact` program with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
+#
+#### LAB-5B
+![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-Congratulations, you have deployed an App on K8s and completed LAB-5.
+- Let's use the [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) image to run the `Petclinic` program on your Kubernetes cluster.
+
+- Execute the following commands:
+
+```
+kubectl create deployment petclinic --image=rmeira/petclinic
+kubectl get all
+kubectl expose deployment petclinic --type=LoadBalancer --port=80 --target-port=3000
+```
+- It takes a minute to create a load balancer and to expose a K8s service, but you can see the pod being created using the following command:
+
+```
+kubectl get pods -w
+```
+
+- You can use `CTRL-C` to cancel out of the `-w` watch mode.
+
+```
+kubectl get service -w
+```
+- You can use `CTRL-C` to cancel out of the `-w` watch mode once you see an `External IP` show up for the `Petclinic` service
+   
+- As soon as the `External IP` address is available, access the following URL using a browser to verify that your `Petclinic` docker image is working as expected:
+
+```
+http://<External-IP>;
+```
+- You should see the `Petclinic` App.
+
+
+**Let's recap:** 
+- You deployed the `rmeira/fact` and `rmeira/petclinic` images to your K8s cluster and tested that both were working.
+- Even though the `pks resize` command was still `in progress`, you were able to carry out App deployments.
+- Kubernetes fetches images from a registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry.
+- You exposed both `fact` and `petclinic` deployments as services available on the Internet.
+- You did not get SSL encrypted, secure URLs accessible on the Internet, but anyone with access to the correct `External IP` addresses is able to run/access your `fact` and `petclinic` programs.
+- If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
+
+Congratulations, you have deployed a GO App and a Spring Boot App to a K8s cluster, and completed LAB-5.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
@@ -534,7 +571,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Harbor was installed next to TKG-i in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. Note: *Don't* change `Password1` to `Password<#>` because you are `user<#>`, every user was created with the same password: `Password1`. 
+- Harbor was installed next to TKGI in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. Note: *Don't* change `Password1` to `Password<#>` because you are `user<#>`, every user was created with the same password: `Password1`. 
 
 - Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
 
