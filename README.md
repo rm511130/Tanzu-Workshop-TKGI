@@ -593,6 +593,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Let's log into Harbor from your Ubuntu VM. Execute the following commands:
 
 ```
+docker images
+```
+- Verify that you have two docker images that are local to your Ubuntu VM. Proceed by executing the following commands:
+
+```
 docker login -p Password1 harbor.pks4u.com -u $user
 docker images
 docker tag fact harbor.pks4u.com/library/$user-fact:latest
