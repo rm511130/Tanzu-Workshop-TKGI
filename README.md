@@ -649,7 +649,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu VM. Please arrange them side by side, per the example below, keeping all simultaneously visible on your screen. 
+- For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu VM. Please arrange them side by side, per the example below, keeping all 3 terminal windows simultaneously visible on your screen. 
 - If using PuTTY, you can right-click on the top border of your existing terminal window and use the "Duplicate Session" option. 
 - If using a Mac, you can open more terminal windows using ⌘ N, command-N.
 
