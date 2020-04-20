@@ -113,6 +113,10 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
      
 ![](./images/lab.png)
 
+- The following icon will show up once or twice during the hands-on labs. It's to remind you to pay special attention to only execute the commands that follow after you have adapted them to match your UserID.
+     
+![](./images/peril.png)
+
 -----------------------------------------------------
 ## Architecture, Installation & Set-up 
 
@@ -170,6 +174,8 @@ mvn -version
 ```
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
+
+![](./images/peril.png)
 
 - Let's now set-up environment variables aligned to the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed. Please make sure to change the UserID to the one that applies to you before executing the commands shown below:
 
