@@ -477,7 +477,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 Congratulations, you have completed LAB-4.
 
 -----------------------------------------------------
-### LAB-5: Deploying an Apps to Kubernetes
+### LAB-5: Deploying Apps to Kubernetes Clusters
 
 - A Docker Images identical to the ones you created during Lab-3A and Lab-3B have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) and [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
 
