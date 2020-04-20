@@ -69,8 +69,6 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 - [Three Types of Code & Shared KPIs](https://drive.google.com/open?id=12yG6cpR6NP12IjATRhrdq3-65ZUBb6ZaZjgS94wZrsk)
 
-- [VMware Tanzu](https://drive.google.com/open?id=1Sneqdq-ItQ3RI5vlgKxixNxeA5frPuVs)
-
 - [VMware Customer Stories](https://tanzu.vmware.com/customers)
 
 - ["Simply put, we're here to help you build, run, manage, connect and protect any cloud environment", Pat Gelsinger, CEP VMWare](https://www.youtube.com/watch?v=6uQu3ZKJ28o)
