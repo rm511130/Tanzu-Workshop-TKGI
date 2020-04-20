@@ -15,7 +15,7 @@
      - Operations Manager
      - Tile Installation
      - Client Tools
-- Demo & Hands-on TKG-i Labs on the cloud
+- Demo & Hands-on TKGI Labs on the cloud
      - Operator Experience
      - Developer Experience
      - Observability & Management Tools
@@ -35,7 +35,7 @@
 ```
 help wget
 cd ~\Downloads
-wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKG-i/master/fuse.ppk -Outfile fuse.ppk
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKGI/master/fuse.ppk -Outfile fuse.ppk
 ```
 - If you rather not install [wget](http://gnuwin32.sourceforge.net/packages/wget.htm), you can simply click on [`fuse.ppk`](./fuse.ppk) then cut-&-paste its contents to a local file in your Windows machine. The file must be named `fuse.ppk` and set to read-only mode.
 - If you need help installing or using PuTTY with [fuse.ppk](./fuse.ppk) check these [detailed instructions](./PuTTY_and_SSH.md).
@@ -46,7 +46,7 @@ wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKG-i/master/fuse
 - Using a Terminal Window, execute the following commands to download `fuse.pem` and set the downloaded file to read-only mode:
 ```
 cd ~/Downloads
-wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKG-i/master/fuse.pem
+wget https://raw.githubusercontent.com/rm511130/Tanzu-Workshop-TKGI/master/fuse.pem
 chmod 400 ~/Downloads/fuse.pem
 ```
 - You can now test whether SSH is working with the `fuse.pem` private key using the following command:
@@ -90,7 +90,7 @@ VMware is your trusted partner to help address all of these challenges.
 -----------------------------------------------------
 ## Guidelines & Conventions for this Workshop 
 
-_- TKG / TKG Plus / TKG-i are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKG-i‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKG-i used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface)._
+_- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKGI‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKGI used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface)._
 
 - This self-paced workshop includes presentations, videos, demos and hands-on labs. 
 - The labs are interdependent and must be executed in order.
@@ -394,7 +394,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/lab.png)
 
 - During this lab you are going to assume the role of a Platform DevOps person.
-- Execute the following commands to log into the TKG-i Control Plane. 
+- Execute the following commands to log into the TKGI Control Plane. 
 - Please make sure to use the correct `-u devops<#>` aligned to your UserID.
 
 ```
@@ -455,12 +455,12 @@ Last Action State:        in progress
 ```
 - You don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
 
-- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an TKG-i Operator function.
+- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an TKGI Operator function.
 
 **Let's recap:** 
-- You logged into the TKG-i Control Plane as a DevOps user, and scaled an existing cluster.
-- Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the TKG-i platform.
-- You executed a few `kubectl` commands against your cluster as a DevOps TKG-i Manager.
+- You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
+- Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the TKGI platform.
+- You executed a few `kubectl` commands against your cluster as a DevOps TKGI Manager.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
@@ -774,7 +774,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - We have to be extra-cautious during this Lab because it can be destructive depending on the username you employ.
 - Make sure to use the correct `-u devops<#>` and `-u user<#>` aligned to the UserID you claimed at the beginning of this workshop.
 
-- Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the TKG-i Administrator. Please execute the following commands:
+- Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the TKGI Administrator. Please execute the following commands:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops 
@@ -812,9 +812,9 @@ while true; do curl http://<External-IP>/5000000000; echo; done
 ```
 - Go back from time to time to this Terminal Window #1 to see how your `timer-test` is responding. 
 - Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
-- We will come back to it in a little while, but the main concept here is that your cluster is a TKG-i tenant with hard isolation from other TKG-i tenants. Workloads running in separate clusters will not affect your `timer-test` response times.
+- We will come back to it in a little while, but the main concept here is that your cluster is a TKGI tenant with hard isolation from other TKGI tenants. Workloads running in separate clusters will not affect your `timer-test` response times.
 
-- Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a TKG-i Administrator:
+- Now to the dangerous part of this Lab. Using a second Terminal Window, execute the following command to become a TKGI Administrator:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
@@ -823,7 +823,7 @@ pks login -a https://api.pks.pks4u.com:9021 -u pks_admin -p password -k
 ```
 pks clusters
 ```
-- When logged-in with the scope of a TKG-i Administrator, you can see and manage all K8s Clusters created via the TKG-i Control Plane. Please make sure not to delete or resize any clusters.
+- When logged-in with the scope of a TKGI Administrator, you can see and manage all K8s Clusters created via the TKGI Control Plane. Please make sure not to delete or resize any clusters.
 
 - We have a `shared-cluster` that has not been used in any labs. Execute the following command to learn more about this `shared-cluster`:
 
@@ -876,7 +876,7 @@ while true; do curl http://<External IP>/5000000000; echo; done
 - Leave open all your Terminal Windows that are running the `timer-test` program. We will get back to them in a few minutes.
 
 **Let's recap:** 
-- TKGI allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKG-i control plane. 
+- TKGI allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKGI control plane. 
 - TKGI enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
 - K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
 - K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits to workloads, but the sharing and utilization of resources has to be monitored carefully.
@@ -938,7 +938,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- In this Lab we will take a look at how easy it is to integrate TKG-i with Wavefront:
+- In this Lab we will take a look at how easy it is to integrate TKGI with Wavefront:
 
 - If you were following the Labs one-by-one and in sequence, you should still have three Terminal Windows up and running. Two of them should have `timer-test` running in a loop, demonstrating the difference between workload isolation by cluster vs. workload isolation by namespacing.
 
