@@ -590,12 +590,13 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Keep Harbor open. You will come back to it in a few minutes.
 
-- Let's log into Harbor from your Ubuntu VM. Execute the following commands:
+- Execute the following command:
 
 ```
 docker images
 ```
-- Verify that you have two docker images that are local to your Ubuntu VM. Proceed by executing the following commands:
+- Verify that you have at least two docker images that are local to your Ubuntu VM: `fact` and `petclinic`. 
+- Proceed by executing the following commands to log into Harbor from your Ubuntu VM and to upload images to the Harbor registry:
 
 ```
 docker login -p Password1 harbor.pks4u.com -u $user
