@@ -527,7 +527,7 @@ curl http://<External-IP>/10; echo
 ```
 kubectl create deployment petclinic --image=rmeira/petclinic
 kubectl get all
-kubectl expose deployment petclinic --type=LoadBalancer --port=80 --target-port=3000
+kubectl expose deployment petclinic --type=LoadBalancer --port=8080
 ```
 - It takes a minute to create a load balancer and to expose a K8s service, but you can see the pod being created using the following command:
 
@@ -545,7 +545,7 @@ kubectl get service -w
 - As soon as the `External IP` address is available, access the following URL using a browser to verify that your `Petclinic` docker image is working as expected:
 
 ```
-http://<External-IP>;
+http://<External-IP>:8080
 ```
 - You should see the `Petclinic` App.
 
@@ -575,7 +575,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
 
-- Now follow the example below, clicking where the yellow arrows are pointing, so you can get an idea of how Harbor works. Your userID has been given administrator privileges, so please be careful not to change Harbor's configuration.
+- To get acquainted with Harbor's GUI, follow the example below, clicking where the yellow arrows are pointing, so you can get an idea of how Harbor works. Your userID has been given administrator privileges, so please be careful not to change Harbor's configuration.
 
 ![](./images/harbor-walk-through.png)
 
