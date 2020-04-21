@@ -1059,18 +1059,26 @@ curl -k https://fact-$user.apps.13.83.100.157.cf.pcfazure.com/100; echo
 - Your App is running in the Cloud on Highly Available, self-monitoring, self-healing, multi-zone infrastructure.
 - Your App has been auto-instrumented for APM (Application Performance Monitoring) and Log aggregation.
 
-- Now let's scale your App horizontally and then vertically:
+- Now let's scale your App horizontally:
 
 ```      
 cf scale fact-$user -i 5
 cf app fact-$user
+```
+- Now let's scale your App vertically:
+
+```
 cf scale fact-$user -m 64M
 cf app fact-$user
 ```
 - Now let's create a shell into one of your App containers and learn more about it:
 
 ```
-cf ssh fact-$user.                     # to create an ssh session into a container
+cf ssh fact-$user                      # to create an ssh session into a container
+```
+- Execute the following commands to learn about the OS Layer in the container and validate that the user is not `root`:
+
+```
 cat /etc/*release | head -4            # to verify which version of Linux is being used
 whoami                                 # to validate that you are not root
 ```
