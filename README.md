@@ -988,12 +988,16 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - If you were following the Labs one-by-one and in sequence, you should still have three Terminal Windows up and running. Two of them should have `timer-test` running in a loop, demonstrating the difference between workload isolation by cluster vs. workload isolation by namespacing.
 
-- Using the third Terminal Window, let's go back to your `user<#>-cluster` as the `devops<#>` user - both aligned to your UserID.
+- Using the third Terminal Window, let's focus on your individual cluster using the `devops` username: 
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -u devops1 -p password -k
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops
 pks clusters    # you should only see one
-pks get-credentials user1-cluster
+pks get-credentials $user-cluster
+```
+- If asked for a password, use `password`. Please continue with the following commands:
+
+```
 kubectl cluster-info
 helm repo add wavefront https://wavefronthq.github.io/helm/
 helm repo update
@@ -1001,10 +1005,10 @@ kubectl create namespace wavefront
 ```
 - For the next command you will need your individual `Helm` command which can be found under Column S of the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
 
-- Check to make sure to use the correct `wavefront.token` and `clusterName=user<#>-cluster` in the command shown below.
+- The command you shoud copy-&-past-&-execute should look like the example shown below:
 
 ```
-helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --namespace wavefront --set wavefront.token=<your-own-wavefront-token> --set clusterName=user1-cluster
+# helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --namespace wavefront --set wavefront.token=<your-own-wavefront-token> --set clusterName=user1-cluster
 ```
 
 - Now ask the workshop organizer to show your cluster data on Wavefront.
