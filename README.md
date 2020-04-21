@@ -177,13 +177,23 @@ mvn -version
 
 ![](./images/peril.png)
 
-- Let's now set-up environment variables aligned to the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed. Please make sure to change the UserID to the one that applies to you before executing the commands shown below:
+- Let's now set-up environment variables aligned to the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed for yourself. Please make sure to change the UserID# to the one that applies to you before executing the command shown below:
 
 ```
-echo "export user=user1" >> ~/.bashrc
-echo "export devops=devops1" >> ~/.bashrc
-echo "export role=vmware-role1" >> ~/.bashrc
-echo "export namespace=namespace1" >> ~/.bashrc
+export my_number=1    # change to =2 if you are user2, to =3 if your are user3, ... to =15 if you are user15 ....
+```
+- Let's check:
+
+```
+echo "My UserID is user$my_number"
+```
+- If the `echo` command produced the correct results by showing the UserID you claimed at the beginning of the workshop, then please proceed by executing the following commands in sequence.
+
+```
+echo "export user=user$my_number" >> ~/.bashrc
+echo "export devops=devops$my_number" >> ~/.bashrc
+echo "export role=vmware-role$my_number" >> ~/.bashrc
+echo "export namespace=namespace$my_number" >> ~/.bashrc
 echo "export JAVA_HOME=/usr" >> ~/.bashrc
 source ~/.bashrc
 $JAVA_HOME/bin/java -version
