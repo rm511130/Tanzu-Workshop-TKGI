@@ -1063,12 +1063,16 @@ curl -k https://fact-$user.apps.13.83.100.157.cf.pcfazure.com/100; echo
 
 ```      
 cf scale fact-$user -i 5
+```
+```
 cf app fact-$user
 ```
 - Now let's scale your App vertically:
 
 ```
 cf scale fact-$user -m 64M
+```
+```
 cf app fact-$user
 ```
 - Now let's create a shell into one of your App containers and learn more about it:
