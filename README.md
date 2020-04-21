@@ -870,26 +870,30 @@ kubectl cluster-info
 kubectl get namespaces
 ```
 
-- Now, using your UserID number for the `vmware-role<#>` and the `namespace<#>` execute the following commands:
+- Now, you are going to use the `role` and a `namespace` that were assigned to your UserID. Execute the following commands:
 
 ```
 kubectl get role $role -n $namespace -o yaml
 kubectl get rolebinding $role -n $namespace -o yaml
 ```
 
-- The `role` and `rolebinding` shown above, limit your `user<#>` to only be able to perform commands within the scope of your `namespace<#>`.
+- The `role` and `rolebinding` shown above, limit your `userID` to only be able to perform commands within the scope of your `namespace<#>`.
 
-- Let's switch to playing the role of a developer. We will switch to being `user<#>` instead of `pks_admin` or `devops<#>`. Please execute the following commands making sure to use the correct `user<#>` aligned to your userID.
+- Let's switch to playing the role of a developer. We will switch to being `user<#>` instead of `pks_admin` or `devops<#>`. Please execute the following commands:
 
 ```
 rm ~/.kube/config            # this eliminates all previously used login token information on your Ubuntu VM
 ./get-pks-k8s-config.sh --API=api.pks.pks4u.com --CLUSTER=shared-cluster-k8s.pks4u.com --USER=$user     # password = password
+```
+- Now let's check if the `~/.kube/config` you deleted a few seconds ago is back with the correct scopes:
+
+```
 cat ~/.kube/config
 ```
 
 - You are now logged into the `shared-cluster` as the `user<#>` you selected. You are also limited to the role assigned to `user<#>` which is only allowed to operate within a single `namespace<#>`.
 
-- Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within your `namespace<#>` that has been limited to only allow `user<#>` access and control. Make sure to use the correct `namespace<#>` aligned to your UserID.
+- Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within your `namespace<#>` that has been limited to only allow `user<#>` access and control. Execute the following commands:
 
 ```
 kubectl create deployment timer-test --image=rmeira/timer-test -n $namespace
@@ -901,7 +905,7 @@ kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port
 watch kubectl get service timer-test -n $namespace
 ```
 
-- Once you have an `External IP` for your service in the correct namespace, use `CRTL-C` to stop the `watch` loop and proceed with the following commands:
+- Once you have an `External IP` for your service, use `CRTL-C` to stop the `watch` loop and proceed with the following command using the `Externam IP` address assigned to your `timer-test` service:
 
 ```
 while true; do curl http://<External IP>/5000000000; echo; done
@@ -915,7 +919,7 @@ while true; do curl http://<External IP>/5000000000; echo; done
 - TKGI allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKGI control plane. 
 - TKGI enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
 - K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
-- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits to workloads, but the sharing and utilization of resources has to be monitored carefully.
+- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits for workloads, but the sharing and utilization of resources has to be monitored carefully.
 
 Congratulations, you have completed LAB-8.
 
@@ -929,7 +933,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
     - To Manage Many K8s Clusters across Many Public/Private IaaS
     - Where "Manage" means audit, enforce policies, create, delete, upgrade, ...
     
-- VMware's Tanzu Mission Control v1.0 is Generally Available with an initial implementation that covers:
+- VMware's Tanzu Mission Control's current release covers:
     - Attaching any K8s Cluster from any Cloud for monitoring, auditing, and enforcing policies.
     - Life-cycle management of K8s Clusters created on AWS and vSphere. Azure and GCP to follow shortly.
     
@@ -946,9 +950,13 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - The commands you will execute will look something like this:
 
 ```
-pks login -a https://api.pks.pks4u.com:9021 -p password -k -u devops1       # user the appropriate devops<#>
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops      # user the appropriate devops<#>
 pks clusters
-pks get-credentials user1-cluster        # if asked, password = password
+pks get-credentials $user-cluster
+```
+- If asked for a password, use `password`. Please continue 
+
+```
 kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?<use your assigned code from spreadsheet>' 
 ```
 - Once the connection has been verified the presenter will be able to demo you your cluster attached to TMC.
