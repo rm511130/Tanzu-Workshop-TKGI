@@ -1041,10 +1041,12 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ```
 cd ~/fact;   rm Dockerfile Procfile README.md; rm -rf .git; ls -las
 ```
-- Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use `user<#>` and `fact-user<#>` aligned to your UserID: 
+- Log into TAS (Tanzu Application Service) and `cf push` your application: 
 
 ```
 cf login -a api.sys.13.83.100.157.cf.pcfazure.com -p password --skip-ssl-validation -u $user
+```
+```
 cf push -m 128M -b go_buildpack fact-$user
 ```
 
