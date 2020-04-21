@@ -310,10 +310,10 @@ docker build -t fact .        # the dot is important
 docker run -d --publish 3000:3000 --name fact --rm fact
 ```
 
-- Using `curl` on your Ubuntu VM, or if you'd like, using a browser, access the following URL to test your `Fact` program. Remember to replace `<userID#>` by your correct UserID.
+- Using `curl` on your Ubuntu VM, or if you'd like, using a browser, access the following URL to test your `Fact` program. You will need to replace `$user` by your correct UserID if using a browser.
 
 ```
-curl http://<userID#>.pks4u.com:3000/5; echo
+curl http://$user.pks4u.com:3000/5; echo
 ```
 
 - During the `docker build` phase, did you notice how many layers were used to create the Docker Image of your GoLang factorial program? Execute the following commands, one-by-one, to learn more about your Docker Image. Pay attention to the layers and how recent they are:
