@@ -768,8 +768,8 @@ kubectl scale deployment fact --replicas=1
     - please execute the following commands:
     
     ```
-    kubectl delete deployment fact
-    kubectl delete service fact
+    kubectl delete deployment fact petclinic
+    kubectl delete service fact petclinic
     ```
 
 **Let's recap:** 
