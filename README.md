@@ -947,14 +947,16 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Your unique YAML file can be found in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Scroll to the right and look under column R for your YAML file information.
 
-- The commands you will execute will look something like this:
+- Please execute the following commands to focus back on your individual k8s cluster:
 
 ```
 pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops      # user the appropriate devops<#>
 pks clusters
 pks get-credentials $user-cluster
 ```
-- If asked for a password, use `password`. Please continue 
+- If asked for a password, use `password`. 
+
+- Please continue with the command you obtained from column R of the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). The command is very similar to the one shown below:
 
 ```
 kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?<use your assigned code from spreadsheet>' 
