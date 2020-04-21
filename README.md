@@ -182,7 +182,7 @@ export my_number=1    # change to =2 if you are user2, to =3 if your are user3, 
 ```
 echo "My UserID is user$my_number"
 ```
-- If the `echo` command produced the correct results by showing the UserID you claimed at the beginning of the workshop, then please proceed by executing the following commands in sequence.
+- If the `echo` command produced the correct results by showing the UserID you claimed at the beginning of the workshop, then please proceed by executing the following commands in sequence. This is literally just a copy-&-paste of the commands below:
 
 ```
 echo "export user=user$my_number" >> ~/.bashrc
