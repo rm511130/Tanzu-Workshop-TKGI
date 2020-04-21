@@ -20,7 +20,7 @@
      - Developer Experience
      - Observability & Management Tools
      - Contrasting with Tanzu Application Service
-- Next Steps
+- Next Steps & Feedback
 -----------------------------------------------------
 ## Technical Pre-Requisites
 - You should be able to access:
@@ -1124,4 +1124,4 @@ Congratulations, you have completed all the LABs in this Workshop.
 
 We covered a lot of ground today. Lots of new concepts and hopefully lots of valuable learning opportunities. We've only scratched the surface. VMware has a robust set of services and documented best practices to help you get started with greenfield projects and/or brownfield modernizations from old architectures to modern cloud native solutions.
 
-Thank you for your time and attention. We look forward to next steps.
+Thank you for your time and attention. Please take 30 seconds to provide us some [feedback](https://forms.gle/AQU3Ky3bfduB2c7y6).
