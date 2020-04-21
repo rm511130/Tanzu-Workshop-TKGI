@@ -182,11 +182,15 @@ mvn -version
 ```
 echo "export user=user1" >> ~/.bashrc
 echo "export devops=devops1" >> ~/.bashrc
+echo "export role=vmware-role1" >> ~/.bashrc
+echo "export namespace=namespace1" >> ~/.bashrc
 echo "export JAVA_HOME=/usr" >> ~/.bashrc
 source ~/.bashrc
 $JAVA_HOME/bin/java -version
 echo "Your UserID is $user"
 echo "Your DevopsID is $devops"
+echo "Your Namespace in the Shared-Cluster is $namespace"
+echo "Your role in the Shared-Cluster is $role"
 ```
 
 - If the output of the commands shown above don't match the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed, please inform the workshop organizers. Do not proceed until the environment variables are correctly set.
