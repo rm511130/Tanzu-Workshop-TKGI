@@ -802,7 +802,6 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/lab.png)
 
 - We have to be extra-cautious during this Lab because it can be destructive depending on the username you employ.
-- Make sure to use the correct `-u devops<#>` and `-u user<#>` aligned to the UserID you claimed at the beginning of this workshop.
 
 - Your `devops<#>` user is only allowed to see and manage the K8s clusters that it created, and it's also limited to only creating K8s clusters within the sizing limits and machine types defined by the TKGI Administrator. Please execute the following commands:
 
