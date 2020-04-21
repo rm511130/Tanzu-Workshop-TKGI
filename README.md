@@ -847,7 +847,11 @@ pks clusters
 - We have a `shared-cluster` that has not been used in any labs. Execute the following command to learn more about this `shared-cluster`:
 
 ```
-pks get-credentials shared-cluster                 # if asked for a password, it's password
+pks get-credentials shared-cluster                 
+```
+- If asked for a password, use `password`. Please continue with the following commands:
+
+```
 pks cluster shared-cluster
 kubectl cluster-info
 kubectl get namespaces
