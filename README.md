@@ -874,8 +874,8 @@ kubectl get namespaces
 - Now, using your UserID number for the `vmware-role<#>` and the `namespace<#>` execute the following commands:
 
 ```
-kubectl get role vmware-role1 -n namespace1 -o yaml
-kubectl get rolebinding vmware-role1 -n namespace1 -o yaml
+kubectl get role $role -n $namespace -o yaml
+kubectl get rolebinding $role -n $namespace -o yaml
 ```
 
 - The `role` and `rolebinding` shown above, limit your `user<#>` to only be able to perform commands within the scope of your `namespace<#>`.
@@ -884,7 +884,7 @@ kubectl get rolebinding vmware-role1 -n namespace1 -o yaml
 
 ```
 rm ~/.kube/config            # this eliminates all previously used login token information on your Ubuntu VM
-./get-pks-k8s-config.sh --API=api.pks.pks4u.com --CLUSTER=shared-cluster-k8s.pks4u.com --USER=user1     # password = password
+./get-pks-k8s-config.sh --API=api.pks.pks4u.com --CLUSTER=shared-cluster-k8s.pks4u.com --USER=$user     # password = password
 cat ~/.kube/config
 ```
 
@@ -893,13 +893,13 @@ cat ~/.kube/config
 - Let's execute the following commands to initiate a `timer-test` in the `shared-cluster` within your `namespace<#>` that has been limited to only allow `user<#>` access and control. Make sure to use the correct `namespace<#>` aligned to your UserID.
 
 ```
-kubectl create deployment timer-test --image=rmeira/timer-test -n namespace1
-kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000 -n namespace1
+kubectl create deployment timer-test --image=rmeira/timer-test -n $namespace
+kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port=3000 -n $namespace
 ```
 - Wait until you have an `External IP` assigned to your service:
 
 ```
-watch kubectl get service timer-test -n namespace1
+watch kubectl get service timer-test -n $namespace
 ```
 
 - Once you have an `External IP` for your service in the correct namespace, use `CRTL-C` to stop the `watch` loop and proceed with the following commands:
