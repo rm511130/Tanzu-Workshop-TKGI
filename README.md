@@ -1039,7 +1039,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Execute the following commands from your Ubuntu VM to eliminate all the superfluous files:
 
 ```
-cd ~/fact;   rm Dockerfile Procfile README.md .git;  ls -las
+cd ~/fact;   rm Dockerfile Procfile README.md; rm -rf .git; ls -las
 ```
 - Log into TAS (Tanzu Application Service) and `cf push` your application making sure to use `user<#>` and `fact-user<#>` aligned to your UserID: 
 
