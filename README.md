@@ -5,7 +5,7 @@
 # VMware TKGI Workshop 
 ----------------------------------------------------------
 ## [Tanzu Kubernetes Grid - Workshop Agenda](https://drive.google.com/open?id=1pzVmFNv7hlpOGGuU-C5YopBR9VIRz6FU)
-(1:00PM to 5:00PM on 04/21/2020)
+(12:30PM to 4:00PM on 05/14/2020)
 
 - Introduction
      - Workshop Orientation
@@ -67,7 +67,7 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 - [VMware Tanzu](https://drive.google.com/open?id=1idNKL_eTxKu5pEc6Z7GwLaJ_W5zaBmOxFecH96gI3ds) &nbsp;&nbsp;&nbsp; by Matt Helmers - Acct Exec.
 
-- [Three Types of Code & Shared KPIs](https://drive.google.com/open?id=12yG6cpR6NP12IjATRhrdq3-65ZUBb6ZaZjgS94wZrsk) &nbsp;&nbsp;&nbsp; by Matt Popovich - Senior Solution Engineer
+<!-- - [Three Types of Code & Shared KPIs](https://drive.google.com/open?id=12yG6cpR6NP12IjATRhrdq3-65ZUBb6ZaZjgS94wZrsk) &nbsp;&nbsp;&nbsp; by Matt Popovich - Senior Solution Engineer -->
 
 - [VMware Customer Stories](https://tanzu.vmware.com/customers)
 
@@ -114,6 +114,10 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
 
 -----------------------------------------------------
 ## Architecture, Installation & Set-up 
+
+- A Map of the Tanzu Portfolio of products:
+
+![](./images/TanzuMap.png)
 
 - The diagram below shows the general layout of the VMs, K8s Clusters and Platforms that we will be using during this workshop.
 
