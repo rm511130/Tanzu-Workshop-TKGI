@@ -283,11 +283,17 @@ http://user1.pks4u.com:8080
 cat ~/fact/Dockerfile
 ```
 
-- Execute the following commands to start with a clean slate and build a Docker Image of your GoLang factorial program:
+- The `FROM golang:onbuild` automatically copies the package source, fetches the application dependencies, builds the program, and configures it to run on startup.
+
+- Execute the following commands to start with a clean Docker environment:
 
 ```
-docker system prune -a -f     # deletes old container images
+docker system prune -a -f                                                             # deletes old container images
 if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi; # stops any running containers
+```
+- Now let's build a Docker Image of your GoLang factorial program:
+
+```
 cd ~/fact
 docker build -t fact .        # the dot is important 
 ```
