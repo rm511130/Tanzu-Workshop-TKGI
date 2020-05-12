@@ -177,7 +177,7 @@ Your role in the Shared-Cluster is vmware-role22
 
 ```
 pks --version
-kubectl version -o json # If you see a connection refused message, don't worry, it is expected and not a problem
+kubectl version -o json 2>/dev/null
 cf --version
 git version
 docker --version
@@ -189,7 +189,7 @@ java -version
 mvn -version
 ```
 
-- If any of the commands shown above did not work or produced and error, please alert the workshop organizers. Please note that the `kubectl version` command will probably respond with the version and a `connection refused` message that is expected.
+- If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
 
 - Congratulations, you have completed LAB-1.
 
