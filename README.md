@@ -108,7 +108,7 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
      
 ![](./images/lab.png)
 
-- The following icon will show up once or twice during the hands-on labs. It's to remind you to pay special attention to only execute the commands that follow after you have adapted them to match your UserID.
+- The following icon will show up once or twice during the hands-on labs. It's to remind you to pay special attention to the syntax of the commands you are being asked to execute. The commands will need to match the UserID you claimed for yourself in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
      
 ![](./images/peril.png)
 
