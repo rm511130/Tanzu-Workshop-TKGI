@@ -341,7 +341,7 @@ docker exec -it fact bash
  whoami
  exit
  ```
- - What release of the OS was used?
+ - What release of the [OS](https://www.debian.org/releases/) was used? 
  - What was the answer to the `whoami` command?
  
 #
