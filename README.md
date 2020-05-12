@@ -140,7 +140,7 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
 
 -----------------------------------------------------
 
-### LAB-1: SSH into your Linux Workshop VM environment & test the Command Line Interface tools
+### LAB-1: SSH into your Linux Workshop VM environment & Test the Command Line Interface tools
 
 - Let's start by logging into the Workshop environment from your machine (Mac, PC, Laptop, Desktop, Terminal, VDI). You will need to use the following private key: 
    - [fuse.pem](./fuse.pem) if using a Mac.
