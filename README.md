@@ -172,7 +172,7 @@ java -version
 mvn -version
 ```
 
-- If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
+- If any of the commands shown above did not work or produced and error, please alert the workshop organizers. Please note that the `kubectl version` command will probably respond with the version and a `connection refused` message that is expected.
 
 ![](./images/peril.png)
 
