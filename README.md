@@ -348,7 +348,7 @@ docker exec -it fact bash
 #### LAB-2D
 ![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-- Now let's create a Docker Image from the Petclinic Jar file you created during Lab-2. 
+- Now let's create a Docker Image from the Petclinic Jar file you created during Lab-2B. 
 - Execute the following commands to take a look at the `Dockerfile` we will be using:
 
 ```
@@ -378,10 +378,10 @@ docker history petclinic
 docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 
-- As you can see, as a developer, you have a lot of control over what layers and operating systems are employed in building a container image.
+- As a developer, you have a lot of control over what layers and operating systems are employed in building a container image. It's very easy to _pick what works_ and proceed with code that delivers business functionality. It's also very easy to _stick with what works_ which can open vectors of attack to [Common Vulnerabilities and Exposures (CVEs)](https://www.cvedetails.com/cve-help.php).  
 
 **Let's recap:** 
-- You built and executed a couple of Docker Images on your Ubuntu VM using essentially the same files you had during Lab-2.
+- You built and executed a couple of Docker Images on your Ubuntu VM using essentially the same files you used during LABs 2A and 2B.
 - Using various commands on your Ubuntu VM and in a Docker container, you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` commands.
 - Now that you have a working, local container image of your `fact` and `petclinic` programs, as a developer, you should feel reassured that your Apps have a good chance of working in their containerized image format, when pushed to a server. This is one of the main reasons for the success of Container Images among developers.
 
