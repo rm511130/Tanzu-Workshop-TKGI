@@ -258,7 +258,7 @@ cd spring-petclinic
 
 - Once you see in your logs that `Tomcat started on port(s): 8080` you can proceed to test your `Pet Clinic` program.
 
-- To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com`.
+- To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com:8080`.
 
 ```
 http://user1.pks4u.com:8080
