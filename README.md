@@ -153,10 +153,27 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
 - In the pre-requisites section of this workshop, you were asked to use `ssh` or `PuTTY` to access the Ubuntu VM that has been assigned to your [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Please go ahead and create a Terminal Session into your VM. The example shown below applies to `user1` if he or she had downloaded the `fuse.pem` key to a Mac. If you need, the `PuTTY` instructions for Windows PC users can be found [here](./PuTTY_and_SSH.md).
 
 ```
-ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
+ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com 
 ```
 
-- Once logged in, you can ignore any messages that ask you to perform a `do-release-upgrade`. Please proceed by executing the following commands:
+- Once logged in, you can ignore any messages that ask you to perform a `do-release-upgrade`. 
+
+- Please check whether the greeting information matches your UserID. For example, `user22` should see something like this:
+
+```
+my_number is 22
+openjdk version "11.0.7" 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-2ubuntu218.04)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-2ubuntu218.04, mixed mode, sharing)
+Your UserID is user22
+Your DevopsID is devops22
+Your Namespace in the Shared-Cluster is namespace22
+Your role in the Shared-Cluster is vmware-role22
+```
+
+- If you believe your greeting information to be wrong, please alert the workshop organizers. 
+
+- If all is well, please proceed by executing the following commands. These commands will validate that your VM has all the necessary CLIs and frameworks for this workshop.
 
 ```
 pks --version
@@ -174,36 +191,6 @@ mvn -version
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers. Please note that the `kubectl version` command will probably respond with the version and a `connection refused` message that is expected.
 
-![](./images/peril.png)
-
-- Let's now set-up environment variables aligned to the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed for yourself. Please make sure to change the UserID# to the one that applies to you before executing the command shown below:
-
-```
-export my_number=1    # change to =2 if you are user2, to =3 if your are user3, ... to =15 if you are user15 ....
-```
-- Let's check:
-
-```
-echo "My UserID is user$my_number"
-```
-- If the `echo` command produced the correct results by showing the UserID you claimed at the beginning of the workshop, then please proceed by executing the following commands in sequence. This is literally just a copy-&-paste of the commands below:
-
-```
-echo "export user=user$my_number" >> ~/.bashrc
-echo "export devops=devops$my_number" >> ~/.bashrc
-echo "export role=vmware-role$my_number" >> ~/.bashrc
-echo "export namespace=namespace$my_number" >> ~/.bashrc
-echo "export JAVA_HOME=/usr" >> ~/.bashrc
-source ~/.bashrc
-$JAVA_HOME/bin/java -version
-echo "Your UserID is $user"
-echo "Your DevopsID is $devops"
-echo "Your Namespace in the Shared-Cluster is $namespace"
-echo "Your role in the Shared-Cluster is $role"
-```
-
-- If the output of the commands shown above don't match the [UserID](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) you claimed, please inform the workshop organizers. Do not proceed until the environment variables are correctly set.
-
 - Congratulations, you have completed LAB-1.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
@@ -212,12 +199,16 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ### LAB-2: Running a simple GoLang and a Spring/Java Program Locally (on your Ubuntu VM)
 
 - During this Lab, we will experiment with [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
+- We will first run these two examples of code "natively" on your Ubuntu VM.
+- You will then create Docker Images of these programs and, once again, run them locally using the Docker Engine that has been pre-installed on your Ubuntu VM. 
+- If you are a Developer, the steps in this Lab should be very easy and familiar to you. 
+- If you are an Infrastructure person, the steps in this Lab will help you understand what developers do locally on their machines. 
 
 #
 #### LAB-2A 
 ![](./images/golang-tiny.png) ![](./images/lab.png)
 
-- Using your Ubuntu VM you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
+- Using your Ubuntu VM, you are going to take this [Factorial GoLang Program](https://github.com/rm511130/fact/blob/master/fact.go) and run it locally.
 
 - Execute the following commands:
 
@@ -282,15 +273,8 @@ http://user1.pks4u.com:8080
 - The code examples you executed provided an http interface accessible from a browser.
 - A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous "...but it worked on my machine..." comments. In the following hands-on labs, we will see how Container Images can help in this area.
 
-- Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
-
-Congratulations, you have completed LAB-2. 
-
------------------------------------------------------
-### LAB-3: Building a Docker Image
-
 #
-#### LAB-3A
+#### LAB-2C
 ![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Using your Ubuntu VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
@@ -355,7 +339,7 @@ docker exec -it fact bash
  - What was the answer to the `whoami` command?
  
 #
-#### LAB-3B
+#### LAB-2D
 ![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Now let's create a Docker Image from the Petclinic Jar file you created during Lab-2. 
@@ -395,17 +379,17 @@ docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 - Using various commands on your Ubuntu VM and in a Docker container, you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` commands.
 - Now that you have a working, local container image of your `fact` and `petclinic` programs, as a developer, you should feel reassured that your Apps have a good chance of working in their containerized image format, when pushed to a server. This is one of the main reasons for the success of Container Images among developers.
 
-Congratulations, you have completed LAB-3.
+Congratulations, you have completed LAB-2.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-4: Connecting to TKGI API and Resizing a Kubernetes Cluster
+### LAB-3: Connecting to TKGI API and Resizing a Kubernetes Cluster
 
 - The creation of a Kubernetes Cluster takes some time, so we created a Kubernetes Cluster for you in preparation for this workshop. The command used was:
 
 ```
-# pks create-cluster user1-cluster -e example.hostname --plan small --num-nodes 1  # do not execute
+# pks create-cluster user1-cluster -e user1-cluster-k8s.pks4u.com --plan small --num-nodes 1  # do not execute
 ```
 
 ![](./images/bosh_pks_k8s_on_public_cloud.png)
@@ -487,15 +471,15 @@ Last Action State:        in progress
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
-Congratulations, you have completed LAB-4.
+Congratulations, you have completed LAB-3.
 
 -----------------------------------------------------
-### LAB-5: Deploying Apps to Kubernetes Clusters
+### LAB-4: Deploying Apps to Kubernetes Clusters
 
-- Docker Images identical to the ones you created during Lab-3A and Lab-3B have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) and [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
+- Docker Images identical to the ones you created during Lab-2C and Lab-2D have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) and [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
 
 #
-#### LAB-5A
+#### LAB-4A
 ![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Let's use the [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) image to run the Factorial program on your Kubernetes cluster.
@@ -510,6 +494,11 @@ kubectl expose deployment fact --type=LoadBalancer --port=80 --target-port=3000
 - It takes a minute to create a load balancer and to expose a K8s service, so let's first test if there is a pod running the `rmeira/fact` container image using the following commands:
 
 ```
+kubectl get pods
+```
+- If you see that your `fact` pod is up and running, please proceed with the following commands:
+
+```
 pod_name=$(kubectl get pods | grep fact | awk '{ print $1 }'); echo $pod_name
 kubectl exec -t -i $pod_name bash
 ```
@@ -522,7 +511,7 @@ kubectl exec -t -i $pod_name bash
 curl 127.0.0.1:3000/40; echo
 exit
 ```
-- Back to the command prompt on your Ubuntu VM. Let's check whether your service has been assigned a load balancer External-IP address, and whether the `pks resize` command from the previous lab has completed successfully.
+- The `exit` command you just executed will bring you back to the command prompt on your Ubuntu VM. Let's check whether your service has been assigned a load balancer External-IP address, and whether the `pks resize` command from the previous lab has completed successfully.
 
 ```
 kubectl get service
@@ -540,7 +529,7 @@ curl http://<External-IP>/10; echo
 - You should see the results of the `10!` calculation.
 
 #
-#### LAB-5B
+#### LAB-4B
 ![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Let's use the [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) image to run the `Petclinic` program on your Kubernetes cluster.
@@ -552,13 +541,15 @@ kubectl create deployment petclinic --image=rmeira/petclinic
 kubectl get all
 kubectl expose deployment petclinic --type=LoadBalancer --port=8080
 ```
-- It takes a minute to create a load balancer and to expose a K8s service, but you can see the pod being created using the following command:
+- It takes a minute to create a load balancer and to expose a K8s service. You can see the pod being created using the following command:
 
 ```
 kubectl get pods -w
 ```
 
 - You can use `CTRL-C` to cancel out of the `-w` watch mode.
+
+- Similarly, the command below will display information about your K8s services:
 
 ```
 kubectl get service -w
@@ -580,12 +571,12 @@ http://<External-IP>:8080
 - You did not get SSL encrypted, secure URLs accessible on the Internet, but anyone with access to the correct `External IP` addresses is able to run/access your `fact` and `petclinic` programs.
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
 
-Congratulations, you have deployed a GO App and a Spring Boot App to a K8s cluster, and completed LAB-5.
+Congratulations, you have deployed a GO App and a Spring Boot App to a K8s cluster, and completed LAB-4.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-6: Using Harbor, Clair and Notary
+### LAB-5: Using Harbor, Clair and Notary
 
 - Let's see how Harbor, Clair and Notary enhance the Ops and Devs experience.
 
@@ -650,13 +641,13 @@ docker images
 - You uploaded container images and downloaded a container image.
 - You scanned container images and saw that Harbor did not allow you to download images with `high` or `critical` vulnerabilities.
 
-Congratulations, you have completed LAB-6.
+Congratulations, you have completed LAB-5.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 
 -----------------------------------------------------
-### LAB-7: Scaling an App on Kubernetes
+### LAB-6: Scaling an App on Kubernetes
 
 - Now let's scale up and down the number of pods running the `fact` docker image.
 
@@ -791,12 +782,12 @@ kubectl scale deployment fact --replicas=1
 - For the more advanced users, you may wish to experiment with scaling the K8s cluster using the `pks resize <cluster-name> --num-nodes <#>` command while deploying and scaling the `fact` app. Additional commands such as `kubectl drain <node>` and `kubectl uncordon <node>` also demonstrate the power K8s puts at your fingertips for draining workloads from nodes.
 - Advanced workload placement and management using K8s clusters can be a fun area to [explore](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/).
 
-Congratulations, you have completed LAB-7.
+Congratulations, you have completed LAB-6.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-8: K8s Soft and TKGI Hard Tenancy
+### LAB-7: K8s Soft and TKGI Hard Tenancy
 
 ![](./images/lab.png)
 
@@ -920,12 +911,12 @@ while true; do curl http://<External IP>/5000000000; echo; done
 - K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
 - K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits for workloads, but the sharing and utilization of resources has to be monitored carefully.
 
-Congratulations, you have completed LAB-8.
+Congratulations, you have completed LAB-7.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-9: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
+### LAB-8: A quick look at [TMC (Tanzu Mission Control)](https://players.brightcove.net/1534342432001/default_default/index.html?videoId=6074617846001) 
 
 - VMware's Vision for Tanzu Mission Control is to enable your enterprise:
     - To Manage Any K8s Cluster on Any Public/Private IaaS
@@ -967,13 +958,13 @@ pks get-credentials $user-cluster
 - TMC allows you to visualize in a single location all the K8s clusters your enterprise is using.
 - TMC allows you to create, upgraded, delete K8s clusters on AWS, and soon on all Public IaaS.
 
-Congratulations, you have completed LAB-9.
+Congratulations, you have completed LAB-8.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 
 -----------------------------------------------------
-### LAB-10: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
+### LAB-9: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
 
 - Observability goes beyond the scope of Tanzu Mission Control, so VMware has Tanzu Observability by Wavefront.
 
@@ -1018,13 +1009,13 @@ kubectl create namespace wavefront
 - TO requires the execution of a simple helm chart to integrate with any K8s cluster.
 - Wavefront provides a SaaS based approach to handle terabytes of data in the most cost-effective way.
 
-Congratulations, you have completed LAB-10.
+Congratulations, you have completed LAB-9.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "x" in the appropriate column.
 
 
 -----------------------------------------------------
-### Bonus-LAB: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
+### LAB-10: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
 
 - Tanzu Application Service for K8s is a Platform as a Service that builds and manages secure container images while taking advantage of the power afforded by Kubernetes' orchestration of containers. 
 - Developers love TAS because there are no IP addresses, no complex YAML files, no need to understand load balancing, routing, SSL certificates, or specifics of any given Public IaaS. TAS is all about getting from source code to production via a simple `cf push`.
