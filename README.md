@@ -219,6 +219,8 @@ cd ~/fact
 go run fact.go 
 ```
 
+- It may take a few seconds, but you should see a log message indicating that your code is `using port 3000`.
+
 - Leave the code running and use a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user20` should use `http://user20.pks4u.com`.
 ```
 http://user1.pks4u.com:3000/1500
@@ -231,7 +233,9 @@ http://user1.pks4u.com:3000/1500
      - `http://user1.pks4u.com:3000/header`
   - Did you see the logs on the Terminal Window of your VM?
 
-- Use `CTRL-C` ton your Ubuntu VM to cancel out of the `go run fact.go` command.
+- Use `CTRL-C` on your Ubuntu VM to cancel out of the `go run fact.go` command.
+
+- Let's proceed with a Java/Spring example.
 
 
 #
