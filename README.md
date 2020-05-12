@@ -404,9 +404,10 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - During this lab you are going to assume the role of a Platform DevOps person.
 - Execute the following commands to log into the TKGI Control Plane. 
-- The use of `$devops` will align each command to your UserID.
+- The use of `$devops` will automatically align each command to your UserID.
 
 ```
+echo $devops
 pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops
 pks clusters
 pks plans
@@ -425,12 +426,7 @@ kubectl cluster-info
 kubectl get all --all-namespaces
 ```
 
-- If kubectl auto-completion is not switched-on for your Ubuntu VM, you can execute the following commands to activate it:
-```
-echo "source <(kubectl completion bash)" >> ~/.bashrc
-exit
-# and log back into your Ubuntu VM using PuTTY or SSH 
-```
+- As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
 
@@ -468,7 +464,7 @@ Last Action State:        in progress
 ```
 - You don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
 
-- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-6/scale-clusters.html). Changing the `plan` of how clusters are built is an TKGI Operator function.
+- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-7/scale-clusters.html). Changing the `plan` of how clusters are built is an TKGI Operator function.
 
 **Let's recap:** 
 - You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
@@ -572,7 +568,7 @@ http://<External-IP>:8080
 **Let's recap:**
 - Even though the `pks resize` command was still `in progress`, you were able to carry out App deployments.
 - You deployed the `fact` and `petclinic` images to your K8s cluster and tested that both were working.
-- Kubernetes fetches images from a registry which, until now, was the public Docker Hub. We will see in the next Lab how to use Harbor, an Enterprise-Class registry.
+- Kubernetes fetches images from a registry which, until now, was the public Docker Hub image registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry.
 - You exposed both `fact` and `petclinic` deployments as services available on the Internet.
 - You did not get SSL encrypted, secure URLs accessible on the Internet, but anyone with access to the correct `External IP` addresses is able to run/access your `fact` and `petclinic` programs.
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
@@ -590,7 +586,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Harbor was installed next to TKGI in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. Note: *Don't* change `Password1` to `Password<#>` because you are `user<#>`, every user was created with the same password: `Password1`. 
+- Harbor was installed next to TKGI in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. 
 
 - Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
 
