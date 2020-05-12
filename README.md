@@ -117,7 +117,7 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
 
 - A Map of the Tanzu Portfolio of products:
 
-![](./images/TanzuMap.png)
+![](./images/TanzuStack.png)
 
 - The diagram below shows the general layout of the VMs, K8s Clusters and Platforms that we will be using during this workshop.
 
