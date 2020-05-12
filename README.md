@@ -2,9 +2,9 @@
 
 ![](./images//vmware-logo.png)
 
-# VMware TKGI Workshop 
+# VMware Tanzu Workshop 
 ----------------------------------------------------------
-## [Tanzu Kubernetes Grid - Workshop Agenda](https://drive.google.com/open?id=1pzVmFNv7hlpOGGuU-C5YopBR9VIRz6FU)
+## [Tanzu Workshop Agenda](https://drive.google.com/open?id=1pzVmFNv7hlpOGGuU-C5YopBR9VIRz6FU)
 (12:30PM to 4:00PM on 05/14/2020)
 
 - Introduction
@@ -26,7 +26,7 @@
 - You should be able to access:
 
     - https://zoom.us/test
-    - https://solar-system.cfapps.io
+    - https://chess.cfapps.io
     - [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI)
 
 ### If using a Windows PC
