@@ -1,4 +1,4 @@
-#### [https://tinyurl.com/04212020AF](https://tinyurl.com/04212020AF)
+#### [https://tinyurl.com/05142020LB](https://tinyurl.com/05142020LB)
 
 ![](./images//vmware-logo.png)
 
