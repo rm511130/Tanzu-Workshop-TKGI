@@ -1031,7 +1031,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Execute the following commands using your Ubuntu VM to eliminate all the superfluous files we used during earlier Labs:
 
 ```
-cd ~/fact;  rm Dockerfile Procfile README.md; rm -rf .git; ls -las
+cd ~/fact;  rm Dockerfile Procfile README.md; rm -rf .git; ls -ls
 ```
 - Log into TAS (Tanzu Application Service) and `cf push` your application: 
 
