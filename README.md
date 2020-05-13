@@ -1036,7 +1036,7 @@ cd ~/fact;  rm Dockerfile Procfile README.md; rm -rf .git; ls -las
 - Log into TAS (Tanzu Application Service) and `cf push` your application: 
 
 ```
-cf login -a api.sys.13.83.100.157.cf.pcfazure.com -p password --skip-ssl-validation -u $user
+cf login -a api.sys.ourpcf.com -p password --skip-ssl-validation -u $user
 ```
 ```
 cf push -m 128M -b go_buildpack fact-$user
@@ -1045,7 +1045,7 @@ cf push -m 128M -b go_buildpack fact-$user
 - Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following command:
 
 ```
-curl -k https://fact-$user.apps.13.83.100.157.cf.pcfazure.com/100; echo 
+curl -k https://fact-$user.apps.ourpcf.com/100; echo 
 ```
 
 - You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
