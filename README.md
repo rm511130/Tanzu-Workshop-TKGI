@@ -1042,7 +1042,7 @@ cf login -a api.sys.ourpcf.com -p password --skip-ssl-validation -u $user
 cf push -m 128M -b go_buildpack fact-$user
 ```
 
-- Wait for the `cf push` to complete and grab the URL next `routes:`, then execute the following command:
+- Wait for the `cf push` to complete, then execute the following command. You can also access the same URL using a browser.
 
 ```
 curl -k https://fact-$user.apps.ourpcf.com/100; echo 
@@ -1069,6 +1069,16 @@ cf scale fact-$user -m 64M
 ```
 cf app fact-$user
 ```
+- Now let's make a change to the code and perform a rolling deploy of the new version with zero-downtime:
+
+```
+sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
+cf v3-zdt-push fact-$user
+```
+```
+cf app fact$user
+```
+
 - Now let's create a shell into one of your App containers and learn more about it:
 
 ```
