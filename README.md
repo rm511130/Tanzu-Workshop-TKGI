@@ -1082,7 +1082,7 @@ cf app fact-$user | grep route
 
 ![](/images/30-fact.png)
 
-- Execute the following commands, and as you wait for them to complete, keep refreshing the browser page you just opened periodically.
+- Execute the following commands, and as you wait for them to complete, keep refreshing the browser page you just opened, so you can see the switch from v1 to v2 happening seamlessly:
 
 ```
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
