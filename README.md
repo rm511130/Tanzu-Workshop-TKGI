@@ -1057,12 +1057,10 @@ curl -k https://fact-$user.apps.ourpcf.com/100; echo
 
 ```      
 cf scale fact-$user -i 5
-```
-```
 cf app fact-$user
 ```
 
-- Now let's scale your App vertically:
+- Now let's scale your App vertically. When prompted, respond with a `y`. 
 
 ```
 cf scale fact-$user -m 64M
