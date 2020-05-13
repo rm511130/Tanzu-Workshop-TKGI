@@ -1090,10 +1090,6 @@ cf app fact-$user | grep route
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
 cf v3-zdt-push fact-$user
 ```
-```
-cf app fact$user
-```
-
 - Now let's create a shell into one of your App containers and learn more about it:
 
 ```
@@ -1123,7 +1119,6 @@ cf app fact-$user                      # to check the status of your App and all
 cf events fact-$user
 cf logs fact-$user --recent
 ```
-
 - We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database. Execute the following command to see the types of services that can be made available as self-service options to developers:
 
 ```
