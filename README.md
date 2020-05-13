@@ -1042,7 +1042,7 @@ cf login -a api.sys.ourpcf.com -p password --skip-ssl-validation -u $user
 cf push -m 128M -b go_buildpack fact-$user
 ```
 
-- Wait for the `cf push` to complete, then execute the following command. You can also access the same URL using a browser.
+- Wait for the `cf push` to complete, then execute the following command.
 
 ```
 curl -k https://fact-$user.apps.ourpcf.com/100; echo 
@@ -1058,18 +1058,26 @@ curl -k https://fact-$user.apps.ourpcf.com/100; echo
 ```      
 cf scale fact-$user -i 5
 ```
-```
-cf app fact-$user
-```
+
 - Now let's scale your App vertically:
 
 ```
 cf scale fact-$user -m 64M
 ```
+
+- Now let's map an additional (new) route to your App. Replace the `<pick-a-unique-name>` part of the command below with something creative, unique, but easy to remember:
+
 ```
-cf app fact-$user
+cf map-route fact-$user apps.ourpcf.com --hostname <pick-a-unique-name>
 ```
-- Now let's make a change to the code and perform a rolling deploy of the new version with zero-downtime:
+
+- Let's see what routes map to your App:
+
+```
+cf routes
+```
+
+- Now let's perform a rolling deploy of a new version of `fact.go` with zero-downtime. Please open a browser page to access your `fact.go` App. You can, for example, use your newly mapped route. Keep refreshing the page as you wait for the following commands to execute.     
 
 ```
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
