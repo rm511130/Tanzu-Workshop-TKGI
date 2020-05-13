@@ -1082,9 +1082,9 @@ cf app fact-$user | grep route
 
 - Now let's perform a rolling deploy of a new version of `fact.go` with zero-downtime. Please open a browser page to access your `fact.go` App. You can, for example, use your newly mapped route - just remember to add a `/30` to it so you can calculate the value of `30!`. Here's an example:
 
-![](/images/30fact.png)
+![](/images/30-fact.png)
 
-- Keep refreshing the page as you wait for the following commands to execute.     
+- Execute the following commands, and as you wait for them to complete, keep refreshing the browser page you just opened periodically.
 
 ```
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
