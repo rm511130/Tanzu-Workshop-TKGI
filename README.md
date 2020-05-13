@@ -1047,7 +1047,7 @@ cf push -m 128M -b go_buildpack fact-$user
 ```
 curl -k https://fact-$user.apps.ourpcf.com/100; echo 
 ```
-
+![](./images//wow-face.png)
 - You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
 - Your App has an SSL encrypted URL that routes and load-balances user requests automatically to your App instance(s).
 - Your App is running in the Cloud on Highly Available, self-monitoring, self-healing, multi-zone infrastructure.
