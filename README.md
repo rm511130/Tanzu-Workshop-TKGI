@@ -1147,6 +1147,8 @@ cf marketplace
 
 Congratulations, you have completed all the LABs in this Workshop.
 
+Please update the Workshop Google Sheet with an "x" in the appropriate column.
+
 -----------------------------------------------------
 ### BONUS LAB: Using Tanzu Gemfire to Turbo-Charge Access to Data in a MySQL Database
 
