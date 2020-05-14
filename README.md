@@ -631,7 +631,7 @@ docker pull harbor.pks4u.com/library/$user-fact:latest
 - Execute the following command:
 
 ```
-docker pull harbor.pks4u.com/library/fact-alpine:latest
+docker pull harbor.pks4u.com/library/chess-cf:1.0
 ```
 - This image should have downloaded without problems because it does not expose you to any critical CVEs. Execute the following command to confirm the status of your local Docker images:
 
