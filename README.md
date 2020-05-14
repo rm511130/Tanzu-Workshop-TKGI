@@ -187,6 +187,7 @@ python3 --version
 helm version
 java -version
 mvn -version
+gfsh version
 ```
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
