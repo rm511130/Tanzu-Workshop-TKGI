@@ -1168,8 +1168,9 @@ cat manifest.yml
 ```
 cf services
 ```
+![](./images/peril.png)
 
-- Once both services are up and running, proceed with the following command:
+- Once both services are up and running, proceed with the following command. Please make sure that both services are indeed in a `create succeeded` state before proceeding.
 
 ```
 cf push
