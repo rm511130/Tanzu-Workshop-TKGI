@@ -1147,12 +1147,15 @@ cf marketplace
 
 Congratulations, you have completed all the LABs in this Workshop.
 
-Please update the Workshop Google Sheet with an "x" in the appropriate column.
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
+
 
 -----------------------------------------------------
 ### BONUS LAB: Using Tanzu Gemfire to Turbo-Charge Access to Data in a MySQL Database
 
+- This lab was created specifically for L Brands. It only takes 10 minutes to execute. 
 - During this Lab, we will deploy a sample App that uses a MySQL DB and a GEMFIRE In-Memory-Lookaside-Cache.
+- You will spin-up your own MySQL DB and GEMFIRE In-Memory-Lookaside-Cache data services.
 - Please execute the commands shown below:
 
 ```
@@ -1254,6 +1257,8 @@ cf delete-service mysql-dev
 ![](./images//wow-face.png)
 
 Congratulations, you have completed the bonus Lab!
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 
 ------------------------
