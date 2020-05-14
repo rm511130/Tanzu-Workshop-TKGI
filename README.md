@@ -1148,22 +1148,36 @@ cf marketplace
 Congratulations, you have completed all the LABs in this Workshop.
 
 -----------------------------------------------------
-### BONUS LAB: Using Tanzu Gemfire to Turbo-Charge Access to Data
+### BONUS LAB: Using Tanzu Gemfire to Turbo-Charge Access to Data in a MySQL Database
 
-- During this Lab, we will deploy a sample App that uses a MySQL DB and a GEMFIRE In-Memory-Look-Aside-Cache.
+- During this Lab, we will deploy a sample App that uses a MySQL DB and a GEMFIRE In-Memory-Lookaside-Cache.
+- Please execute the commands shown below:
 
 ```
 cd ~
 git clone https://github.com/rm511130/pad-pcc-demo
 cd pad-pcc-demo
 cf login -a api.sys.ourpcf.com -p password --skip-ssl-validation -u $user
-cf cs p.mysql db-small mysql-dev
+```
+- Let's create the MySQL DB:
+
+```
+cf create-service p.mysql db-small mysql-dev
+```
+- Let's create a GEMFIRE In-Memory-Data-Grid:
+
+```
 cf create-service p-cloudcache dev-plan dev-cluster
+```
+
+- Let's take a look at the `manifest.yml` file that the `cf push` command is going to use. We'll alter the `manifest.yml` file to make sure you will create a unique application URL. Please execute the following commands:
+
+```
 sed -i 's/random-route: false/random-route: true/g' manifest.yml
 cat manifest.yml
 ```
 
-- Wait until both services have been created. You can check their status by running the following command:
+- Now wait ~5 minutes until both services have been created. You can check their status by running the following command:
 
 ```
 cf services
@@ -1176,13 +1190,14 @@ cf services
 cf push
 ```
 
-- Once the `cf push` command has deployed your App, execute the following commands to learn more about how to access your services:
+- Once the `cf push` command has deployed your App, execute the following commands to get some environment information about your GEMFIRE In-Memory-Data-Grid:
 
 ```
 cf env pcc-lookaside-cache | grep 'gfsh_login_string'
 gfsh
 ```
-- Now use the output from the command above to connect to your Gemfire In-memory Data-Grid. Your command should look something like the example shown below:
+
+- Now use the output from the command above to connect to your Gemfire In-Memory-Data-Grid. We're doing this because we need to execute a small set-up step in Gemfire. Your command should look like the example shown below (but make sure to use your `connect...` command obtained above. All the `key-store`, `trust-store`, etc... prompts just need a simple click on `<Enter>`.
 ```
 gfsh>connect --url=https://cloudcache-156605a4-e3e0-4d54-bef2-c4c670f274da.sys.ourpcf.com/gemfire/v1 --user=cluster_operator_1kSTN0824VHzFgZSY09F5Q --password=idyqhr1kFdopn8NQX1nSg --skip-ssl-validation
 key-store: <just hit enter>
@@ -1197,14 +1212,14 @@ ssl-enabled-components(default: all): <just hit enter>
 Successfully connected to: GemFire Manager HTTP service @ https://cloudcache-156605a4-e3e0-4d54-bef2-c4c670f274da.sys.ourpcf.com/gemfire/v1
 ```
 
-- We need to create a table in Gemfire. Execute the commands shown below:
+- Let's create a `customer` table in Gemfire. In Gemfire lingo, tables are called `regions`. Execute the commands shown below:
 
 ```
 Cluster-0 gfsh> create region --name=customer --type=REPLICATE
 Cluster-0 gfsh> exit
 ```
 
-- Great, now we should be able to test the Demo PCC-Lookaside-App you just `cf pushed`. Execute the following command to get your App's URL and then open a browser using the URL:
+- Great, now we should be able to test the Demo PCC-Lookaside-App you `cf pushed`. Execute the following command to get your App's URL and then open a browser using the URL:
 
 ```
 cf app pcc-lookaside-cache | grep route 
@@ -1214,11 +1229,27 @@ cf app pcc-lookaside-cache | grep route
 
 ![](./images/pcc.png)
 
+- Let's clean-up once you have experimented with your PCC-Lookaside-App. Please execute the following commands:
+
+```
+cf delete pcc-lookaside-cache
+cf delete-service dev-cluster
+cf delete-service mysql-dev
+```
+
 **Let's recap:** 
 - You created an in-memory data-grid and a mySQL DB using simple on-line commands.
-- You deployed an app to TAS (Tanzu Application Service)
-- Your App was bound to the data services listed inside the `manifest.yml` file.
-- You tested the App and saw that the lookaside-cache can speed up access to data.
+      ```
+      cf create-service p.mysql db-small mysql-dev
+      cf create-service p-cloudcache dev-plan dev-cluster
+      ```
+- You deployed an app to TAS (Tanzu Application Service) using a simple: `cf push`
+- Your App was bound to the data services listed inside a `manifest.yml` file.
+- You tested the App and saw that the lookaside-cache can speed up access to data in a MySQL DB.
+- You cleaned-up with 3 simple commands.
+- You didn't have to open any support tickets with networking, infrastructure or operations to get all of this done.
+
+![](./images//wow-face.png)
 
 Congratulations, you have completed the bonus Lab!
 
