@@ -1118,6 +1118,23 @@ cf app fact-$user                      # to check the status of your App and all
 cf events fact-$user
 cf logs fact-$user --recent
 ```
+
+- How easy is it to create a whole new QA or Test isolated space? Try the following commands:
+
+```
+cf create-space qa
+cf target -s qa
+cf apps
+```
+- As you can see, the QA environment you just created is ready within seconds. It's this self-service ease of use that makes developers and application teams multiple times more efficient. 
+
+- You can point back to the original `workshop` space with the following commands:
+
+```
+cf target -s workshop
+cf apps
+```
+
 - We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database. Execute the following command to see the types of services that can be made available as self-service options to developers:
 
 ```
@@ -1129,6 +1146,18 @@ cf marketplace
 - By delivering TAS for Kubernetes, VMware effectively automates away all the k8s complexities and guarantees the consistent creation of curated, secure container images that will run on k8s clusters on any cloud infrastructure, with the proven efficiency of a `cf push` dial-tone.
 
 Congratulations, you have completed all the LABs in this Workshop.
+
+-----------------------------------------------------
+### BONUS LAB: Using Tanzu Gemfire to Turbo-Charge Access to Data
+
+- During this Lab, we will deploy a sample App that uses a MySQL DB and a GEMFIRE In-Memory-Look-Aside-Cache.
+
+```
+cd ~
+git clone https://github.com/rm511130/pad-pcc-demo
+cd pad-pcc-demo
+```
+
 
 ------------------------
 ## Wrapping-up
