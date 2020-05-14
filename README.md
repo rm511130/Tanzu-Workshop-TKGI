@@ -1156,6 +1156,7 @@ Congratulations, you have completed all the LABs in this Workshop.
 cd ~
 git clone https://github.com/rm511130/pad-pcc-demo
 cd pad-pcc-demo
+cf login -a api.sys.ourpcf.com -p password --skip-ssl-validation -u $user
 cf cs p.mysql db-small mysql-dev
 cf create-service p-cloudcache dev-plan dev-cluster
 sed -i 's/random-route: false/random-route: true/g' manifest.yml
