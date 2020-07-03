@@ -422,14 +422,16 @@ docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 cd ~/dotnet
 dotnet publish -c Release
-
-echo # FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 > Dockerfile
-echo FROM mcr.microsoft.com/dotnet/core/runtime:3.1 >> Dockerfile
-echo COPY bin/Release/netcoreapp3.1/publish/ App/   >> Dockerfile
-echo WORKDIR /App                                   >> Dockerfile
-echo ENTRYPOINT ["dotnet", "dotnet.dll"]            >> Dockerfile
 ```
 
+- Create a `Dockerfile` with the following content:
+
+```
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+COPY bin/Release/netcoreapp3.1/publish/ App/
+WORKDIR /App
+ENTRYPOINT ["dotnet","dotnet.dll"]
+```
 
 - Let's run it:
 
