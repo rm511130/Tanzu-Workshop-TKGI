@@ -422,38 +422,26 @@ docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 cd ~/dotnet
 dotnet publish -c Release
-echo FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 > Dockerfile
-docker build -t dotnet-core-welcome -f Dockerfile .
-```
-- You should see an output similar to the example shown below:
 
+echo # FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 > Dockerfile
+echo FROM mcr.microsoft.com/dotnet/core/runtime:3.1 >> Dockerfile
+echo COPY bin/Release/netcoreapp3.1/publish/ App/   >> Dockerfile
+echo WORKDIR /App                                   >> Dockerfile
+echo ENTRYPOINT ["dotnet", "dotnet.dll"]            >> Dockerfile
 ```
-Sending build context to Docker daemon  11.29MB
-Step 1/1 : FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
-3.1: Pulling from dotnet/core/aspnet
-8559a31e96f4: Pull complete 
-0ced10af2a8c: Pull complete 
-62f82a6dbc6a: Pull complete 
-472ebb87008f: Pull complete 
-207c88fa8512: Pull complete 
-Digest: sha256:060ebef0165a38e28279f7fd4f12e33d35af1de879442d75dabbcb4bc536e55c
-Status: Downloaded newer image for mcr.microsoft.com/dotnet/core/aspnet:3.1
- ---> 014a41b1f39a
-Successfully built 014a41b1f39a
-Successfully tagged dotnet-core-welcome:latest
-```
+
 
 - Let's run it:
 
 ```
-docker run -it -d --rm dotnet-core-welcome -p 5001:80
+docker build -t dotnet-core-welcome -f Dockerfile .
+docker run -d -p 80:80 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
 - Let's build a Docker Container Image and run it locally on your Ubuntu VM. Use the following commands:
 
 ```
-docker build -t petclinic . 
-docker run -d --publish 80:8080 --name petclinic --rm petclinic
+xxx
 ```
 
 - It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
