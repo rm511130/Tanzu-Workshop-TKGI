@@ -1,4 +1,4 @@
-#### [https://tinyurl.com/05142020LB](https://tinyurl.com/05142020LB)
+#### [https://tinyurl.com/05142020LB](https://tinyurl.com/CareSourceTKGI)
 
 ![](./images//vmware-logo.png)
 
@@ -65,9 +65,11 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 -----------------------------------------------------
 ## A Brief Introduction - VMware Tanzu
 
-- [VMware Tanzu](https://drive.google.com/open?id=1idNKL_eTxKu5pEc6Z7GwLaJ_W5zaBmOxFecH96gI3ds) &nbsp;&nbsp;&nbsp; by Matt Helmers - Acct Exec.
+<!-- - [VMware Tanzu](https://drive.google.com/open?id=1idNKL_eTxKu5pEc6Z7GwLaJ_W5zaBmOxFecH96gI3ds) &nbsp;&nbsp;&nbsp; by Account Manager -->
 
 <!-- - [Three Types of Code & Shared KPIs](https://drive.google.com/open?id=12yG6cpR6NP12IjATRhrdq3-65ZUBb6ZaZjgS94wZrsk) &nbsp;&nbsp;&nbsp; by Matt Popovich - Senior Solution Engineer -->
+
+[VMware Tanzu Customer Success](https://drive.google.com/open?id=1idNKL_eTxKu5pEc6Z7GwLaJ_W5zaBmOxFecH96gI3ds) &nbsp;&nbsp;&nbsp; by Lynn Strickmeyer - CSM
 
 - [VMware Customer Stories](https://tanzu.vmware.com/customers)
 
@@ -188,6 +190,7 @@ helm version
 java -version
 mvn -version
 gfsh version
+dotnet --version
 ```
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
@@ -268,14 +271,40 @@ http://user1.pks4u.com:8080
 
 - You can use `CRTL-C` on your Ubuntu VM to cancel out of the `spring-boot Pet Clinic` program.
 
+#
+#### LAB-2C 
+![](./images/dotnet.png) ![](./images/lab.png)   
+
+- Execute the following commands:
+
+```
+mkdir -p ~/dotnet
+cd ~/dotnet
+dotnet new global
+dotnet new mvc 
+sed -i "s/Welcome/Welcome User$my_number/g" ~/dotnet/Views/Home/Index.cshtml
+dotnet run --urls http://0.0.0.0:5001
+```
+
+- Once you see in your logs that `Content root path: /home/ubuntu/dotnet` you can proceed to test your `.NET Core MVC` program.
+
+- To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com:5001`.
+
+```
+http://user1.pks4u.com:5001
+```
+- If you see a `Welcome` page, your .NET App is running and you have a good .NET Core example to work with.
+
+- You can use `CRTL-C` on your Ubuntu VM to cancel out of the `.NET Core Welcome` program.
+
 **Let's recap:** 
-- Your Linux VM is able to run GoLang and Spring/Java programs. 
-- Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that lets your friends access and test your Apps. You can also test your code locally using localhost or 127.0.0.1.
+- Your Linux VM is able to run GoLang, Spring/Java and .NET Core programs.
+- Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that lets your friends access and test your Apps. You can also test your code locally using localhost or 127.0.0.1 when ssh'ed into your Linux VM.
 - The code examples you executed provided an http interface which you accessed from a browser.
 - A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous _"...but it worked on my machine..."_ comments. In the following hands-on labs, we will see how Container Images can help in this area.
 
 #
-#### LAB-2C
+#### LAB-2D
 ![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Using your Ubuntu VM let's take a look at the `Dockerfile` in the `~/fact` directory. 
@@ -346,7 +375,7 @@ docker exec -it fact bash
  - What was the answer to the `whoami` command?
  
 #
-#### LAB-2D
+#### LAB-2E
 ![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Now let's create a Docker Image from the Petclinic Jar file you created during Lab-2B. 
@@ -380,6 +409,42 @@ docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 
 - As a developer, you have a lot of control over what layers and operating systems are employed in building a container image. It's very easy to _pick what works_ and proceed with code that delivers business functionality. It's also very easy to _stick with what works_ which can open vectors of attack to [Common Vulnerabilities and Exposures (CVEs)](https://www.cvedetails.com/cve-help.php).  
+
+#
+#### LAB-2F
+![](./images/dotnet.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
+
+- Now let's create a Docker Image for the .NET Core Welcome program.
+
+
+- Execute the following commands to take a look at the `Dockerfile` we will be using:
+
+```
+cd ~/spring-petclinic
+cat Dockerfile
+```
+
+- Let's build a Docker Container Image and run it locally on your Ubuntu VM. Use the following commands:
+
+```
+docker build -t petclinic . 
+docker run -d --publish 80:8080 --name petclinic --rm petclinic
+```
+
+- It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
+
+```
+http://<userID#>.pks4u.com
+```
+
+- Let's now take a look at the layers used in the creation of your Petclinic container image:
+
+```
+docker history petclinic
+```
+```
+docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
+```
 
 **Let's recap:** 
 - You built and executed a couple of Docker Images on your Ubuntu VM using essentially the same files you used during LABs 2A and 2B.
