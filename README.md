@@ -318,8 +318,8 @@ cat ~/fact/Dockerfile
 - Execute the following commands to start with a clean Docker environment:
 
 ```
-docker system prune -a -f                                                             # deletes old container images
 if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi; # stops any running containers
+docker system prune -a -f                                                             # deletes old container images
 ```
 - Now let's build a Docker Image of your GoLang factorial program:
 
