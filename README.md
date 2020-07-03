@@ -417,11 +417,36 @@ docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 - Now let's create a Docker Image for the .NET Core Welcome program.
 
 
-- Execute the following commands to take a look at the `Dockerfile` we will be using:
+- Execute the following commands to publish your `.NET Core Welcome` program and to create a `Dockerfile`:
 
 ```
-cd ~/spring-petclinic
-cat Dockerfile
+cd ~/dotnet
+dotnet publish -c Release
+echo FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 > Dockerfile
+docker build -t dotnet-core-welcome -f Dockerfile .
+```
+- You should see an output similar to the example shown below:
+
+```
+Sending build context to Docker daemon  11.29MB
+Step 1/1 : FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+3.1: Pulling from dotnet/core/aspnet
+8559a31e96f4: Pull complete 
+0ced10af2a8c: Pull complete 
+62f82a6dbc6a: Pull complete 
+472ebb87008f: Pull complete 
+207c88fa8512: Pull complete 
+Digest: sha256:060ebef0165a38e28279f7fd4f12e33d35af1de879442d75dabbcb4bc536e55c
+Status: Downloaded newer image for mcr.microsoft.com/dotnet/core/aspnet:3.1
+ ---> 014a41b1f39a
+Successfully built 014a41b1f39a
+Successfully tagged dotnet-core-welcome:latest
+```
+
+- Let's run it:
+
+```
+docker run -it -d --rm dotnet-core-welcome -p 5001:80
 ```
 
 - Let's build a Docker Container Image and run it locally on your Ubuntu VM. Use the following commands:
