@@ -320,6 +320,7 @@ cat ~/fact/Dockerfile
 ```
 if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi; # stops any running containers
 docker system prune -a -f                                                             # deletes old container images
+docker images; docker ps -a                                                           # check if anything was left behind
 ```
 - Now let's build a Docker Image of your GoLang factorial program:
 
