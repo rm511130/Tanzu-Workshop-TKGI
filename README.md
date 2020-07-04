@@ -350,6 +350,9 @@ docker image inspect fact
 ```
 docker history fact
 ```
+
+- Note that some layers are `<missing>` their Image-IDs. This is a known backward incompatibility [problem](https://github.com/moby/moby/issues/20131#issuecomment-182294926) introduced by the Docker 1.10 content addressability migration project.
+
 ```
 docker ps
 ```
@@ -410,6 +413,8 @@ docker history petclinic
 docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 
+- What release of the [OS](https://www.debian.org/releases/) was used? 
+
 - As a developer, you have a lot of control over what layers and operating systems are employed in building a container image. It's very easy to _pick what works_ and proceed with code that delivers business functionality. It's also very easy to _stick with what works_ which can open vectors of attack to [Common Vulnerabilities and Exposures (CVEs)](https://www.cvedetails.com/cve-help.php).  
 
 #
@@ -433,6 +438,14 @@ cd ~/dotnet
 cat Dockerfile
 ```
 
+- Execute the following commands to start with a clean Docker environment:
+
+```
+if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi; # stops any running containers
+docker system prune -a -f                                                             # deletes old container images
+docker images; docker ps -a                                                           # check if anything was left behind
+```
+
 - Let's build a Docker image of your `.NET Core Welcome` App, and run it in your Linux VM:
 
 ```
@@ -454,6 +467,7 @@ docker history dotnet-core-welcome
 ```
 docker exec -it dotnet-core-welcome sh -c "cat /etc/*release" | head -n 4
 ```
+ - What release of the [OS](https://www.debian.org/releases/) was used? 
 
 **Let's recap:** 
 - You built and executed Docker Images on your Ubuntu VM using essentially the same files you used during LABs 2A, 2B and 2C.
@@ -503,6 +517,23 @@ kubectl get all --all-namespaces
 
 - As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
+- fuck
+
+
+- Let's take a look at the current capacity of your K8s cluster. The `pks plans` command is just to remind us of the available sizing specifications defined by Operations.
+
+```
+pks plans
+kubectl top nodes
+```
+
+- You should see an output similar to the one shown below:
+
+```
+NAME                                      CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   429m         21%    2488Mi          64%
+```
+
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
 
 ```
@@ -518,19 +549,21 @@ pks cluster $user-cluster
 - You should see output similar to the example below:
 
 ```
-PKS Version:              1.6.1-build.6
+PKS Version:              1.7.0-build.26
 Name:                     user1-cluster
-K8s Version:              1.15.5
+K8s Version:              1.16.7
 Plan Name:                small
-UUID:                     1210f5d8-c292-4f22-a0d8-0147b87b4ed0
+UUID:                     6e3907eb-3ac0-4c6e-8196-8f5b1ebd03b0
 Last Action:              UPDATE
 Last Action State:        in progress
-Last Action Description:  Instance update in progress
+Last Action Description:  Instance update completed
 Kubernetes Master Host:   user1-cluster-k8s.pks4u.com
 Kubernetes Master Port:   8443
-Worker Nodes:             2
+Worker Nodes:             1
 Kubernetes Master IP(s):  10.0.11.10
 Network Profile Name:     
+Kubernetes Profile Name:  
+Tags:    
 ```
 - Note in the output shown above the line that indicates the active resizing of your cluster:
 
@@ -553,7 +586,16 @@ Congratulations, you have completed LAB-3.
 -----------------------------------------------------
 ### LAB-4: Deploying Apps to Kubernetes Clusters
 
-- Docker Images identical to the ones you created during Lab-2C and Lab-2D have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) and [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. 
+- Docker Images identical to the ones you created during Lab-2D, Lab-2E and Lab-2F have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact), [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) and [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. You will carry out these steps in a subsequent Lab when it's time to upload container images into a private registry called `Harbor`. 
+
+- During this lab you will deploy your containerized Apps in your K8s cluster. Let's start by taking a look at your cluster's capacity. Execute the following command:
+
+```
+kubectl top nodes
+```
+
+
+
 
 #
 #### LAB-4A
@@ -640,15 +682,69 @@ http://<External-IP>:8080
 ```
 - You should see the `Petclinic` App.
 
+#
+#### LAB-4C
+![](./images/dotnet.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
+
+- Let's use the [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome) image to run the `.NET Core Welcome` program on your Kubernetes cluster. We will dedicate a namespace (`ns`) for your `.NET Core Welcome` App.
+
+- Execute the following commands:
+
+```
+kubectl create ns dotnet-core-welcome
+kubectl create deployment dotnet-core-welcome --image=rmeira/dotnet-core-welcome -n dotnet-core-welcome
+kubectl get all -n dotnet-core-welcome
+kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --port=80 -n dotnet-core-welcome
+```
+- It takes a minute to create a pod, a load balancer and to expose a K8s service. You can see the pod being created using the following command:
+
+```
+kubectl get pods -n dotnet-core-welcome
+```
+
+- Similarly, the command below will display information about your K8s services:
+
+```
+kubectl get service -n dotnet-core-welcome
+```
+   
+- As soon as the `External IP` address is available, access the following URL using a browser to verify that your `.NET Core Welcome` docker image is working as expected:
+
+```
+http://<External-IP>
+```
+- You should see a `.Net Core Welcome` home page that reads: `Welcome All Users`.
+
 **Let's recap:**
 - Even though the `pks resize` command was still `in progress`, you were able to carry out App deployments.
-- You deployed the `fact` and `petclinic` images to your K8s cluster and tested that both were working.
-- Kubernetes fetches images from a registry which, until now, was the public Docker Hub image registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry.
-- You exposed both `fact` and `petclinic` deployments as services available on the Internet.
-- You did not get SSL encrypted, secure URLs accessible on the Internet, but anyone with access to the correct `External IP` addresses is able to run/access your `fact` and `petclinic` programs.
+- You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
+- Kubernetes fetches images from a registry which, until now, was the public Docker Hub image registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry for storing and scanning your images.
+- You exposed `fact`, `petclinic` and `.Net Core Welcome` deployments as services available on the Internet fronted by Load Balancers.
+- However:
+  - you did not get SSL encrypted, secure URLs accessible on the Internet. 
+  - you did not get a FQDN (Fully Qualified Domain Name).
+- Anyone with access to the correct `External IP` addresses is able to run/access your `fact`, `petclinic` and `.Net Core Welcome` programs.
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
 
-Congratulations, you have deployed a GO App and a Spring Boot App to a K8s cluster, and completed LAB-4.
+#
+#### LAB-4D
+![](./images/docker-tiny.png)    ![](./images/lab.png)
+
+- Let's cleam your K8s cluster a little. We will use two different methods. 
+
+- Method 1: 
+
+```
+
+
+
+
+
+
+
+
+
+Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-4.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
