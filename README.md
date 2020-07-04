@@ -518,7 +518,7 @@ kubectl get all --all-namespaces
 - As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
 
-- Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Let's take a look at the current capacity of your K8s cluster. 
+- Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Let's take a look at the current capacity of your K8s cluster by executing the following command:
 
 ```
 kubectl top nodes
@@ -535,7 +535,7 @@ vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   429m         21%    2488Mi          64
    - You only have one worker node.
    - The results also show that 21% of 2 vCPUs (2000m) are being consumed.
 
-- Let's scale your cluster horizontally by adding an additional K8s worker node:
+- Let's scale your cluster horizontally by adding an additional K8s worker node using the following command:
 
 ```
 pks resize $user-cluster --num-nodes 2
@@ -578,7 +578,7 @@ Last Action State:        in progress
 **Let's recap:** 
 - You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
 - Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the TKGI platform.
-- You executed a few `kubectl` commands against your cluster as a DevOps TKGI Manager.
+- You executed a few new `kubectl` commands against your cluster as a DevOps TKGI Manager.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
@@ -589,14 +589,7 @@ Congratulations, you have completed LAB-3.
 
 - Docker Images identical to the ones you created during Lab-2D, Lab-2E and Lab-2F have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact), [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) and [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. You will carry out these steps in a subsequent Lab when it's time to upload container images into a private registry called `Harbor`. 
 
-- During this lab you will deploy your containerized Apps in your K8s cluster. Let's start by taking a look at your cluster's capacity. Execute the following command:
-
-```
-kubectl top nodes
-```
-
-
-
+- During this lab you will deploy your containerized Apps in your K8s cluster. 
 
 #
 #### LAB-4A
@@ -614,9 +607,9 @@ kubectl expose deployment fact --type=LoadBalancer --port=80 --target-port=3000
 - It takes a minute to create a load balancer and to expose a K8s service, so let's first test if there is a pod running the `rmeira/fact` container image using the following commands:
 
 ```
-kubectl get pods
+kubectl get pods -w
 ```
-- If you see that your `fact` pod is up and running, please proceed with the following commands:
+- If you see that your `fact` pod has a `STATUS` of `running`, please use `CTRL-C` to cancel the command above and proceed with the following commands:
 
 ```
 pod_name=$(kubectl get pods | grep fact | awk '{ print $1 }'); echo $pod_name
@@ -647,6 +640,20 @@ pks cluster $user-cluster
 curl http://<External-IP>/10; echo
 ```
 - You should see the results of the `10!` calculation.
+
+- Let's check your K8s cluster utilization by executing the following command:
+
+```
+kubectl top nodes
+```
+
+- The results from the command shown above should show that you have plenty of capacity in your cluster. The results shown below are just for reference:
+
+```
+NAME                                      CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   349m         17%    2246Mi          58%       
+vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   71m          3%     803Mi           20% 
+```
 
 #
 #### LAB-4B
@@ -683,6 +690,26 @@ http://<External-IP>:8080
 ```
 - You should see the `Petclinic` App.
 
+- Let's check your K8s cluster utilization by executing the following command:
+
+```
+kubectl top nodes
+```
+
+- The results from the command shown above should show that you have plenty of capacity in your cluster. The results shown below are just for reference:
+
+```
+NAME                                      CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   338m         16%    2252Mi          58%       
+vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   83m          4%     1083Mi          28%
+```
+
+- Comparing the results shown above with the previous `kubectl top nodes` output, we can see that the 2nd VM Worker Node has grown its memory utilization from `20%` to `28%`. This change indicates that the single `pod` running the `Petclinic` App was allocated to run in the 2nd VM Worker Node. We can confirm this by issuing the following commmand:
+
+```
+kubectl get pods -o json | grep 'nodeName\|\"name\"'
+```
+
 #
 #### LAB-4C
 ![](./images/dotnet.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
@@ -716,10 +743,25 @@ http://<External-IP>
 ```
 - You should see a `.Net Core Welcome` home page that reads: `Welcome All Users`.
 
+- Let's check your K8s cluster utilization by executing the following command:
+
+```
+kubectl top nodes
+```
+
+- The results shown below are just for reference:
+
+```
+NAME                                      CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   362m         18%    2255Mi          58%       
+vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29% 
+```
+
 **Let's recap:**
 - Even though the `pks resize` command was still `in progress`, you were able to carry out App deployments.
 - You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
 - Kubernetes fetches images from a registry which, until now, was the public Docker Hub image registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry for storing and scanning your images.
+- You kept an eye on K8s cluster capacity using `kubectl top nodes`
 - You exposed `fact`, `petclinic` and `.Net Core Welcome` deployments as services available on the Internet fronted by Load Balancers.
 - However:
   - you did not get SSL encrypted, secure URLs accessible on the Internet. 
@@ -731,19 +773,23 @@ http://<External-IP>
 #### LAB-4D
 ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-- Let's cleam your K8s cluster a little. We will use two different methods. 
+- Let's cleam your K8s cluster. We will use two different methods. 
 
-- Method 1: 
+- Method 1: execute the following commands to delete the `Petclinic` deployment and service:
 
 ```
+kubectl delete deployment petclinic
+kubectl delete service petclinic 
+```
 
+- Method 2: delete the namespace where the `.Net Core Welcome` deployment and service were created:
 
+```
+kubectl delete ns dotnet-core-welcome
+```
 
-
-
-
-
-
+**Let's recap:**
+- If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to clean up all the obejcts by just deleting the namespace.
 
 Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-4.
 
