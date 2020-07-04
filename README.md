@@ -440,7 +440,7 @@ docker build -t dotnet-core-welcome -f Dockerfile .
 docker run -d -p 80:80 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
-- It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. dockPlease make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
+- It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
 http://<userID#>.pks4u.com
