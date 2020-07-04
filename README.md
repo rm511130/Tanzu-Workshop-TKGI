@@ -202,11 +202,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-2: Running a simple GoLang and a Spring/Java Program Locally (on your Ubuntu VM)
 
-- During this Lab, we will experiment with [GoLang](https://golang.org/) and [Spring/Java](https://spring.io/) examples.
-- We will first run these two examples of code "natively" on your Ubuntu VM.
+- During this Lab, we will experiment with [GoLang](https://golang.org/), [Spring/Java](https://spring.io/) and [.NET Core](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) program examples.
+- We will first run these examples of code "natively" on your Ubuntu VM.
 - You will then create Docker Images of these programs and, once again, run them locally using the Docker Engine that has been pre-installed on your Ubuntu VM. 
 - If you are a Developer, the steps in this Lab should be very easy and familiar to you. 
-- If you are an Infrastructure person, the steps in this Lab will help you understand what developers do locally on their machines. 
+- If you are an Infrastructure person, the steps in this Lab will help you understand what developers do locally on their machines to run their code. 
 
 #
 #### LAB-2A 
@@ -278,7 +278,8 @@ http://user1.pks4u.com:8080
 - Execute the following commands:
 
 ```
-mkdir -p ~/dotnet
+cd ~; rm -rf dotnet
+git clone https://github.com/rm511130/dotnet.git 
 cd ~/dotnet
 dotnet new global
 dotnet new mvc 
@@ -425,16 +426,14 @@ cd ~/dotnet
 dotnet publish -c Release
 ```
 
-- Create a `Dockerfile` with the following content:
+- Take a look at the contents of `Dockerfile` using the following commands:
 
 ```
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
-COPY bin/Release/netcoreapp3.1/publish/ App/
-WORKDIR /App
-ENTRYPOINT ["dotnet","dotnet.dll"]
+cd ~/dotnet
+cat Dockerfile
 ```
 
-- Let's build a docker image and run it in your Linux VM:
+- Let's build a Docker image of your `.NET Core Welcome` App, and run it in your Linux VM:
 
 ```
 docker build -t dotnet-core-welcome -f Dockerfile .
