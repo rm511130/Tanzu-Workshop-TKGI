@@ -517,13 +517,10 @@ kubectl get all --all-namespaces
 
 - As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
-- fuck
 
-
-- Let's take a look at the current capacity of your K8s cluster. The `pks plans` command is just to remind us of the available sizing specifications defined by Operations.
+- Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Let's take a look at the current capacity of your K8s cluster. 
 
 ```
-pks plans
 kubectl top nodes
 ```
 
@@ -533,6 +530,10 @@ kubectl top nodes
 NAME                                      CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
 vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   429m         21%    2488Mi          64%
 ```
+
+   - The results shown above indicate that 64% of the 4GB of VM Worker Node Memory are being used. 
+   - You only have one worker node.
+   - The results also show that 21% of 2 vCPUs (2000m) are being consumed.
 
 - Let's scale your cluster horizontally by adding an additional K8s worker node:
 
