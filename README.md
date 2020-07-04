@@ -434,38 +434,32 @@ WORKDIR /App
 ENTRYPOINT ["dotnet","dotnet.dll"]
 ```
 
-- Let's run it:
+- Let's build a docker image and run it in your Linux VM:
 
 ```
 docker build -t dotnet-core-welcome -f Dockerfile .
 docker run -d -p 80:80 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
-- Let's build a Docker Container Image and run it locally on your Ubuntu VM. Use the following commands:
-
-```
-xxx
-```
-
-- It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
+- It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. dockPlease make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
 http://<userID#>.pks4u.com
 ```
 
-- Let's now take a look at the layers used in the creation of your Petclinic container image:
+- Let's now take a look at the layers used in the creation of your `.NET Core Welcome`  container image:
 
 ```
-docker history petclinic
+docker history dotnet-core-welcome
 ```
 ```
-docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
+docker exec -it dotnet-core-welcome sh -c "cat /etc/*release" | head -n 4
 ```
 
 **Let's recap:** 
-- You built and executed a couple of Docker Images on your Ubuntu VM using essentially the same files you used during LABs 2A and 2B.
-- Using various commands on your Ubuntu VM and in a Docker container, you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` commands.
-- Now that you have a working, local container image of your `fact` and `petclinic` programs, as a developer, you should feel reassured that your Apps have a good chance of working in their containerized image format, when pushed to a server. This is one of the main reasons for the success of Container Images among developers.
+- You built and executed Docker Images on your Ubuntu VM using essentially the same files you used during LABs 2A, 2B and 2C.
+- Using various commands on your Ubuntu VM or in Docker containers, you were able to see that many layers (and software versions) were assembled together on your behalf as a result of the `docker build` commands.
+- Now that you have a working, local container image of your `fact`, `petclinic` and `dotnet-core-welcome` programs, as a developer, you should feel reassured that your Apps have a good chance of working in their containerized image format, when pushed to a server. This is one of the main reasons for the success of Container Images among developers.
 
 Congratulations, you have completed LAB-2.
 
