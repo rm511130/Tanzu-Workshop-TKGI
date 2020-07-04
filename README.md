@@ -416,7 +416,7 @@ docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 #### LAB-2F
 ![](./images/dotnet.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-- Now let's create a Docker Image for the .NET Core Welcome program.
+- Now let's create a Docker Image for the `.NET Core Welcome` program.
 
 
 - Execute the following commands to publish your `.NET Core Welcome` program and to create a `Dockerfile`:
