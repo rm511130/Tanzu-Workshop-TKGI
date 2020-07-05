@@ -771,9 +771,9 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 
 #
 #### LAB-4D
-![](./images/docker-tiny.png)    ![](./images/lab.png)
+![](./images/lab.png)
 
-- Let's cleam your K8s cluster. We will use two different methods. 
+- Let's clean your K8s cluster. We will use two different methods. 
 
 - Method 1: execute the following commands to delete the `Petclinic` deployment and service:
 
@@ -789,7 +789,7 @@ kubectl delete ns dotnet-core-welcome
 ```
 
 **Let's recap:**
-- If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to clean up all the obejcts by just deleting the namespace.
+- If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
 
 Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-4.
 
