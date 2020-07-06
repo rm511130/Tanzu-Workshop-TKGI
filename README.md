@@ -442,13 +442,13 @@ cat Dockerfile
 
 ```
 docker build -t dotnet-core-welcome -f Dockerfile .
-docker run -d -p 88:80 --name dotnet-core-welcome dotnet-core-welcome
+docker run -d -p 5001:80 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
 - It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
-http://<userID#>.pks4u.com:88
+http://<userID#>.pks4u.com:5001
 ```
 
 - Let's now take a look at the layers used in the creation of your `.NET Core Welcome`  container image:
