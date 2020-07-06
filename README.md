@@ -504,11 +504,27 @@ pks get-credentials $user-cluster
 
 ```
 kubectl cluster-info
-kubectl get all --all-namespaces
+nslookup $user-cluster-k8s.pks4u.com
+pks cluster $user-cluster
 ```
 
-- As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
+- The `kubectl cluster-info` command relays back to you information about the the diagram shown above. You have a Load Balancer entry point that allows `kubectl` commands to get through to the `API Server` (Process) in your cluster's `Control Plane (Master Node VM)` using `https` over `port 8443`. 
+- The IP address you obtained by executing the `nslookup` command, is the IP address of the Load Balancer.
+- The `pks cluster` command shows you the real IP address of your `Control Plane (Master Node VM)`.
+- The `kubectl cluster-info` command also informed you that your cluster is using [`CoreDNS`](https://coredns.io/) instead of older `Kube-dns`. `CoreDNS` is a flexible, high-performance, extensible DNS server used by your Kubernetes cluster. `CoreDNS` listens for service and endpoint events from the Kubernetes API and updates its DNS records as needed. These events are triggered when you create, update or delete Kubernetes services and their associated pods. Like Kubernetes, the `CoreDNS` project is hosted by the [`CNCF`](https://www.cncf.io/).
 
+- Execute the following commands to get an inventory of the API resources and versions, the namespacing and a general report on all resources and their different types. As you will see, your K8s cluster is already quite busy even though you haven't deployed any Apps to it.
+
+```
+kubectl get ns
+kubectl get all --all-namespaces
+kubectl api-versions
+kubectl api-resources
+```
+
+- You can learn more about Kubernetes APIs at https://kubernetes.io/docs/reference/kubectl/overview/
+
+- As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
 - Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Let's take a look at the current capacity of your K8s cluster by executing the following command:
 
@@ -526,6 +542,12 @@ vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   429m         21%    2488Mi          64
    - The results shown above indicate that 64% of the 4GB of VM Worker Node Memory are being used. 
    - You only have one worker node.
    - The results also show that 21% of 2 vCPUs (2000m) are being consumed.
+   
+- You can also execute the following command to see how your `pods` are performing:
+
+```
+kubectl top pods --all-namespaces
+```
 
 - Let's scale your cluster horizontally by adding an additional K8s worker node using the following command:
 
@@ -549,7 +571,7 @@ Plan Name:                small
 UUID:                     6e3907eb-3ac0-4c6e-8196-8f5b1ebd03b0
 Last Action:              UPDATE
 Last Action State:        in progress
-Last Action Description:  Instance update completed
+Last Action Description:  Instance update in progress
 Kubernetes Master Host:   user1-cluster-k8s.pks4u.com
 Kubernetes Master Port:   8443
 Worker Nodes:             1
@@ -569,8 +591,7 @@ Last Action State:        in progress
 
 **Let's recap:** 
 - You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
-- Even though you are a DevOps user, you did not see any other K8s Clusters. You are an isolated tenant of the TKGI platform.
-- You executed a few new `kubectl` commands against your cluster as a DevOps TKGI Manager.
+- You executed a few new `kubectl` commands against your cluster as a DevOps user with **TKGI Manager** privileges. Your peers also executed the same commands, but note that you only saw your `userID-cluster` and they only saw their `userID-clusters`. Later on in this workshop you will execute commands as a **TKGI Administrator** and this will allow you to see all the `userID-clusters` runningp on the TKGI Platform.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
