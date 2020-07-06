@@ -1484,3 +1484,366 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 We covered a lot of ground today. Lots of new concepts and hopefully lots of valuable learning opportunities. We've only scratched the surface. VMware has a robust set of services and documented best practices to help you get started with greenfield projects and/or brownfield modernizations from old architectures to modern cloud native solutions.
 
 Thank you for your time and attention. Please take 30 seconds to provide us some [feedback](https://forms.gle/AQU3Ky3bfduB2c7y6).
+
+
+
+-----------------------------------------------------
+### LAB-X: [Configure LetsEncrypt and Acme.sh](https://github.com/acmesh-official/acme.sh)
+
+- As more and more solutions are built using microservices architecture, it is very important to have all your public endpoints encrypted. The good news is that you can achieve it without spending any additional penny. LetsEncrypt is one such project which is a free and open Certificate Authority and you can easily integrate it with your setup to automatically generate SSL certificates free of cost, FOREVER…
+
+- Let's first make sure that you are a `DevOps` user:
+
+```
+pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops
+printf 'password\n' | pks get-credentials user1-cluster
+```
+
+- The domain `pks4u.com` is being managed by Google, so we're going to use the Google Instructions:
+
+```
+gcloud init              # it may ask you to run $ sudo snap install google-cloud-sdk --classic
+```
+- You should see:
+```
+Welcome! This command will take you through the configuration of gcloud.
+
+Settings from your current configuration [default] are:
+compute:
+  region: us-east1
+  zone: us-east1-b
+core:
+  account: rmeira@pivotal.io
+  disable_usage_reporting: 'True'
+  project: fe-rmeira
+```
+
+```
+cd ~
+git clone https://github.com/acmesh-official/acme.sh
+cd acme.sh
+export CLOUDSDK_ACTIVE_CONFIG_NAME=default
+```
+```
+./acme.sh --issue --dns dns_gcloud -d pks4u.com -d '*.pks4u.com' -d *.pks.pks4u.com -d *.apps.pks4u.com -d *.sys.pks4u.com -d *.login.sys.pks4u.com -d *.uaa.sys.pks4u.com
+```
+- And then you wait for `acme.sh` to do its magic... and eventually you will see:
+
+```
+[Mon Jul  6 00:32:52 UTC 2020] Your cert is in  /home/ubuntu/.acme.sh/pks4u.com/pks4u.com.cer 
+[Mon Jul  6 00:32:52 UTC 2020] Your cert key is in  /home/ubuntu/.acme.sh/pks4u.com/pks4u.com.key 
+[Mon Jul  6 00:32:52 UTC 2020] The intermediate CA cert is in  /home/ubuntu/.acme.sh/pks4u.com/ca.cer 
+[Mon Jul  6 00:32:52 UTC 2020] And the full chain certs is there:  /home/ubuntu/.acme.sh/pks4u.com/fullchain.cer 
+```
+
+- You can use https://www.sslshopper.com/certificate-decoder.html to decode the cert at /home/ubuntu/.acme.sh/pks4u.com/pks4u.com.cer and you'll see:
+
+```
+Certificate Information:
+Common Name: pks4u.com
+Subject Alternative Names: *.apps.pks4u.com, *.login.sys.pks4u.com, *.pks.pks4u.com, *.pks4u.com, *.sys.pks4u.com, *.uaa.sys.pks4u.com, pks4u.com
+Valid From: July 5, 2020
+Valid To: October 3, 2020
+Issuer: Let's Encrypt Authority X3, Let's Encrypt Write review of Let's Encrypt
+Serial Number: 039b90fdb27a6487b880c7aa4523181c8c37
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+### LAB-X: [Old Cert Manager notes](https://github.com/acmesh-official/acme.sh)
+
+
+
+
+
+- Let's start by executing the following command to create a CRD (Custom Resource Definition):
+
+```
+kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.14/deploy/manifests/00-crds.yaml
+```
+
+- The command above should produce an output similar to the example shown below:
+
+```
+customresourcedefinition.apiextensions.k8s.io/certificaterequests.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/certificates.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/challenges.acme.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/issuers.cert-manager.io created
+customresourcedefinition.apiextensions.k8s.io/orders.acme.cert-manager.io created
+```
+
+- We'll be using the `cert-manager` namespace:
+
+```
+kubectl get ns  # if you don't see the "cert-manager" namespace, please create it using $ kubectl create ns cert-manager
+```
+
+- Add the Jetstack Helm repository and update your local Helm chart repo cache:
+
+```
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+```
+
+- Let's install the cert-manager helm chart:
+
+```
+helm install cert-manager --namespace cert-manager --version v0.15.1 jetstack/cert-manager
+```
+
+- The command above should produce an output similar to the example shown below:
+
+```
+NAME: cert-manager
+LAST DEPLOYED: Sun Jul  5 18:03:28 2020
+NAMESPACE: cert-manager
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+cert-manager has been deployed successfully!
+
+In order to begin issuing certificates, you will need to set up a ClusterIssuer
+or Issuer resource (for example, by creating a 'letsencrypt-staging' issuer).
+
+More information on the different types of issuers and how to configure them
+can be found in our documentation:
+
+https://cert-manager.io/docs/configuration/
+
+For information on how to configure cert-manager to automatically provision
+Certificates for Ingress resources, take a look at the `ingress-shim`
+documentation:
+
+https://cert-manager.io/docs/usage/ingress/
+```
+
+- Let's make sure you have the 3 required pods up and running. Execute the following command:
+
+```
+kubectl get pods -n cert-manager
+```
+- You should see something similar to the output shown below. If the pods are not running, wait a few seconds and check again.
+
+```
+NAME                                       READY   STATUS    RESTARTS   AGE
+cert-manager-9b8969d86-9xmxr               1/1     Running   0          108s
+cert-manager-cainjector-8545fdf87c-9rsbm   1/1     Running   0          108s
+cert-manager-webhook-8c5db9fb6-cgdcq       1/1     Running   0          108s
+```
+
+- hmmmm    
+
+
+
+
+
+
+
+
+## Running Chess and accessing it via an ingress 
+
+```
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo update
+kubectl run chess --image=rmeira/chess --port=80
+kubectl expose deployment chess --port=80 --target-port=80 --name=chess --type=LoadBalancer
+kubectl get service chess -w
+```
+```
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)        AGE
+chess   LoadBalancer   10.100.200.130   34.74.220.255   80:31726/TCP   4m40s
+```
+- We can now play chess at `http://34.74.220.255`
+```
+kubectl create ns ingress
+helm install nginx-ingress stable/nginx-ingress --set rbac.create=true --namespace ingress --set controller.config.proxy-buffer-size=16k
+```
+```
+NAME: nginx-ingress
+LAST DEPLOYED: Sun Jul  5 20:42:10 2020
+NAMESPACE: ingress
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The nginx-ingress controller has been installed.
+It may take a few minutes for the LoadBalancer IP to be available.
+You can watch the status by running 'kubectl --namespace ingress get services -o wide -w nginx-ingress-controller'
+
+An example Ingress that makes use of the controller:
+
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    name: example
+    namespace: foo
+  spec:
+    rules:
+      - host: www.example.com
+        http:
+          paths:
+            - backend:
+                serviceName: exampleService
+                servicePort: 80
+              path: /
+    # This section is only required if TLS is to be enabled for the Ingress
+    tls:
+        - hosts:
+            - www.example.com
+          secretName: example-tls
+
+If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: example-tls
+    namespace: foo
+  data:
+    tls.crt: <base64 encoded cert>
+    tls.key: <base64 encoded key>
+  type: kubernetes.io/tls
+
+```
+```
+kubectl --namespace ingress get services -o wide -w nginx-ingress-controller
+```
+```
+NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE   SELECTOR
+nginx-ingress-controller   LoadBalancer   10.100.200.247   35.231.44.137   80:30978/TCP,443:30779/TCP   89s   app.kubernetes.io/component=controller,app=nginx-ingress,release=nginx-ingress
+```
+
+- Add 35.231.44.137 in the DNS as nginx.pks4u.com  --> try it http://nginx.pks4u.com
+
+- vi my-first-ingress-4-chess.yml
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: example
+  namespace: default
+spec:
+  rules:
+    - host: nginx.pks4u.com
+      http:
+        paths:
+          - backend:
+              serviceName: chess
+              servicePort: 80
+            path: /
+```
+
+```
+kubectl apply -f my-first-ingress-4-chess.yml
+kubectl get ingress 
+```
+
+- Now try http://nginx.pks4u.com  and yoou oshould see the chess board
+
+
+## Running Chess w/o the Chess Service being exposed to the outside
+
+```
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo update
+kubectl run chess --image=rmeira/chess --port=80
+kubectl expose deployment chess --port=80 --target-port=80 --name=chess --type=NodePort
+kubectl get service chess
+```
+```
+NAME    TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+chess   NodePort   10.100.200.234   <none>        80:31567/TCP   3s
+```
+```
+kubectl run fact --image=rmeira/fact
+kubectl expose deployment fact --name=fact --port=80 --type=NodePort
+```        
+     
+- Create nginx ingress controller // don't do this step if it has already been done
+```
+kubectl create ns ingress
+helm install nginx-ingress stable/nginx-ingress --set rbac.create=true --namespace ingress --set controller.config.proxy-buffer-size=16k
+```
+
+```
+kubectl --namespace ingress get services -o wide nginx-ingress-controller
+```
+```
+NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE   SELECTOR
+nginx-ingress-controller   LoadBalancer   10.100.200.247   35.231.44.137   80:30978/TCP,443:30779/TCP   89s   app.kubernetes.io/component=controller,app=nginx-ingress,release=nginx-ingress
+```
+
+- Add 35.231.44.137 in the DNS as nginx.pks4u.com  --> try it http://nginx.pks4u.com
+
+- vi my-first-ingress-4-chess.yml
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: workshop-ingress
+  namespace: default
+spec:
+  backend:
+    serviceName: other
+    servicePort: 8080
+  rules:
+    - host: nginx.pks4u.com
+      http:
+        paths:
+          - backend:
+              serviceName: chess
+              servicePort: 80
+            path: /
+    - host: nginx.pks4u.com
+      http:
+        paths:
+          - backend:
+              serviceName: fact
+              servicePort: 80
+            path: /fact       
+```
+
+```
+kubectl apply -f my-first-ingress-4-chess.yml
+kubectl get ingress 
+```
+
+- Now try http://nginx.pks4u.com  and you should see the chess board
+
+
+## Having some fun
+
+```
+kubectl get all
+kubectl get all --all-namespaces
+kubectl api-resources
+kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get -o name --all-namespaces
+```
+
+
+
+
+
