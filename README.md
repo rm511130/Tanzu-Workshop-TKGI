@@ -647,7 +647,7 @@ curl http://<External-IP>/10; echo
 kubectl top nodes
 ```
 
-- The results from the command shown above should show that you have plenty of capacity in your cluster. The results shown below are just for reference:
+- The results from the command shown above should show that you have plenty of capacity in your cluster. The output shown below is just for reference. Don't worry if you don't see two VMs as shown below. You can use `pks clusters` to check whether the `pks resize` command is still working to create the additional Worker Node.
 
 ```
 NAME                                      CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
