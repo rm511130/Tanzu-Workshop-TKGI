@@ -69,7 +69,7 @@ ssh -i ~/Downloads/fuse.pem ubuntu@user1.pks4u.com
 
 <!-- - [Three Types of Code & Shared KPIs](https://drive.google.com/open?id=12yG6cpR6NP12IjATRhrdq3-65ZUBb6ZaZjgS94wZrsk) &nbsp;&nbsp;&nbsp; by Matt Popovich - Senior Solution Engineer -->
 
-[VMware Tanzu Customer Success](https://drive.google.com/open?id=1idNKL_eTxKu5pEc6Z7GwLaJ_W5zaBmOxFecH96gI3ds) &nbsp;&nbsp;&nbsp; by Lynn Strickmeyer - CSM
+- [VMware Tanzu Customer Success Manager](https://drive.google.com/file/d/1L15cVbpE6_4gYhoLfpNPvOPg6L321qDD/view) &nbsp;&nbsp;&nbsp; by Lynn Strickmeyer - CSM
 
 - [VMware Customer Stories](https://tanzu.vmware.com/customers)
 
