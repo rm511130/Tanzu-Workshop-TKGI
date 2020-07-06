@@ -811,23 +811,24 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ```
 docker images
 ```
-- Verify that you have at least two docker images that are local to your Ubuntu VM: `fact` and `petclinic`. 
+- Verify that you have at least three docker images that are local to your Ubuntu VM: `fact`, `petclinic` and `dotnet-core-welcome`. 
 - Proceed by executing the following commands to log into Harbor from your Ubuntu VM and to upload images to the Harbor registry:
 
 ```
 docker login -p Password1 harbor.pks4u.com -u $user
-docker images
 docker tag fact harbor.pks4u.com/library/$user-fact:latest
 docker tag petclinic harbor.pks4u.com/library/$user-petclinic:latest
+docker tag dotnet-core-welcome harbor.pks4u.com/library/$user-dotnet-core-welcome:latest
 docker images
 docker push harbor.pks4u.com/library/$user-fact:latest
 docker push harbor.pks4u.com/library/$user-petclinic:latest
+docker push harbor.pks4u.com/library/$user-dotnet-core-welcome:latest
 ```
 - Now look for your programs in the Harbor browser session you were asked to leave open.
 
-- If it hasn't happened yet, go ahead and select your `userID-fact` image and scan it for vulnerabilities. 
-- Do the same for your `userID-petclinic` image.
-- How many CVEs are your `fact` and `petclinic` Apps exposed to?
+- If scanning of your images hasn't happened yet, go ahead and select your `userID-fact` image and scan it for vulnerabilities. 
+- Do the same for your `userID-petclinic` and `userID-dotnet-core-welcome` images.
+- How many CVEs are your `fact`, `petclinic` and `dotnet-core-welcome` Apps exposed to?
 
 - Now execute the following command on your Ubuntu VM:
 
@@ -955,7 +956,7 @@ kubectl get deployment fact -o yaml > fact-deployment.yml
 - You then need to alter the contents of the `fact-deployment.yml` file to include the yaml snippet shown above. 
 - *However*, since it's very easy to get the yaml formatting wrong, and the purpose of this workshop is not to test your editing skills, let's proceed by using the `fact-deployment-with-readiness-probe.yml` file, available in your home directory, to recreate a working deployment of your `fact` program.
 
-- Delete and recreate, using [`fact-deployment-with-readiness-probe.yml`](./fact-deployment-with-readiness-probe.yml), your `fact` deployment with the following commands:
+- Delete and recreate, using [`fact-deployment-with-readiness-probe.yml`](./fact-deployment-with-readiness-probe.yml), your `fact` deployment using the following commands:
 
 ```
 kubectl delete deployment fact
@@ -984,8 +985,8 @@ kubectl scale deployment fact --replicas=1
     - please execute the following commands:
     
     ```
-    kubectl delete deployment fact petclinic
-    kubectl delete service fact petclinic
+    kubectl delete deployment fact
+    kubectl delete service fact
     ```
 
 **Let's recap:** 
@@ -1036,7 +1037,7 @@ kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port
 - Execute the command below until you see an `External IP` address assigned to your service. You can then use `CTRL-C` to cancel the `watch` loop:
 
 ```
-watch kubectl get service timer-test
+kubectl get service timer-test -w
 ```
 
 - Using the `External IP` address, execute the following command and leave it running. Use Terminal Window #1 for this step.
