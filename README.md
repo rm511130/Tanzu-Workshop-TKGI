@@ -413,7 +413,7 @@ docker history petclinic
 docker exec -it petclinic sh -c "cat /etc/*release" | head -n 4
 ```
 
-- What release of the [OS](https://www.debian.org/releases/) was used? 
+- What release of the [OS](https://alpinelinux.org/) was used? 
 
 - As a developer, you have a lot of control over what layers and operating systems are employed in building a container image. It's very easy to _pick what works_ and proceed with code that delivers business functionality. It's also very easy to _stick with what works_ which can open vectors of attack to [Common Vulnerabilities and Exposures (CVEs)](https://www.cvedetails.com/cve-help.php).  
 
