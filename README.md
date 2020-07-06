@@ -438,25 +438,17 @@ cd ~/dotnet
 cat Dockerfile
 ```
 
-- Execute the following commands to start with a clean Docker environment:
-
-```
-if [ "$(docker ps -aq -f status=running)" ]; then docker stop $(docker ps -a -q); fi; # stops any running containers
-docker system prune -a -f                                                             # deletes old container images
-docker images; docker ps -a                                                           # check if anything was left behind
-```
-
 - Let's build a Docker image of your `.NET Core Welcome` App, and run it in your Linux VM:
 
 ```
 docker build -t dotnet-core-welcome -f Dockerfile .
-docker run -d -p 80:80 --name dotnet-core-welcome dotnet-core-welcome
+docker run -d -p 88:80 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
 - It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
-http://<userID#>.pks4u.com
+http://<userID#>.pks4u.com:88
 ```
 
 - Let's now take a look at the layers used in the creation of your `.NET Core Welcome`  container image:
