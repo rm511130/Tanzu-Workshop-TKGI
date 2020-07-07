@@ -287,7 +287,7 @@ dotnet new mvc
 - Let's make a couple of edits to personalize the Welcome Message and to make sure our code is listening on port `5001` by running the following script:
 
 ```
-soource ./tweaking_Index.cshtml_and_Program.cs.sh
+source ./tweaking_Index.cshtml_and_Program.cs.sh
 ```
 
 - Let's run our `.Net Core Welcome` program using the following command:
