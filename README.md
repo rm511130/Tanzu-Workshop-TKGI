@@ -296,7 +296,7 @@ source ./tweaking_Index.cshtml_and_Program.cs.sh
 dotnet run
 ```
 
-- Once you see in your logs that `Content root path: /home/ubuntu/dotnet` you can proceed to test your `.NET Core Welcome` MVC program.
+- Once you see in `Content root path: /home/ubuntu/dotnet` in your logs on the termional screen, you can proceed to test your `.NET Core Welcome` MVC program.
 
 - To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com:5001`.
 
@@ -407,7 +407,7 @@ docker build -t petclinic .
 docker run -d --publish 80:8080 --name petclinic --rm petclinic
 ```
 
-- It will take around 15 seconds for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
+- It will take around **15 seconds** for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
 http://<userID#>.pks4u.com
@@ -451,7 +451,7 @@ cat Dockerfile
 
 ```
 docker build -t dotnet-core-welcome -f Dockerfile .
-docker run -d -p 5001:80 --name dotnet-core-welcome dotnet-core-welcome
+docker run -d -p 5001:5001 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
 - It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
@@ -482,19 +482,28 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-3: Connecting to TKGI API and Resizing a Kubernetes Cluster
 
-- The creation of a Kubernetes Cluster takes some time, so we created a Kubernetes Cluster for you in preparation for this workshop. The command used was:
+- The creation of a Kubernetes Cluster takes several minutes, so we created a Kubernetes Cluster for each workshop attendee in preparation for this workshop. 
 
-```
-# pks create-cluster user1-cluster -e user1-cluster-k8s.pks4u.com --plan small --num-nodes 1  # do not execute
-```
+- We are running part of this Workshop on Google's GCP Public Cloud for its elastic capacity so, for your reference, the commands used to create clusters are describe [here](https://docs.pivotal.io/tkgi/1-8/gcp-cluster-load-balancer.html). At a high-level, the GCP-specific steps to create clusters are as follows:
+     - Create a GCP Load Balancer
+     - Create a DNS Entry
+     - Create the Cluster using `pks create-cluster user1-cluster -e user1-cluster-k8s.pks4u.com --plan small --num-nodes 1`
+     - Configure Load Balancer Back End
+     - Create a Network Tag
+     - Create Firewall Rules
+     - Access the Cluster
+     
+- The steps shown above are typically scripted as can be seen [here](https://github.com/rm511130/manage-pks).
+
+- You will be asked to create a K8s Cluster later on in this workshop.
 
 ![](./images/bosh_pks_k8s_on_public_cloud.png)
 
 ![](./images/lab.png)
 
 - During this lab you are going to assume the role of a Platform DevOps person.
-- Execute the following commands to log into the TKGI Control Plane. 
-- The use of `$devops` will automatically align each command to your UserID.
+- Execute the following commands to log into the TKGI/PKS Control Plane (a.k.a. Master Node) of your K8s cluster. 
+- The use of the environment variable `$devops` will automatically align each command to match your UserID.
 
 ```
 echo $devops
@@ -510,15 +519,19 @@ rm ~/.kube/config
 kubectl config view
 ```
 
-- Let's get `kubectl` credentials for your `DevOps` user. If prompted for a password, use `password`. Please execute the following commands:
+- Let's now get `kubectl` credentials for your `DevOps` user. If prompted for a password, use `password`. Please execute the following commands:
 
 ```
 pks get-credentials $user-cluster
+```
+- Let's now take a look at your `kubeconfig`:
+
+```
 ls ~/.kube/config                   
 kubectl config view                   
 ```
 
-- The commands shown above helped us to check whether your `kubeconfig` file has been re-created with the information `kubectl` needs to choose a cluster and communicate with the API server of a cluster. 
+- The commands shown above helped us to check whether your `kubeconfig` file has been re-created with the information `kubectl` needs to choose a cluster and communicate with the API server of that cluster. 
 - Let's learn more about your cluster. Please execute the following commands:
 
 ```
@@ -530,9 +543,9 @@ pks cluster $user-cluster
 - The `kubectl cluster-info` command relays back to you information about the the diagram shown above. You have a Load Balancer entry point that allows `kubectl` commands to get through to the `API Server` (Process) in your cluster's `Control Plane (Master Node VM)` using `https` over `port 8443`. 
 - The IP address you obtained by executing the `nslookup` command, is the IP address of the Load Balancer.
 - The `pks cluster` command shows you the real IP address of your `Control Plane (Master Node VM)`.
-- The `kubectl cluster-info` command also informed you that your cluster is using [`CoreDNS`](https://coredns.io/) instead of older `Kube-dns`. `CoreDNS` is a flexible, high-performance, extensible DNS server used by your Kubernetes cluster. `CoreDNS` listens for service and endpoint events from the Kubernetes API and updates its DNS records as needed. These events are triggered when you create, update or delete Kubernetes services and their associated pods. Like Kubernetes, the `CoreDNS` project is hosted by the [`CNCF`](https://www.cncf.io/).
+- The `kubectl cluster-info` command also informed you that your cluster is using [`CoreDNS`](https://coredns.io/) instead of the older `Kube-dns`. `CoreDNS` is a flexible, high-performance, extensible DNS server used by your Kubernetes cluster. `CoreDNS` listens for service and endpoint events from the Kubernetes API and updates its DNS records as needed. These events are triggered when you create, update or delete Kubernetes services and their associated pods. Like Kubernetes, the `CoreDNS` project is hosted by the [`CNCF`](https://www.cncf.io/).
 
-- Execute the following commands to get an inventory of the API resources and versions, the namespacing and a general report on all resources and their different types. As you will see, your K8s cluster is already quite busy even though you haven't deployed any Apps to it.
+- Execute the following commands to get an inventory of the API resources and versions, the namespacing and a general report on all resources and their different types. As you will see, your K8s cluster is already quite busy even though you haven't deployed any Apps to it just yet.
 
 ```
 kubectl get ns
@@ -543,7 +556,7 @@ kubectl api-resources
 
 - You can learn more about Kubernetes APIs at https://kubernetes.io/docs/reference/kubectl/overview/
 
-- As you issue `kubectl` commands, you can make use of `tab` to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
+- As you issue `kubectl` commands, you can make use the `tab` key to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
 - Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Let's take a look at the current capacity of your K8s cluster by executing the following command:
 
@@ -562,7 +575,7 @@ vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   429m         21%    2488Mi          64
    - You only have one worker node.
    - The results also show that 21% of 2 vCPUs (2000m) are being consumed.
    
-- You can also execute the following command to see how your `pods` are performing:
+- You can also execute the following command to see how `pods` in system namespaces are performing:
 
 ```
 kubectl top pods --all-namespaces
