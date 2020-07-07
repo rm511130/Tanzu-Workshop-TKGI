@@ -291,7 +291,7 @@ sed -i "s/Welcome/Welcome User$my_number/g" ~/dotnet/Views/Home/Index.cshtml
 cat ~/dotnet/Program.cs | awk '{ if (NR==24) printf("                    webBuilder.UseUrls(\"http://0.0.0.0:5001\");\n"); print $0; }' > ~/dotnet/Programs-v2.cs
 mv ~/dotnet/Programs-v2.cs ~/dotnet/Programs.cs
 ```
-- Let's run our `.Net Core Welcome` program using the following commands:
+- Let's run our `.Net Core Welcome` program using the following command:
 
 ```
 dotnet run
