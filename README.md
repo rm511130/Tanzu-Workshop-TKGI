@@ -492,15 +492,25 @@ echo $devops
 pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops
 pks clusters
 pks plans
+pks cluster $user-cluster
 ```
-- Let's get more detailed information about your cluster.
+- Let's get more detailed information about your cluster. We'll start by erasing your local `config` file. Execute the following commands. Note: the [Kubernetes Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) is a valuable resource you should bookmark.
 
 ```
-pks cluster $user-cluster
 rm ~/.kube/config
-pks get-credentials $user-cluster
+kubectl config view
 ```
-- If prompted for a password, use `password`. Please continue by executing the following commands:
+
+- Let's get `kubectl` credentials for your `DevOps` user. If prompted for a password, use `password`. Please execute the following commands:
+
+```
+pks get-credentials $user-cluster
+ls ~/.kube/config                   
+kubectl config view                   
+```
+
+- The commands shown above helped us to check whether your `kubeconfig` file has been re-created with the information `kubectl` needs to choose a cluster and communicate with the API server of a cluster. 
+- Let's learn more about your cluster. Please execute the following commands:
 
 ```
 kubectl cluster-info
@@ -603,7 +613,7 @@ Congratulations, you have completed LAB-3.
 -----------------------------------------------------
 ### LAB-4: Deploying Apps to Kubernetes Clusters
 
-- Docker Images identical to the ones you created during Lab-2D, Lab-2E and Lab-2F have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact), [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) and [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. You will carry out these steps in a subsequent Lab when it's time to upload container images into a private registry called `Harbor`. 
+- Docker container images identical to the ones you created during Lab-2D, Lab-2E and Lab-2F have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact), [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) and [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. You will carry out these steps in a subsequent Lab when it's time to upload container images into a private registry called `Harbor`. 
 
 - During this lab you will deploy your containerized Apps in your K8s cluster. 
 
@@ -628,11 +638,11 @@ kubectl get pods -w
 - If you see that your `fact` pod has a `STATUS` of `running`, please use `CTRL-C` to cancel the command above and proceed with the following commands:
 
 ```
-pod_name=$(kubectl get pods | grep fact | awk '{ print $1 }'); echo $pod_name
-kubectl exec -t -i $pod_name bash
+pod_name=$(kubectl get pods | grep fact | awk '{ print $1 }'); echo $pod_name         # getting the name of the pod that is running your fact app
+kubectl exec -t -i $pod_name bash                                                     # open terminal session 
 ```
 
-- The `kubectl exec` command opens a terminal session on a container that is running the `fact` Docker Image in your cluster. You should see a prompt similar to the example: `root@factorial:/go/src/app#`
+- The `kubectl exec` command opens a terminal session on the container that is running the `fact` Docker Image in your cluster. You should see a prompt similar to the example: `root@factorial:/go/src/app#`
 
 - Continue with the following commands to test whether the `fact` program is running:
 
@@ -681,7 +691,6 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   71m          3%     803Mi           20
 
 ```
 kubectl create deployment petclinic --image=rmeira/petclinic
-kubectl get all
 kubectl expose deployment petclinic --type=LoadBalancer --port=8080
 ```
 - It takes a minute to create a load balancer and to expose a K8s service. You can see the pod being created using the following command:
@@ -730,15 +739,14 @@ kubectl get pods -o json | grep 'nodeName\|\"name\"'
 #### LAB-4C
 ![](./images/dotnet.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-- Let's use the [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome) image to run the `.NET Core Welcome` program on your Kubernetes cluster. We will dedicate a namespace (`ns`) for your `.NET Core Welcome` App.
+- Let's use the [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome) image to run the `.NET Core Welcome` program on your Kubernetes cluster. We will create a namespace for your `.NET Core Welcome` App.
 
 - Execute the following commands:
 
 ```
-kubectl create ns dotnet-core-welcome
+kubectl create namespace dotnet-core-welcome
 kubectl create deployment dotnet-core-welcome --image=rmeira/dotnet-core-welcome -n dotnet-core-welcome
-kubectl get all -n dotnet-core-welcome
-kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --port=80 -n dotnet-core-welcome
+kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --port=80 --target-port=5001 -n dotnet-core-welcome
 ```
 - It takes a minute to create a pod, a load balancer and to expose a K8s service. You can see the pod being created using the following command:
 
@@ -789,6 +797,18 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 #### LAB-4D
 ![](./images/lab.png)
 
+- Each one of the apps we are running on your Kubernetes Cluster has been created with a `Service` of the `LoadBalancer` type. You can see this by executing the following command:
+
+```
+kubectl get services
+```
+
+
+
+#
+#### LAB-4E
+![](./images/lab.png)
+
 - Let's clean your K8s cluster. We will use two different methods. 
 
 - Method 1: execute the following commands to delete the `Petclinic` deployment and service:
@@ -803,6 +823,8 @@ kubectl delete service petclinic
 ```
 kubectl delete ns dotnet-core-welcome
 ```
+
+
 
 **Let's recap:**
 - If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
