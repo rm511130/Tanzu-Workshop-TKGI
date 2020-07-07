@@ -284,13 +284,12 @@ cd ~/dotnet
 dotnet new global
 dotnet new mvc
 ```
-- Let's make a couple of edits to personalize the Welcome Message and to make sure our code is listening on port `5001`:
+- Let's make a couple of edits to personalize the Welcome Message and to make sure our code is listening on port `5001` by running the following script:
 
 ```
-sed -i "s/Welcome/Welcome User$my_number/g" ~/dotnet/Views/Home/Index.cshtml
-cat ~/dotnet/Program.cs | awk '{ if (NR==24) printf("                    webBuilder.UseUrls(\"http://0.0.0.0:5001\");\n"); print $0; }' > ~/dotnet/Programs-v2.cs
-mv ~/dotnet/Programs-v2.cs ~/dotnet/Programs.cs
+./tweaking+Index.cshtml_and_Program.cs.sh
 ```
+
 - Let's run our `.Net Core Welcome` program using the following command:
 
 ```
