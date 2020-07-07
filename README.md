@@ -282,12 +282,22 @@ cd ~; rm -rf dotnet
 git clone https://github.com/rm511130/dotnet.git 
 cd ~/dotnet
 dotnet new global
-dotnet new mvc 
+dotnet new mvc
+```
+- Let's make a couple of edits to personalize the Welcome Message and to make sure our code is listening on port `5001`:
+
+```
 sed -i "s/Welcome/Welcome User$my_number/g" ~/dotnet/Views/Home/Index.cshtml
-dotnet run --urls http://0.0.0.0:5001
+cat ~/dotnet/Program.cs | awk '{ if (NR==24) printf("                    webBuilder.UseUrls(\"http://0.0.0.0:5001\");\n"); print $0; }' > ~/dotnet/Programs-v2.cs
+mv ~/dotnet/Programs-v2.cs ~/dotnet/Programs.cs
+```
+- Let's run our `.Net Core Welcome` program using the following commands:
+
+```
+dotnet run
 ```
 
-- Once you see in your logs that `Content root path: /home/ubuntu/dotnet` you can proceed to test your `.NET Core MVC` program.
+- Once you see in your logs that `Content root path: /home/ubuntu/dotnet` you can proceed to test your `.NET Core Welcome` MVC program.
 
 - To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com:5001`.
 
@@ -746,7 +756,7 @@ kubectl get pods -o json | grep 'nodeName\|\"name\"'
 ```
 kubectl create namespace dotnet-core-welcome
 kubectl create deployment dotnet-core-welcome --image=rmeira/dotnet-core-welcome -n dotnet-core-welcome
-kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --port=80 --target-port=5001 -n dotnet-core-welcome
+kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --port=80 --target-port=80 -n dotnet-core-welcome
 ```
 - It takes a minute to create a pod, a load balancer and to expose a K8s service. You can see the pod being created using the following command:
 
