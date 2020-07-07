@@ -587,11 +587,14 @@ Last Action State:        in progress
 ```
 - You don't need to wait while the expansion of the worker nodes is progressing. Let's proceed with the next steps.
 
-- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-7/scale-clusters.html). Changing the `plan` of how clusters are built is an TKGI Operator function.
+- Had we wished to scale the cluster vertically, we would have followed the instructions found [here](https://docs.pivotal.io/pks/1-7/scale-clusters.html). Scaling vertically basically means changing the definition of the `pks plans` and allowing TKGI to upgrade cluster nodes behind the scenes. This is an operation reserved for TKGI Operators.
+
+- Worker and Control Plane node sizing is detailed under https://docs.pivotal.io/tkgi/1-8/vm-sizing.html
 
 **Let's recap:** 
 - You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
 - You executed a few new `kubectl` commands against your cluster as a DevOps user with **TKGI Manager** privileges. Your peers also executed the same commands, but note that you only saw your `userID-cluster` and they only saw their `userID-clusters`. Later on in this workshop you will execute commands as a **TKGI Administrator** and this will allow you to see all the `userID-clusters` runningp on the TKGI Platform.
+- Even though cluster resizing is taking place as you read these words, we're not going to worry about it. TKGI knows what to do. We're just going to continue with Lab-4 and the deployment of Apps to your K8s cluster.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
