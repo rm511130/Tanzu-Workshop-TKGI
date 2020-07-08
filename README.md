@@ -951,18 +951,47 @@ If TLS is enabled for the Ingress, a Secret containing the certificate and key m
 kubectl get service 
 ```
 
-- Take note of the `External-IP Address` of your `nginx-ingress-controller` of type `LoadBalancer`. In the example shown below, it's `34.74.188.39`:
+- Take note of the `External-IP Address` of your `nginx-ingress-controller` of type `LoadBalancer`. In the example shown below, it's `35.231.44.137`:
 
 ```
-NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
-fact                            NodePort       10.100.200.198   <none>         3000:30895/TCP               8m38s
-kubernetes                      ClusterIP      10.100.200.1     <none>         443/TCP                      2d
-nginx-ingress-controller        LoadBalancer   10.100.200.65    34.74.188.39   80:30951/TCP,443:32519/TCP   3m8s
-nginx-ingress-default-backend   ClusterIP      10.100.200.236   <none>         80/TCP                       3m8s
-petclinic                       NodePort       10.100.200.42    <none>         8080:31478/TCP               8m37s
+NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)                      AGE
+fact                            NodePort       10.100.200.198   <none>          3000:30895/TCP               9h
+kubernetes                      ClusterIP      10.100.200.1     <none>          443/TCP                      2d10h
+nginx-ingress-controller        LoadBalancer   10.100.200.66    35.231.44.137   80:30016/TCP,443:31365/TCP   11m
+nginx-ingress-default-backend   ClusterIP      10.100.200.47    <none>          80/TCP                       11m
+petclinic                       NodePort       10.100.200.42    <none>          8080:31478/TCP               9h
+```
+
+- Please ask the workshop organizers to create a DNS entry mapping your `nginx-ingress-controller` IP address (e.g. `35.231.44.137`) to the following FQDN  `userID-nginx.pks4u.com` where `userID` is your UserID claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
+
+- Wait until the following command resolves the FQDN to your `nginx-ingress-controller` IP address:
+
+```
+nslookup $user-nginx.pks4u.com
+```
+
+- Assuming that `nslookup $user-nginx.pks4u.com` is working, let's proceed by creating an ingress for your Apps. Please execute the following commands:
+
+```
+kubectl get ingress
+cat ~/ingress-4-apps.yml
+envsubst < ~/ingress-4-apps.yml | kubectl apply -f -
+```
+
+- The `envsubst` command simply replaces `$user` in the yaml file with it's actual value. 
+
+- Please execute the following command to check whether your ingress has been created:
+
+```
+kubectl get ingress
 ```
 
 - 
+
+
+
+
+
 
 
 
