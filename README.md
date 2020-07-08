@@ -480,14 +480,16 @@ Congratulations, you have completed LAB-2.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-3: Connecting to TKGI API and Resizing a Kubernetes Cluster
+### LAB-3: Connecting to TKGI API, Creating and Resizing Kubernetes Clusters
+
+## TKGI Clusters on the Public Cloud
 
 - The creation of a Kubernetes Cluster takes several minutes, so we have already set up a Kubernetes Cluster for each workshop attendee in preparation for this workshop. 
 
-- We are running part of this Workshop on Google's GCP Public Cloud for its elastic capacity so, for your reference, the commands used to create clusters are describe [here](https://docs.pivotal.io/tkgi/1-8/gcp-cluster-load-balancer.html). At a high-level, the GCP-specific steps to create clusters are as follows:
+- We are running a big part of this Workshop on Google's GCP Public Cloud given its elastic capacity. The commands used to create the workshop clusters are describe [here](https://docs.pivotal.io/tkgi/1-8/gcp-cluster-load-balancer.html). At a high-level, the GCP-specific steps to create clusters are as follows:
      - Create a GCP Load Balancer
      - Create a DNS Entry
-     - Create the Cluster using `pks create-cluster user1-cluster -e user1-cluster-k8s.pks4u.com --plan small --num-nodes 1`
+     - Create the Cluster e.g. `pks create-cluster user1-cluster -e user1-cluster-k8s.pks4u.com --plan small --num-nodes 1`
      - Configure Load Balancer Back End
      - Create a Network Tag
      - Create Firewall Rules
@@ -495,15 +497,55 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
      
 - The steps shown above are typically scripted as can be seen [here](https://github.com/rm511130/manage-pks).
 
-- You will be asked to create a K8s Cluster later on in this workshop.
+## TKGI on vSphere with NSX-T
+
+- When using TKGI/PKS on vSphere with NSX-T, the steps to create a K8s cluster do not require the configuration of a load balancer to access the PKS API VM. A DNAT rule is automatically configured to make the PKS API host accessible. 
+
+![](./images/lab.png)
+
+- There are just two steps necessary to create a K8s cluster on TKGI running on vSphere with NSX-T. Let's go ahead and create a K8s Cluster on TKGI running on vSphere with NSX-T. Please execute the following commands. Please note that our use of the environment variables `$devops` and `$user` will automatically align each command to match your UserID, so you need not make any changes to the commands shown below:
+
+```
+pks login -a https://api.run.haas-208.pez.pivotal.io:9021 -p password -k -u $devops
+pks create-cluster $user-cluster --plan small --num-nodes 1 -e $user.run.haas-208.pez.pivotal.io
+```
+
+- That's it. You can check on the status of the `pks create-cluster` process by executing the following command: 
+
+```
+pks cluster $user-cluster
+```
+
+- Once you see an output similar to the example shown below, you need only add the appropriate Master Node A-record DNS entry to match its IP address, and the cluster is ready to be used.
+
+```
+TKGI Version:             1.7.0-build.26
+Name:                     user2-cluster
+K8s Version:              1.16.7
+Plan Name:                small
+UUID:                     115d125a-b387-4005-b36f-28276a08661e
+Last Action:              CREATE
+Last Action State:        succeeded
+Last Action Description:  Instance provisioning completed
+Kubernetes Master Host:   user2.run.haas-208.pez.pivotal.io    <-------+
+Kubernetes Master Port:   8443                                         |________  A-Record DNS Entry
+Worker Nodes:             1                                            |
+Kubernetes Master IP(s):  10.195.72.137      <-------------------------+
+```
+
+- You can come back later to check on the progress of your `pks create-cluster` process. It normally takes 8 to 10 minutes to complete. 
+
+- Behind the scenes, when a TKGI Kubernetes cluster is created, NSX-T creates and configures a dedicated load balancer that is tied to the cluster. The load balancer is a shared resource designed to provide efficient traffic distribution to master nodes as well as services deployed on worker nodes. Each application service is mapped to a virtual server instance, carved out from the same load balancer. For more information, see [Logical Load Balancer in the NSX-T documentation](https://docs.vmware.com/en/VMware-NSX-T/2.1/com.vmware.nsxt.admin.doc/GUID-46567C8D-A5C5-4793-8CDF-858E58FDE3C4.html).
+
+- From this point onwards we will continue the Workshop Labs using the TKGI on GCP clusters that have already been provisioned for you.
 
 ![](./images/bosh_pks_k8s_on_public_cloud.png)
 
 ![](./images/lab.png)
 
 - During this lab you are going to assume the role of a Platform DevOps person.
-- Execute the following commands to log into the TKGI/PKS Control Plane (a.k.a. Master Node) of your K8s cluster. 
-- The use of the environment variable `$devops` will automatically align each command to match your UserID.
+- Execute the following commands to log into the TKGI/PKS Control Plane (a.k.a. Master Node) of the K8s cluster we created for you on GCP. 
+- As you copy and execute these commands in your Linux Workshop VM, please take the time to read each line and try to understand what it does.
 
 ```
 echo $devops
@@ -512,12 +554,15 @@ pks clusters
 pks plans
 pks cluster $user-cluster
 ```
-- Let's get more detailed information about your cluster. We'll start by erasing your local `config` file. Execute the following commands. Note: the [Kubernetes Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) is a valuable resource you should bookmark.
+
+- Let's get more detailed information about your cluster. We'll start by erasing your local `config` file. Execute the following commands.
 
 ```
 rm ~/.kube/config
 kubectl config view
 ```
+
+- Note: the [Kubernetes Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/) is a valuable resource you should bookmark.
 
 - Let's now get `kubectl` credentials for your `DevOps` user. If prompted for a password, use `password`. Please execute the following commands:
 
@@ -531,7 +576,7 @@ ls ~/.kube/config
 kubectl config view                   
 ```
 
-- The commands shown above helped us to check whether your `kubeconfig` file has been re-created with the information `kubectl` needs to choose a cluster and communicate with the API server of that cluster. 
+- The commands shown above helps us check whether your `kubeconfig` file has been re-created with the information `kubectl` needs to choose a cluster and communicate with the API server of that cluster. 
 - Let's learn more about your cluster. Please execute the following commands:
 
 ```
@@ -624,8 +669,9 @@ Last Action State:        in progress
 - Worker and Control Plane node sizing is detailed under https://docs.pivotal.io/tkgi/1-8/vm-sizing.html
 
 **Let's recap:** 
+- You created a TKGI Kubernetes Cluster on vSphere and NSX-T using 2 simple steps. 
 - You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
-- You executed a few new `kubectl` commands against your cluster as a DevOps user with **TKGI Manager** privileges. Your peers also executed the same commands, but note that you only saw your `userID-cluster` and they only saw their `userID-clusters`. Later on in this workshop you will execute commands as a **TKGI Administrator** and this will allow you to see all the `userID-clusters` runningp on the TKGI Platform.
+- You executed a few new `kubectl` commands against your cluster as a DevOps user with **TKGI Manager** privileges. Your peers also executed the same commands, but note that you only saw your `userID-cluster` and they only saw their `userID-clusters`. Later on in this workshop you will execute commands as a **TKGI Administrator** and this will allow you to see all the `userID-clusters` running on the TKGI Platform.
 - Even though cluster resizing is taking place as you read these words, we're not going to worry about it. TKGI knows what to do. We're just going to continue with Lab-4 and the deployment of Apps to your K8s cluster.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
@@ -751,10 +797,10 @@ vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   338m         16%    2252Mi          58
 vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   83m          4%     1083Mi          28%
 ```
 
-- Comparing the results shown above with the previous `kubectl top nodes` output, we can see that the 2nd VM Worker Node has grown its memory utilization from `20%` to `28%`. This change indicates that the single `pod` running the `Petclinic` App was allocated to run in the 2nd VM Worker Node. We can confirm this by issuing the following commmand:
+- Comparing the results shown above with the previous `kubectl top nodes` output, we can see that the 2nd VM Worker Node has grown its memory utilization from `20%` to `28%`. This change indicates that the single `pod` running the `Petclinic` App was allocated to run in the 2nd VM Worker Node. We can confirm this by executing the following commmand:
 
 ```
-kubectl get pods -o json | grep 'nodeName\|\"name\"'
+kubectl get pods -o json | grep 'nodeName\|\"name\"' | grep 'fact\"\|nic\"\|ome\"\|vm' 
 ```
 
 #
@@ -768,7 +814,7 @@ kubectl get pods -o json | grep 'nodeName\|\"name\"'
 ```
 kubectl create namespace dotnet-core-welcome
 kubectl create deployment dotnet-core-welcome --image=rmeira/dotnet-core-welcome -n dotnet-core-welcome
-kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --port=80 --target-port=80 -n dotnet-core-welcome
+kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --target-port=5001 --port=5001 -n dotnet-core-welcome
 ```
 - It takes a minute to create a pod, a load balancer and to expose a K8s service. You can see the pod being created using the following command:
 
@@ -785,9 +831,9 @@ kubectl get service -n dotnet-core-welcome
 - As soon as the `External IP` address is available, access the following URL using a browser to verify that your `.NET Core Welcome` docker image is working as expected:
 
 ```
-http://<External-IP>
+http://<External-IP>:5001
 ```
-- You should see a `.Net Core Welcome` home page that reads: `Welcome All Users`.
+- You should see a `.Net Core Welcome` home page that reads: `Welcome to all Users`.
 
 - Let's check your K8s cluster utilization by executing the following command:
 
@@ -811,19 +857,112 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 - You exposed `fact`, `petclinic` and `.Net Core Welcome` deployments as services available on the Internet fronted by Load Balancers.
 - However:
   - you did not get SSL encrypted, secure URLs accessible on the Internet. 
-  - you did not get a FQDN (Fully Qualified Domain Name).
+  - you also did not get a FQDN (Fully Qualified Domain Name) for each exposed service.
 - Anyone with access to the correct `External IP` addresses is able to run/access your `fact`, `petclinic` and `.Net Core Welcome` programs.
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
 
 #
-#### LAB-4D
+#### LAB-4D - Using Ingress Controllers
 ![](./images/lab.png)
 
-- Each one of the apps we are running on your Kubernetes Cluster has been created with a `Service` of the `LoadBalancer` type. You can see this by executing the following command:
+- Each one of the apps we are running on your Kubernetes Cluster has been created with a `Service` of the type `LoadBalancer`. You can see this by executing the following command:
 
 ```
-kubectl get services
+kubectl get services; kubectl get services -n dotnet-core-welcome
 ```
+- Load Balancers are expensive. Let's take a look at the use of Ingress Controllers instead. Execute the following commands to delete the exposed services of your three Apps:
+
+```
+kubectl delete service fact petclinic
+kubectl delete service dotnet-core-welcome -n dotnet-core-welcome
+```
+
+- Now let's recreate the services as NodePort services by executing the following commands:
+
+```
+kubectl expose deployment fact --type=NodePort --port=3000
+kubectl expose deployment petclinic --type=NodePort --port=8080
+kubectl expose deployment dotnet-core-welcome -n dotnet-core-welcome --type=NodePort --port=5001
+```
+
+- Execute the following command to install the NGINX Ingress Controller in your Kubernetes cluster using Helm:
+
+```
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo update
+helm install nginx-ingress stable/nginx-ingress --set rbac.create=true --set controller.config.proxy-buffer-size=16k
+```
+- The configurable parameters of the NGINX Ingress Controller can be found [here](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration).
+
+- Once the `helm install` command has finished, you should see output similar to the example shown below:
+
+```
+NAME: nginx-ingress
+LAST DEPLOYED: Wed Jul  8 03:32:14 2020
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The nginx-ingress controller has been installed.
+It may take a few minutes for the LoadBalancer IP to be available.
+You can watch the status by running 'kubectl --namespace default get services -o wide -w nginx-ingress-controller'
+
+An example Ingress that makes use of the controller:
+
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    name: example
+    namespace: foo
+  spec:
+    rules:
+      - host: www.example.com
+        http:
+          paths:
+            - backend:
+                serviceName: exampleService
+                servicePort: 80
+              path: /
+    # This section is only required if TLS is to be enabled for the Ingress
+    tls:
+        - hosts:
+            - www.example.com
+          secretName: example-tls
+
+If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: example-tls
+    namespace: foo
+  data:
+    tls.crt: <base64 encoded cert>
+    tls.key: <base64 encoded key>
+  type: kubernetes.io/tls
+```
+
+- Let's look for the NGINX service:
+
+```
+kubectl get service 
+```
+
+- Take note of the `External-IP Address` of your `nginx-ingress-controller` of type `LoadBalancer`. In the example shown below, it's `34.74.188.39`:
+
+```
+NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)                      AGE
+fact                            NodePort       10.100.200.198   <none>         3000:30895/TCP               8m38s
+kubernetes                      ClusterIP      10.100.200.1     <none>         443/TCP                      2d
+nginx-ingress-controller        LoadBalancer   10.100.200.65    34.74.188.39   80:30951/TCP,443:32519/TCP   3m8s
+nginx-ingress-default-backend   ClusterIP      10.100.200.236   <none>         80/TCP                       3m8s
+petclinic                       NodePort       10.100.200.42    <none>         8080:31478/TCP               8m37s
+```
+
+- 
 
 
 
