@@ -482,7 +482,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-3: Connecting to TKGI API and Resizing a Kubernetes Cluster
 
-- The creation of a Kubernetes Cluster takes several minutes, so we created a Kubernetes Cluster for each workshop attendee in preparation for this workshop. 
+- The creation of a Kubernetes Cluster takes several minutes, so we have already set up a Kubernetes Cluster for each workshop attendee in preparation for this workshop. 
 
 - We are running part of this Workshop on Google's GCP Public Cloud for its elastic capacity so, for your reference, the commands used to create clusters are describe [here](https://docs.pivotal.io/tkgi/1-8/gcp-cluster-load-balancer.html). At a high-level, the GCP-specific steps to create clusters are as follows:
      - Create a GCP Load Balancer
