@@ -95,8 +95,9 @@ VMware is your trusted partner to help address all of these challenges.
 
 _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKGI‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKGI used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface)._
 
-- This self-paced workshop includes presentations, videos, demos and hands-on labs. 
+- This self-paced workshop includes presentations, videos, demos and hands-on labs.
 - The labs are interdependent and must be executed in order.
+- The lab environments will only be available during the ~5hrs (a limited window of time) dedicated for the joint start and self-paced completion of the workshop.
 - Please use the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) to claim a userID for this workshop. For example, Ralph Meira is user1.
 - Update the same [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) as you progress through the Labs, by placing an "X" in the appropriate column.
 - Each workshop participant will be assigned a Ubuntu VM previously set up for the execution of hands-on Labs. Your Laptop or Desktop will only be used for two purposes: 
@@ -106,6 +107,10 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
   - `ssh -i fuse.pem ubuntu@user3.pks4u.com` is for `user3` 
   - `ssh -i fuse.pem ubuntu@user15.pks4u.com` is for `user15` 
 - In order to simplify the cut-&-paste-&-replace steps described above, once you are operating on your Ubuntu VM Terminal, we will define environment variables that will hold your specific login name as claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). In this way, the cut-&-paste steps will not require you to edit the command line before pressing `return`.
+- As you work through the labs, please make every effort to not just cut-&-paste-&-execute the labs without actually asking yourself a few questions:
+   - Why am I being asked to cut-&-paste-&-execute these commands?
+   - What do I think these commands will do (before actually running them)?
+   - What is the role of the person who will be executing these commands in the future?
 
 - Throughout this document, when it's time for hands-on labs, you will see the following icon:
      
