@@ -141,7 +141,7 @@ _- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its p
 
    - [Kubernetes 101 in 5 minutes](https://www.youtube.com/watch?v=PH-2FfFD2PU)
 
-   - [PKS on vSphere, AWS, Azure, and/or GCP](https://docs.pivotal.io/pks/1-6/installing.html)
+   - [TKGI on vSphere, AWS, Azure, and/or GCP](https://docs.pivotal.io/pks/1-6/installing.html)
 
 
 ![](./images/k8s_and_pks.png)
