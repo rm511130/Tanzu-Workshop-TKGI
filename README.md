@@ -206,13 +206,14 @@ dotnet --version
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-2: Running a simple GoLang and a Spring/Java Program Locally (on your Ubuntu VM)
+### LAB-2: Running Apps Locally (on your Ubuntu VM)
 
 - During this Lab, we will experiment with [GoLang](https://golang.org/), [Spring/Java](https://spring.io/) and [.NET Core](https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet) program examples.
-- We will first run these examples of code "natively" on your Ubuntu VM.
+- You will first run these examples of code "natively" on your Ubuntu VM.
 - You will then create Docker Images of these programs and, once again, run them locally using the Docker Engine that has been pre-installed on your Ubuntu VM. 
 - If you are a Developer, the steps in this Lab should be very easy and familiar to you. 
-- If you are an Infrastructure person, the steps in this Lab will help you understand what developers do locally on their machines to run their code. 
+- If you are an Operations person, the steps in this Lab will help you understand what developers do locally on their machines to run their code. 
+- Both Developers and Operations will also experience how easy it is to create Container Images that run well but are somewhat open to [CVE](https://www.cvedetails.com/cve-help.php)-based attacks.
 
 #
 #### LAB-2A 
