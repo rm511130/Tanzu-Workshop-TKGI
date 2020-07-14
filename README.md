@@ -1068,7 +1068,7 @@ petclinic                       NodePort       10.100.200.42    <none>          
 nslookup $user-nginx.pks4u.com
 ```
 
-- Assuming that `nslookup $user-nginx.pks4u.com` is working, let's proceed by creating an ingress for your Apps. Please execute the following commands:
+- Assuming that `nslookup $user-nginx.pks4u.com` is returning the expected IP Address, let's proceed by creating an ingress for your Apps. Please execute the following commands:
 
 ```
 kubectl get ingress
