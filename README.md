@@ -1108,7 +1108,7 @@ kubectl apply -f ~/simple-ingress-4-apps.yml
 kubectl get ingresses
 ```
 
-- Now open a browser window and try to access each of the URLs shown below:
+- Now open a browser window and try to access each of the URLs shown below. Please remember to use the correct `UserID` instead of `user1` in the URLs that follow. 
 
 ```
 - (1) http://nginx.user1.pks4u.com/fact/15
@@ -1147,7 +1147,7 @@ kubectl get ingress; echo; kubectl get ingress -n dotnet-core-welcome
 nslookup fact.$user.pks4u.com; nslookup petclinic.$user.pks4u.com; nslookup dotnet.$user.pks4u.com;
 ```
 
-- Let's test again. Please open a browser window and try to access each of the URLs shown below:
+- Let's test again. Please open a browser window and try to access each of the URLs shown below. Please remember to use the correct `UserID` instead of `user1` in the URLs that follow. 
 
 ```
 - (1) http://fact.user1.pks4u.com/fact/15
@@ -1182,11 +1182,10 @@ kubectl delete ingress petclinic-ingress
 kubectl delete ns dotnet-core-welcome
 ```
 
-
-
 **Let's recap:**
+- You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
 - The `Nginx Ingress Controller` is an effective way of decreasing the number of `Load Balancers` required to expose services.
-- If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
+- If you scope your App, Pod, Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
 
 Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-5.
 
