@@ -1111,40 +1111,56 @@ kubectl get ingresses
 - Now open a browser window and try to access each of the URLs shown below:
 
 ```
-http://nginx.user1.pks4u.com/fact
-http://nginx.user1.pks4u.com/fact/15
-http://nginx.user1.pks4u.com/petclinic
-http://nginx.user1.pks4u.com/dotnet-core-welcome
-
-
-
+- (1) http://nginx.user1.pks4u.com/fact/15
+- (2) http://nginx.user1.pks4u.com/petclinic
+- (3) http://nginx.user1.pks4u.com/dotnet-core-welcome
 ```
 
-
-- Assuming that `nslookup $user-nginx.pks4u.com` is returning the expected IP Address, let's proceed by creating an ingress for your Apps. Please execute the following commands:
+- You should have seen that the structure of each program - `fact`, `petclinic` and `dotnet` - was such that:
+  - (1) The generic `fact` program message was displayed instead of the `15!` calculation. The `15` parameter was not processed.
+  - (2) `Petclinic` didn't render images properly. All resources that were, for example, at `/resources/images` were not rendered.
+  - (3) `Dotnet-core-welcome` was a no-show because the service in the `dotnet-core-welcome` namespace could not be reached by the `workshop-ingress`.
+ 
+- So let's fix all of these problems with the `ingress` using the [host-based](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/) roouting definition found at `~/ingress-4-apps.yml`. Please execute the following commands:
 
 ```
+kubectl delete ingress workshop-ingress
 kubectl get ingress
 cat ~/ingress-4-apps.yml
+```
+
+- Please execute the following command and note that the `envsubst` command simply replaces `$user` in the yaml file with it's actual value. 
+
+```
 envsubst < ~/ingress-4-apps.yml | kubectl apply -f -
 ```
 
-- The `envsubst` command simply replaces `$user` in the yaml file with it's actual value. 
-
-- Please execute the following command to check whether your ingress has been created:
+- Please execute the following command to check whether your `ingresses` have been created:
 
 ```
-kubectl get ingress
+kubectl get ingress; echo; kubectl get ingress -n dotnet-core-welcome
 ```
 
-- 
+- As part of the workshop set-up, we preemptively created CNAME DNS entries for you so that `*.userID.pks4u.com` maps to your `ingress` controller at `nginx.userID.pks4u.com`. You can validate this by executing the following commands:
 
+```
+nslookup fact.$user.pks4u.com; nslookup petclinic.$user.pks4u.com; nslookup dotnet.$user.pks4u.com;
+```
 
+- Let's test again. Please open a browser window and try to access each of the URLs shown below:
 
+```
+- (1) http://fact.user1.pks4u.com/fact/15
+- (2) http://fact.user1.pks4u.com/fact/header
+- (3) http://petclinic.user1.pks4u.com  and you can click on `veterinarians` to validate that the functionality is working.
+- (4) http://dotnet.user1.pks4u.com
+```
 
-
-
-
+- This time around you attained the desired solution:
+   - One `ingress` controller which you can see using the following command: `kubectl get pods | grep ingress`
+   - Three `ingresses` all pointing at the same `ingress` controller: `kubectl  get ingresses; echo; kubectl get ingress -n dotnet-core-welcome`
+   - A single `IaaS Load Balancer` instead of three.
+   
 
 #
 #### LAB-5E
@@ -1157,6 +1173,7 @@ kubectl get ingress
 ```
 kubectl delete deployment petclinic
 kubectl delete service petclinic 
+kubectl delete ingress petclinic-ingress
 ```
 
 - Method 2: delete the namespace where the `.Net Core Welcome` deployment and service were created:
@@ -1168,9 +1185,10 @@ kubectl delete ns dotnet-core-welcome
 
 
 **Let's recap:**
+- The `Nginx Ingress Controller` is an effective way of decreasing the number of `Load Balancers` required to expose services.
 - If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
 
-Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-4.
+Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-5.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
