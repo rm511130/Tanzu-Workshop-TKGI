@@ -1060,7 +1060,44 @@ nginx-ingress-default-backend   ClusterIP      10.100.200.47    <none>          
 petclinic                       NodePort       10.100.200.42    <none>          8080:31478/TCP               9h
 ```
 
-- Please ask the workshop organizers to create a DNS entry mapping your `nginx-ingress-controller` IP address (e.g. `35.231.44.137`) to the following FQDN  `userID-nginx.pks4u.com` where `userID` is your UserID claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
+- Please ask the workshop organizers to create an A-Record DNS entry to map your `nginx-ingress-controller` IP address (e.g. `35.231.44.137`) to the following FQDN  `nginx.userID.pks4u.com` where `userID` is your UserID claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). For example, `user22` should ask the workshop organizers to create an A-Record DNS entry mapping `nginx.user22.pks4u.com` to `35.231.44.137`
+
+- Let's start with the following file `~/simple-ingress-4-apps.yml`. If you execute `cat ~/simple-ingress-4-apps.yml` you should see the following ingress definition:
+
+```
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: workshop-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /fact
+          backend:
+            serviceName: fact
+            servicePort: 3000
+        - path: /petclinic
+          backend:
+            serviceName: petclinic
+            servicePort: 8080
+        - path: /dotnet-core-welcome
+          backend:
+            serviceName: dotnet-core-welcome
+            servicePort: 5001
+```
+
+- Take a good look at the ingress definition shown above. The contents of `~/simple-ingress-4-apps.yml` are deceivingly simple, and won't actually do what you may expect, but let's give it a try. Execute the following command:
+
+```
+kubectl apply -f ~/simple-ingress-4-apps.yml
+```
+
+- 
+
 
 - Wait until the following command resolves the FQDN to your `nginx-ingress-controller` IP address:
 
