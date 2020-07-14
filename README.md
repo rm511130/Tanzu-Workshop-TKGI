@@ -213,7 +213,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - You will then create Docker Images of these programs and, once again, run them locally using the Docker Engine that has been pre-installed on your Ubuntu VM. 
 - If you are a Developer, the steps in this Lab should be very easy and familiar to you. 
 - If you are an Operations person, the steps in this Lab will help you understand what developers do locally on their machines to run their code. 
-- Both Developers and Operations will also experience how easy it is to create Container Images that run well but are somewhat open to [CVE](https://www.cvedetails.com/cve-help.php)-based attacks.
+- Both Developers and Operations will also experience how easy it is to create container images that run well but are somewhat open to [CVE](https://www.cvedetails.com/cve-help.php)-based attacks.
 
 #
 #### LAB-2A 
@@ -318,7 +318,7 @@ http://user1.pks4u.com:5001
 - Your Linux VM is able to run GoLang, Spring/Java and .NET Core programs.
 - Your Linux VM has a public IP address and a FQDN (Fully Qualified Domain Name) that lets your friends access and test your Apps. You can also test your code locally using localhost or 127.0.0.1 when ssh'ed into your Linux VM.
 - The code examples you executed provided an http interface which you accessed from a browser.
-- A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous _"...but it worked on my machine..."_ comments. In the following hands-on labs, we will see how Container Images can help in this area.
+- A developer typically starts by writing his/her code locally. It's when he/she pushes the code to a server that differences in configuration and dependencies can lead to the famous comments _"...but it worked on my machine..."_. In the following hands-on labs, we will see how Container Images can help in this area.
 
 #
 #### LAB-2D
@@ -487,7 +487,96 @@ Congratulations, you have completed LAB-2.
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
 -----------------------------------------------------
-### LAB-3: Connecting to TKGI API, Creating and Resizing Kubernetes Clusters
+### LAB-3: Using [Harbor](https://goharbor.io/), [Clair](https://github.com/quay/clair#clair) and [Notary](https://github.com/theupdateframework/notary#notice)
+
+- Harbor is an open source registry that secures artifacts with policies and role-based access control, ensures images are scanned and free from vulnerabilities, and signs images as trusted. Harbor, a CNCF Graduated project, delivers compliance, performance, and interoperability to help you consistently and securely manage artifacts across cloud native compute platforms.
+
+- Let's see how Harbor, Clair and Notary enhance the Ops and Devs experience.
+
+![](./images/harbor.png)
+
+![](./images/lab.png)
+
+- Harbor was installed next to TKGI in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. 
+
+- Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
+
+- To get acquainted with Harbor's GUI, follow the example below, clicking where the yellow arrows are pointing, so you can get an idea of how Harbor works. Your userID has been given administrator privileges, so please be careful not to change Harbor's configuration.
+
+![](./images/harbor-walk-through.png)
+
+- Keep Harbor open. You will come back to it in a few minutes.
+
+- Execute the following command:
+
+```
+docker images
+```
+- Verify that you have at least three docker images that are local to your Ubuntu VM: `fact`, `petclinic` and `dotnet-core-welcome`. 
+- Proceed by executing the following commands to log into Harbor from your Ubuntu VM and to upload images to the Harbor registry:
+
+```
+docker login -p Password1 harbor.pks4u.com -u $user
+docker tag fact harbor.pks4u.com/library/$user-fact:latest
+docker tag petclinic harbor.pks4u.com/library/$user-petclinic:latest
+docker tag dotnet-core-welcome harbor.pks4u.com/library/$user-dotnet-core-welcome:latest
+docker images
+docker push harbor.pks4u.com/library/$user-fact:latest
+docker push harbor.pks4u.com/library/$user-petclinic:latest
+docker push harbor.pks4u.com/library/$user-dotnet-core-welcome:latest
+```
+- Now look for your programs in the Harbor browser session you were asked to leave open.
+
+- If scanning of your images hasn't happened yet, go ahead and select your `userID-fact` image and scan it for vulnerabilities. 
+- Do the same for your `userID-petclinic` and `userID-dotnet-core-welcome` images.
+- How many CVEs are your `fact`, `petclinic` and `dotnet-core-welcome` Apps exposed to?
+
+- Now execute the following command on your Ubuntu VM:
+
+```
+docker pull harbor.pks4u.com/library/$user-fact:latest
+```
+
+- The message you received back _`current image with '"Critical" vulnerable' cannot be pulled due to configured policy in 'Prevent images with vulnerability severity of "Critical" from running`_ is a reflection of Harbor's configuration. 
+
+- Note that the image you pushed to Harbor is also not signed. We can set Harbor's configuration to prevent unsigned images from being pulled as well.
+
+- Let's fix your version of the `fact` program. Please execute the following commands on your Workshop VM:
+
+```
+cd ~/fact
+mv Dockerfile replaced_Dockerfile
+mv alternate_Dockerfile Dockerfile
+docker build -t fact .
+docker login -p Password1 harbor.pks4u.com -u $user
+docker tag fact harbor.pks4u.com/library/$user-fact:latest
+docker push harbor.pks4u.com/library/$user-fact:latest
+```
+- Now take a look at your Harbor GUI and check whether your new `fact` image is vulnerable to known Critical CVEs.
+
+- Finally, try to pull the `fact` image from Harbor using the following command:
+
+```
+docker pull harbor.pks4u.com/library/$user-fact:latest
+```
+
+- This image should have downloaded without problems because it does not expose you to any critical CVEs. Execute the following command to confirm the status of your local Docker images:
+
+```
+docker images
+```
+
+**Let's recap:**
+- You were able to target a Harbor registry.  
+- You uploaded container images and downloaded a container image.
+- You scanned container images and saw that Harbor did not allow you to download images with `critical` vulnerabilities.
+
+Congratulations, you have completed LAB-3.
+
+Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
+
+-----------------------------------------------------
+### LAB-4: Connecting to TKGI API, Creating and Resizing Kubernetes Clusters
 
 ## TKGI Clusters on the Public Cloud
 
@@ -683,17 +772,17 @@ Last Action State:        in progress
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
-Congratulations, you have completed LAB-3.
+Congratulations, you have completed LAB-4.
 
 -----------------------------------------------------
-### LAB-4: Deploying Apps to Kubernetes Clusters
+### LAB-5: Deploying Apps to Kubernetes Clusters
 
 - Docker container images identical to the ones you created during Lab-2D, Lab-2E and Lab-2F have been tagged and uploaded into the Public Docker Hub as [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact), [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) and [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome). The short documentation found at [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) contains the steps taken to tag and upload a Docker Image into the Public Docker Hub. You will carry out these steps in a subsequent Lab when it's time to upload container images into a private registry called `Harbor`. 
 
-- During this lab you will deploy your containerized Apps in your K8s cluster. 
+- During this lab you will deploy containerized Apps to your K8s cluster. 
 
 #
-#### LAB-4A
+#### LAB-5A
 ![](./images/golang-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Let's use the [rmeira/fact](https://hub.docker.com/repository/docker/rmeira/fact) image to run the Factorial program on your Kubernetes cluster.
@@ -757,7 +846,7 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   71m          3%     803Mi           20
 ```
 
 #
-#### LAB-4B
+#### LAB-5B
 ![](./images/java-spring-tiny.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
 - Let's use the [rmeira/petclinic](https://hub.docker.com/repository/docker/rmeira/petclinic) image to run the `Petclinic` program on your Kubernetes cluster.
@@ -811,16 +900,18 @@ kubectl get pods -o json | grep 'nodeName\|\"name\"' | grep 'fact\"\|nic\"\|ome\
 ```
 
 #
-#### LAB-4C
+#### LAB-5C
 ![](./images/dotnet.png)    ![](./images/docker-tiny.png)    ![](./images/lab.png)
 
-- Let's use the [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome) image to run the `.NET Core Welcome` program on your Kubernetes cluster. We will create a namespace for your `.NET Core Welcome` App.
+- You can either use the [rmeira/dotnet-core-welcome](https://hub.docker.com/repository/docker/rmeira/dotnet-core-welcome) image to run the `.NET Core Welcome to All` program on your Kubernetes cluster, or you can use your customized image `harbor.pks4u.com/library/$user-dotnet-core-welcome:latest` which will display a welcome message just for you. In the example below, we will be using the image you uploaded to `Harbor`.
+
+- We will also create a namespace just for your `.NET Core Welcome` App.
 
 - Execute the following commands:
 
 ```
 kubectl create namespace dotnet-core-welcome
-kubectl create deployment dotnet-core-welcome --image=rmeira/dotnet-core-welcome -n dotnet-core-welcome
+kubectl create deployment dotnet-core-welcome --image=harbor.pks4u.com/library/"$user"-dotnet-core-welcome:latest -n dotnet-core-welcome
 kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --target-port=5001 --port=5001 -n dotnet-core-welcome
 ```
 - It takes a minute to create a pod, a load balancer and to expose a K8s service. You can see the pod being created using the following command:
@@ -869,7 +960,7 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
 
 #
-#### LAB-4D - Using Ingress Controllers
+#### LAB-5D - Using Ingress Controllers
 ![](./images/lab.png)
 
 - Each one of the apps we are running on your Kubernetes Cluster has been created with a `Service` of the type `LoadBalancer`. You can see this by executing the following command:
@@ -1003,7 +1094,7 @@ kubectl get ingress
 
 
 #
-#### LAB-4E
+#### LAB-5E
 ![](./images/lab.png)
 
 - Let's clean your K8s cluster. We will use two different methods. 
@@ -1027,77 +1118,6 @@ kubectl delete ns dotnet-core-welcome
 - If you scope your App, Pod(s), Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
 
 Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-4.
-
-Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
-
------------------------------------------------------
-### LAB-5: Using Harbor, Clair and Notary
-
-- Let's see how Harbor, Clair and Notary enhance the Ops and Devs experience.
-
-![](./images/harbor.png)
-
-![](./images/lab.png)
-
-- Harbor was installed next to TKGI in Ops Manager, and `user1`, `user2`, ... were all created using the *same password*: `Password1`. 
-
-- Log into Harbor using a browser: [`https://harbor.pks4u.com/`](https://harbor.pks4u.com/)
-
-- To get acquainted with Harbor's GUI, follow the example below, clicking where the yellow arrows are pointing, so you can get an idea of how Harbor works. Your userID has been given administrator privileges, so please be careful not to change Harbor's configuration.
-
-![](./images/harbor-walk-through.png)
-
-- Keep Harbor open. You will come back to it in a few minutes.
-
-- Execute the following command:
-
-```
-docker images
-```
-- Verify that you have at least three docker images that are local to your Ubuntu VM: `fact`, `petclinic` and `dotnet-core-welcome`. 
-- Proceed by executing the following commands to log into Harbor from your Ubuntu VM and to upload images to the Harbor registry:
-
-```
-docker login -p Password1 harbor.pks4u.com -u $user
-docker tag fact harbor.pks4u.com/library/$user-fact:latest
-docker tag petclinic harbor.pks4u.com/library/$user-petclinic:latest
-docker tag dotnet-core-welcome harbor.pks4u.com/library/$user-dotnet-core-welcome:latest
-docker images
-docker push harbor.pks4u.com/library/$user-fact:latest
-docker push harbor.pks4u.com/library/$user-petclinic:latest
-docker push harbor.pks4u.com/library/$user-dotnet-core-welcome:latest
-```
-- Now look for your programs in the Harbor browser session you were asked to leave open.
-
-- If scanning of your images hasn't happened yet, go ahead and select your `userID-fact` image and scan it for vulnerabilities. 
-- Do the same for your `userID-petclinic` and `userID-dotnet-core-welcome` images.
-- How many CVEs are your `fact`, `petclinic` and `dotnet-core-welcome` Apps exposed to?
-
-- Now execute the following command on your Ubuntu VM:
-
-```
-docker pull harbor.pks4u.com/library/$user-fact:latest
-```
-
-- The message you received back is a reflection of Harbor's configuration. Note that the image you pushed to Harbor is also not signed. We can set Harbor's configuration to prevent unsigned images from being pulled as well.
-
-- Execute the following command:
-
-```
-docker pull harbor.pks4u.com/library/chess-cf:1.0
-```
-- This image should have downloaded without problems because it does not expose you to any critical CVEs. Execute the following command to confirm the status of your local Docker images:
-
-```
-docker images
-```
-
-**Let's recap:**
-- You were able to target a Harbor registry.  
-- You uploaded container images and downloaded a container image.
-- You scanned container images and saw that Harbor did not allow you to download images with `high` or `critical` vulnerabilities.
-
-Congratulations, you have completed LAB-5.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
 
