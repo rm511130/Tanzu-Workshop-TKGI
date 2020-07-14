@@ -966,7 +966,7 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 - Each one of the apps we are running on your Kubernetes Cluster has been created with a `Service` of the type `LoadBalancer`. You can see this by executing the following command:
 
 ```
-kubectl get services; kubectl get services -n dotnet-core-welcome
+kubectl get services; echo; kubectl get services -n dotnet-core-welcome
 ```
 - Load Balancers are expensive. Let's take a look at the use of Ingress Controllers instead. Execute the following commands to delete the exposed services of your three Apps:
 
@@ -1062,7 +1062,13 @@ petclinic                       NodePort       10.100.200.42    <none>          
 
 - Please ask the workshop organizers to create an A-Record DNS entry to map your `nginx-ingress-controller` IP address (e.g. `35.231.44.137`) to the following FQDN  `nginx.userID.pks4u.com` where `userID` is your UserID claimed in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). For example, `user22` should ask the workshop organizers to create an A-Record DNS entry mapping `nginx.user22.pks4u.com` to `35.231.44.137`
 
-- Let's start with the following file `~/simple-ingress-4-apps.yml`. If you execute `cat ~/simple-ingress-4-apps.yml` you should see the following ingress definition:
+- Please wait until the command below resolves to the IP Address of your `nginx-ingress-controller`:
+
+```
+nslookup nginx.$user.pks4u.com
+```
+
+- If the `nslookup` command shown above has returned a valid IP address that maps to your `nginx-ingress-controller`, please take a look at the contents of the following file `~/simple-ingress-4-apps.yml`. You can execute `cat ~/simple-ingress-4-apps.yml` to see the following `ingress` definition:
 
 ```
 apiVersion: networking.k8s.io/v1beta1
@@ -1090,20 +1096,30 @@ spec:
             servicePort: 5001
 ```
 
-- Take a good look at the ingress definition shown above. The contents of `~/simple-ingress-4-apps.yml` are deceivingly simple, and won't actually do what you may expect, but let's give it a try. Execute the following command:
+- Take a good look at the ingress definition shown above. It's the classical example of `nginx ingress` definition. The contents of `~/simple-ingress-4-apps.yml` are deceivingly simple, and won't actually do what you may expect, but let's give it a try. Execute the following command:
 
 ```
 kubectl apply -f ~/simple-ingress-4-apps.yml
 ```
 
-- 
-
-
-- Wait until the following command resolves the FQDN to your `nginx-ingress-controller` IP address:
+- Execute the following command to see what `ingresses` were created:
 
 ```
-nslookup $user-nginx.pks4u.com
+kubectl get ingresses
 ```
+
+- Now open a browser window and try to access each of the URLs shown below:
+
+```
+http://nginx.user1.pks4u.com/fact
+http://nginx.user1.pks4u.com/fact/15
+http://nginx.user1.pks4u.com/petclinic
+http://nginx.user1.pks4u.com/dotnet-core-welcome
+
+
+
+```
+
 
 - Assuming that `nslookup $user-nginx.pks4u.com` is returning the expected IP Address, let's proceed by creating an ingress for your Apps. Please execute the following commands:
 
