@@ -911,7 +911,7 @@ kubectl get pods -o json | grep 'nodeName\|\"name\"' | grep 'fact\"\|nic\"\|ome\
 
 ```
 kubectl create namespace dotnet-core-welcome
-kubectl create deployment dotnet-core-welcome --image=harbor.pks4u.com/library/"$user"-dotnet-core-welcome:latest -n dotnet-core-welcome
+kubectl create deployment dotnet-core-welcome --image=harbor.pks4u.com/library/$user-dotnet-core-welcome:latest -n dotnet-core-welcome
 kubectl expose deployment dotnet-core-welcome --type=LoadBalancer --target-port=5001 --port=5001 -n dotnet-core-welcome
 ```
 - It takes a minute to create a pod, a load balancer and to expose a K8s service. You can see the pod being created using the following command:
@@ -950,7 +950,7 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 **Let's recap:**
 - Even though the `pks resize` command was still `in progress`, you were able to carry out App deployments.
 - You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
-- Kubernetes fetches images from a registry which, until now, was the public Docker Hub image registry. We will see in the next Lab how to use Harbor, an Enterprise-Class registry for storing and scanning your images.
+- Kubernetes fetches images from a registry. You have used both the public Docker Hub image registry and a private Harbor registry, an Enterprise-Class registry for storing and scanning your images.
 - You kept an eye on K8s cluster capacity using `kubectl top nodes`
 - You exposed `fact`, `petclinic` and `.Net Core Welcome` deployments as services available on the Internet fronted by Load Balancers.
 - However:
