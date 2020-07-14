@@ -1182,6 +1182,8 @@ kubectl delete ingress petclinic-ingress
 kubectl delete ns dotnet-core-welcome
 ```
 
+- Note: we left the `fact` deployment, pod, service, and the `fact-ingress` running because they will be used in the next Lab.
+
 **Let's recap:**
 - You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
 - The `Nginx Ingress Controller` is an effective way of decreasing the number of `Load Balancers` required to expose services.
@@ -1195,26 +1197,21 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-6: Scaling an App on Kubernetes
 
-- Now let's scale up and down the number of pods running the `fact` docker image.
+- Now let's scale up and down the number of pods running the `fact` container image.
 
 ![](./images/lab.png)
 
-- For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu VM. Please arrange them side by side, per the example below, keeping all 3 terminal windows simultaneously visible on your screen. 
+- For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu Workshop VM. Please arrange them side by side, per the example below, keeping all 3 terminal windows simultaneously visible on your screen. 
 - If using PuTTY, you can right-click on the top border of your existing terminal window and use the "Duplicate Session" option. 
 - If using a Mac, you can open more terminal windows using ⌘ N, command-N. You will need to use the [`ssh`](https://github.com/rm511130/Tanzu-Workshop-TKGI/blob/master/README.md#if-using-a-mac) command to log into your Ubuntu VM.
 
 ![](./images/3-terminals-start.png)
 
 - Let's denominate as Terminal Window #1 the long, narrower terminal window on the right-side of your screen. 
-- Using Terminal Window #1, execute the following command to retrieve the `External IP` address of your `fact` service.
-```
-kubectl get service
-```
-- Using Terminal Window #1, execute the following command using the `External IP` of your `fact` service.
-```
-# example: while true; do curl http://35.227.49.80/10; echo; done; #
+- Using Terminal Window #1, execute the following command to run `fact` in a never ending loop:
 
-while true; do curl http://<External IP>/10; echo; done;
+```
+while true; do curl http://fact.$user.pks4u.com/fact/10; echo; done;
 ```
 - You should see a never ending flow of `10!` calculations. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service.
 - Practice using `CTRL-C` on Terminal Window #1 to stop the processing of `10!`, and then use `<arrow up>` to re-issue the `while true` command to restart the _canary query_ test cycle.
