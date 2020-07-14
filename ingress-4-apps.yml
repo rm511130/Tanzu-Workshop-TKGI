@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fact-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: fact.$user.pks4u.com
+    http:
+      paths:
+      - path: /fact(/|$)(.*)
+        backend:
+          serviceName: fact
+          servicePort: 3000
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: petclinic-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: petclinic.$user.pks4u.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: petclinic
+          servicePort: 8080
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: dotnet-ingress
+  namespace: dotnet-core-welcome
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: dotnet.$user.pks4u.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dotnet-core-welcome
+          servicePort: 5001
