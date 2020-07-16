@@ -197,6 +197,7 @@ java -version
 mvn -version
 gfsh version
 dotnet --version
+seq 1 10 | asciigraph
 ```
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
