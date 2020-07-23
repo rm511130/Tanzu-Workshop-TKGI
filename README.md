@@ -202,7 +202,7 @@ dotnet --version
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
 
 - For your reference, the CLIs you just invoked were downloaded using the links/commands shown below. Please _do not re-install_ any of the CLIs.
-     - kgi, pks, kubectl     --> https://network.pivotal.io/products/pivotal-container-service/
+     - tkgi, pks, kubectl    --> https://network.pivotal.io/products/pivotal-container-service/
      - cf                    --> https://network.pivotal.io/products/tas-for-kubernetes/
      - gfsh                  --> https://network.pivotal.io/products/pivotal-gemfire/
      - git                   --> sudo apt-get install --quiet --assume-yes --no-install-recommends git
