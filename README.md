@@ -6,7 +6,7 @@
 # VMware Tanzu Workshop 
 ----------------------------------------------------------
 ## [Tanzu Workshop Agenda](https://drive.google.com/open?id=1pzVmFNv7hlpOGGuU-C5YopBR9VIRz6FU)
-(12:30PM to 4:00PM on 05/14/2020)
+(8:00AM to 12:00PM on 07/30/2020)
 
 - Introduction
      - Workshop Orientation
