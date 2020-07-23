@@ -425,13 +425,13 @@ cat Dockerfile
 
 ```
 docker build -t petclinic . 
-docker run -d --publish 80:8080 --name petclinic --rm petclinic
+docker run -d --publish 8080:8080 --name petclinic --rm petclinic
 ```
 
 - It will take around **15 seconds** for your Petclinic App to start running. You will then be able to access it at the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
-http://<userID#>.pks4u.com
+http://<userID#>.pks4u.com:8080
 ```
 
 - Let's now take a look at the layers used in the creation of your Petclinic container image:
