@@ -201,7 +201,7 @@ dotnet --version
 
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
 
-- The CLIs you just invoked were downloaded from:
+- For your reference, the CLIs you just invoked were downloaded using the links/commands shown below. Please _do not re-install_ any of the CLIs.
      - https://network.pivotal.io
           - https://network.pivotal.io/products/pivotal-container-service/       -->  tkgi, pks, kubectl
           - https://network.pivotal.io/products/tas-for-kubernetes/              -->  cf
