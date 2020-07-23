@@ -202,16 +202,15 @@ dotnet --version
 - If any of the commands shown above did not work or produced and error, please alert the workshop organizers.
 
 - For your reference, the CLIs you just invoked were downloaded using the links/commands shown below. Please _do not re-install_ any of the CLIs.
-     - https://network.pivotal.io
-          - https://network.pivotal.io/products/pivotal-container-service/       -->  tkgi, pks, kubectl
-          - https://network.pivotal.io/products/tas-for-kubernetes/              -->  cf
-          - https://network.pivotal.io/products/pivotal-gemfire/                 -->  gfsh
-     - sudo apt-get install --quiet --assume-yes --no-install-recommends git     -->  git
-     - https://download.docker.com/linux/static/stable/x86_64/docker-19.03.9.tgz -->  docker
-     - sudo apt-get install -y jq golang-go python3 maven                        -->  go, jq, python3, mvn (Maven)
-     - https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz                        -->  helm
-     - sudo apt install default-jre                                              -->  java
-     - https://docs.microsoft.com/en-us/dotnet/core/install/linux                -->  dotnet
+     - kgi, pks, kubectl     --> https://network.pivotal.io/products/pivotal-container-service/
+     - cf                    --> https://network.pivotal.io/products/tas-for-kubernetes/
+     - gfsh                  --> https://network.pivotal.io/products/pivotal-gemfire/
+     - git                   --> sudo apt-get install --quiet --assume-yes --no-install-recommends git
+     - docker                --> https://download.docker.com/linux/static/stable/x86_64/docker-19.03.9.tgz
+     - go, jq, python3, mvn  --> sudo apt-get install -y jq golang-go python3 maven                        
+     - helm                  --> https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz
+     - java                  --> sudo apt install default-jre
+     - dotnet                --> https://docs.microsoft.com/en-us/dotnet/core/install/linux
 
 - Congratulations, you have completed LAB-1.
 
