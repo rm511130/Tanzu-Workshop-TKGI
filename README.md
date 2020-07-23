@@ -1574,8 +1574,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-10: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
 
-- Tanzu Application Service for K8s is a Platform as a Service that builds and manages secure container images while taking advantage of the power afforded by Kubernetes' orchestration of containers. 
-- Developers love TAS because there are no IP addresses, no complex YAML files, no need to understand load balancing, routing, SSL certificates, or specifics of any given Public IaaS. TAS is all about getting from source code to production via a simple `cf push`.
+- CareSource already has Tanzu Applicatin Service (TAS) ready and in-production. During this workshop you will interact with a TAS environment so you can understand:
+   - Why do developers love TAS? (Spoiler: because it is simple to use, fast, scalable, stable and secure).
+   - When to use TAS vs. TKGI? (Spoiler: when developing use TAS vs. when a vendor, such as confluent, delivers containerized solutions).
+   - And is the really a  question of TAS vs. TKGI? (Spoiler: TAS is a PaaS and TKGI is a CaaS. TAS-4-K8s is TAS running on TKG).
+- A bit more on why developers love TAS: there are no IP addresses, no complex YAML files, no need to understand load balancing, routing, SSL certificates, or specifics of any given private or public IaaS. TAS is all about getting from source code to production via a simple `cf push`. TAS manages the creation and orchestration of containers for the Developer, Operations and InfoSec.
 - Operators love TAS because it is self-monitoring and self-healing. Through TAS, Ops can enforce policies, carry out updates/upgrades of O/S and middleware layers, add database and other services to the developer's marketplace, expand the environment horizontally and vertically, while maintaining high-availability. 
 - TAS effectively simplifies and streamlines developer and operator tasks, enabling productivity, while enforcing security best practices and development techniques that deliver significant gains in speed to market.  
 
@@ -1583,42 +1586,50 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- Execute the following commands using your Ubuntu VM to eliminate all the superfluous files we used during earlier Labs:
+- Before getting to Lab-10 we worked on creating clusters, docker images, uploading images to a registry, scanning them, configuring yaml files and finally running the container images on K8s clusters. 
+
+- Let's go back to our original three Apps and accomplish more (n.b. we'll explain in a second) by doing less. 
+
+- Please execute the following commands:
 
 ```
-cd ~/fact;  rm Dockerfile Procfile README.md; rm -rf .git; ls -ls
+cf login -a api.sys.ourpcf.com -p password -u $user
+cd ~/fact;             cf push $user-fact
+cd ~/spring-petclinic; cf push $user-pets
+cd ~/dotnet; sed -i "s/5001/8080/g" ~/dotnet/Program.cs; cf push $user-dotnet -b dotnet_core_buildpack
 ```
-- Log into TAS (Tanzu Application Service) and `cf push` your application: 
+- And you're done:
+   - You have all three Apps running in containers that are guaranteed to be safe from known CVEs at the O/S, FileSystem Stack, and Middleware layers.
+   - All three Apps have SSL (encrypted), protected FQDN (human readable URLs), load-balanced routes.
+   - All three Apps have been autowired for application performance monitoring and consolidated login.
+   - All three Apps have their health proactively monitored, managed, and they are protected against DDoS attacks.
+   - Your Apps are isolated from each other to avoid noisy-neighbor issues.
+   - Your Apps are restricted from obtaining privileged root-level. 
+   - Operations have full visibility into the health of Apps and Platform status (incl. capacity).
+   - All your Apps can be scaled vertically or horizontally with a single command.
+   - All your Apps can be updated using a zero-downtime-deployment command.
+   - All your Apps can benefit from features that enable dark-launching of new features, as well as blue-green deployments.
+   - All your Apps can be bound to platform services using a single command.
+   - You are using a TAS platform that is IaaS agnostic: i.e. your Apps can run on Azure, AWS, GCP, vSphere, AKS, VMC and GvP.
+   - You are using a TAS platform that is Highly Available, self-monitoring, self-healing, and multi-zone aware.
+   
+- And you didn't have to worry about:
+   - Creating, registering, scanning, docker images that become your "pets".
+   - Setting up ingress controllers, load balancers, deployments, replicasets, services, certificates, routes for each one of your Apps.
+   - You didn't have to work on yaml config files, pods, network policies, cpu restrictions, liveness and readiness probes.
+   - You didn't have to work with your networking team to get FQDN (URLs), Certs, firewall and port settings, etc.
+   - Even though you used Java, Go and .NET Core, you did not have to worry about any of the required middleware and configurations.
+   - You have no concerns about future needs to `cf push` your Apps to any datacenter or Public cloud.
+   
+- Conclusion: 
+   - If you are developing Apps, APIs, Integration middleware or Web/REST Services, use TAS.
+   - If you are deploying k8s-ready container images or helm charts supplied by vendors, use TKGI.
+   - Vendors are responsible for monitoring CVEs, scanning, updating, re-packaging, testing and supporting the K8s-ready images they provide.
+
+- Just to give you some hands-on examples. Please execute the following commands:
 
 ```
-cf login -a api.sys.ourpcf.com -p password --skip-ssl-validation -u $user
-```
-```
-cf push -m 128M -b go_buildpack fact-$user
-```
-
-- Wait for the `cf push` to complete, then execute the following command.
-
-```
-curl -k https://fact-$user.apps.ourpcf.com/100; echo 
-```
-![](./images//wow-face.png)
-- You just deployed and tested your `fact.go` code using the latest sanitized versions of all the container image layers necessary to run your App.
-- Your App has an SSL encrypted URL that routes and load-balances user requests automatically to your App instance(s).
-- Your App is running in the Cloud on Highly Available, self-monitoring, self-healing, multi-zone infrastructure.
-- Your App has been auto-instrumented for APM (Application Performance Monitoring) and Log aggregation.
-
-- Now let's scale your App horizontally:
-
-```      
-cf scale fact-$user -i 5
-cf app fact-$user
-```
-
-- Now let's scale your App vertically. When prompted, respond with a `y`. 
-
-```
-cf scale fact-$user -m 64M
+cf scale $user-fact -m 64M -i 3
 ```
 
 - Now let's map an additional (new) route to your App. Replace the `<pick-a-unique-name>` part of the command below with something creative, unique, but easy to remember:
