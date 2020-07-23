@@ -1626,87 +1626,32 @@ cd ~/dotnet; sed -i "s/5001/8080/g" ~/dotnet/Program.cs; cf push $user-dotnet -b
    - If you are deploying k8s-ready container images or helm charts supplied by vendors, use TKGI.
    - Vendors are responsible for monitoring CVEs, scanning, updating, re-packaging, testing and supporting the K8s-ready images they provide.
 
-- Just to give you some hands-on examples. Please execute the following commands:
+- Some hands-on examples of what you just read. Please execute the following commands:
 
 ```
-cf scale $user-fact -m 64M -i 3
-```
-
-- Now let's map an additional (new) route to your App. Replace the `<pick-a-unique-name>` part of the command below with something creative, unique, but easy to remember:
-
-```
-cf map-route fact-$user apps.ourpcf.com --hostname <pick-a-unique-name>
-```
-
-- Let's see what routes map to your App:
-
-```
-cf app fact-$user | grep route
-```
-
-- Now let's perform a rolling deploy of a new version of `fact.go` with zero-downtime. Please open a browser page to access your `fact.go` App. You can, for example, use your newly mapped route - just remember to add a `/30` to it so you can calculate the value of `30!`. Here's an example:
-
-![](/images/30-fact.png)
-
-- Execute the following commands, and as you wait for them to complete, keep refreshing the browser page you just opened, so you can see the switch from v1 to v2 happening seamlessly:
-
-```
+cd ~/fact
+cf scale $user-fact -f -m 64M -i 6 -k 512M
+cf map-route $user-fact apps.ourpcf.com --hostname $user-factorial
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
-cf v3-zdt-push fact-$user
-```
-- Now let's create a shell into one of your App containers and learn more about it:
-
-```
-cf ssh fact-$user                      # to create an ssh session into a container
-```
-- Execute the following commands to learn about the OS Layer in the container and validate that the user is not `root`:
-
-```
-cat /etc/*release | head -4            # to verify which version of Linux is being used
-whoami                                 # to validate that you are not root
-```
-- Continuing to use the shell session you started with the `cf ssh` command execute the following:
-
-```
-for i in {2..50}; do kill -9 $i; done         # this will force your container to crash
-```
-
-- Now let's check the status of your App:
-
-```
-cf app fact-$user                      # to check the status of your App and all its instances
-```
-
-- Now let's check events & log aggregation. Execute the commands shown below:
-
-```
-cf events fact-$user
-cf logs fact-$user --recent
-```
-
-- How easy is it to create a whole new QA or Test isolated space? Try the following commands:
-
-```
-cf create-space qa
-cf target -s qa
-cf apps
-```
-- As you can see, the QA environment you just created is ready within seconds. It's this self-service ease of use that makes developers and application teams multiple times more efficient. 
-
-- You can point back to the original `workshop` space with the following commands:
-
-```
-cf target -s workshop
-cf apps
-```
-
-- We could extend this Lab with App auto-scaling, or by using `cf bind-service` to bind your App to a database. Execute the following command to see the types of services that can be made available as self-service options to developers:
-
-```
+cf v3-zdt-push $user-fact | awk 'NR>1 { print $0 }'
+cf bs $user-fact shared-db
+cf ssh $user-fact -i 5 -c 'for i in {2..30}; do kill -9 $i; done'
+cf logs $user-fact --recent
 cf marketplace
 ```
 
-- If you are developing modern Apps, Tanzu Application Service can significantly change the developer's experience.
+- Using the 7 `cf` CLI commands shown above you:
+1. Scaled an App vertically down to 64MB of RAM and 512MB of disk, while scaling it horizontally to 6 HA instances.
+2. You mapped a new valid SSL encrypted, FQDN Load Balanced route dynamically to your 6 App instances.
+3. You performed a rolling, zero-downtime update of all 6 instances to a v2 version.
+4. You bound a database to the 6 instances of your App.
+5. You forced the sixth App instance to crash with a kill command. TAS immediately brought the instance back up, bound the database instance to it, and began routing traffic to it once it was healthy. While TAS was starting the sixth App Instance, it only routed traffic to the operational containers.
+6. You collected recent logs from all 6 App instances.
+7. You all the platform provided, self-service data services available to you.
+
+**Let's recap:** 
+
+- If you are developing modern Apps, Tanzu Application Service can significantly improve the developer's experience, accelerate your time-to-market with greater security, stability, scalability and quality of product.
 
 - By delivering TAS for Kubernetes, VMware effectively automates away all the k8s complexities and guarantees the consistent creation of curated, secure container images that will run on k8s clusters on any cloud infrastructure, with the proven efficiency of a `cf push` dial-tone.
 
