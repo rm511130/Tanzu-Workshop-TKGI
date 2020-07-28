@@ -1331,7 +1331,7 @@ kubectl scale deployment fact --replicas=20
 
 - Your screen should look like the example shown below:
 
-![](./images/3-terminals-executing.png)
+![](./images/3-terminals-executing.gif)
 
 
 - On Terminal Window #2, you should see an output similar to the example shown below:
