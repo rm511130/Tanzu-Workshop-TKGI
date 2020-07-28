@@ -1304,40 +1304,6 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
-- We're going to use [`cutemp`](https://github.com/rm511130/cutemp), a small program written in `Go` that lets us test the HTTP GET response time of your `fact` App. Let's perform some set-up work. Please execute the following command to check that `cutemp` is running and is able to access your `fact` App:
-
-```
-kubectl create deployment cutemp --image=rmeira/cutemp:latest
-kubectl expose deployment cutemp --type=LoadBalancer --port=80 --target-port=3001
-kubectl get service -w | grep 'NAME\|cutemp'
-```
-
-- Wait about a minute until the `cutemp` service has an external IP Address assigned to it, and then press `CTRL-C` to stop the `kubectl get service -w` command. You should see an output similar to the example shown below:
-
-```
-NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
-cutemp                          LoadBalancer   10.100.200.210   <pending>        80:32397/TCP                 1s
-cutemp                          LoadBalancer   10.100.200.210   35.227.86.135    80:32397/TCP                 33s
-```
-
-- Take note of the external IP Address of your `cutemp` Load Balancer service. In the example shown above, the external IP Address for the `cutemp` service is `35.227.86.135`.
-
-- Let's test `cutemp`. Please execute the following command using your `cutemp` external IP Address instead of the one in the example shown below:
-
-```
-curl 35.227.86.135/fact.$user.pks4u.com/fact/1000; echo
-```
-- The expected output should look something like the json-formatted example shown below. The first value is a counter that increments everytime you use the previous `curl` command, and the second value is the HTTP GET response time in milliseconds:
-
-```
-[[16,53.109957]]
-```
-
-- 
-
-
-
-
 - For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu Workshop VM. Please arrange them side by side, per the example below, keeping all 3 terminal windows simultaneously visible on your screen. 
 - If using PuTTY, you can right-click on the top border of your existing terminal window and use the "Duplicate Session" option. 
 - If using a Mac, you can open more terminal windows using ⌘ N, command-N. You will need to use the [`ssh`](https://github.com/rm511130/Tanzu-Workshop-TKGI/blob/master/README.md#if-using-a-mac) command to log into your Ubuntu VM.
@@ -1348,10 +1314,9 @@ curl 35.227.86.135/fact.$user.pks4u.com/fact/1000; echo
 - Using Terminal Window #1, execute the following command to run `fact` in a never ending loop:
 
 ```
-while true; do curl http://fact.$user.pks4u.com/fact/10; echo; done;
+while true; do resp=$(curl -s http://fact.$user.pks4u.com/fact/10); echo $resp | awk '{ if (substr($0,1,1)=="C") printf "."; else print "Oops";}'; done;
 ```
-- You should see a never ending flow of `10!` calculations. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service.
-- Practice using `CTRL-C` on Terminal Window #1 to stop the processing of `10!`, and then use `<arrow up>` to re-issue the `while true` command to restart the _canary query_ test cycle.
+- You should see a never ending flow of dots. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service when we scale up or down the number of pods.
 
 - Let's denominate as Terminal Window #2 the top, wider terminal window.
 - Using Terminal Window #2, execute the following command:
