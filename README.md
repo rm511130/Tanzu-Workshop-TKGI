@@ -1319,7 +1319,7 @@ while true; do resp=$(curl -s http://fact.$user.pks4u.com/fact/10); echo $resp |
 - You should see a never ending flow of dots. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service when we scale up or down the number of pods.
 
 - Let's denominate as Terminal Window #2 the top, wider terminal window.
-- Using Terminal Window #2, execute the following command:
+- Using Terminal Window #2, execute the following command in order to keep an eye on your pods:
 ```
 watch kubectl get pods -o wide
 ```
@@ -1344,13 +1344,9 @@ fact-85774cfbb8-72rqk  1/1   Running      0       3m29s  10.200.85.19  vm-25ed22
 fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22a9-b268-4ba5-797c-99595d6c5873  
 ...
 ```
-- Note in the output shown above that under `NODE` we see two different VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes during Lab-3.
+- Note in the output shown above that under `NODE` we see two different VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes as part of an earlier Lab.
 
-- While changing the number of `replicas`, did you see any error messages on Terminal Window #1?
-
-```
-curl: (7) Failed to connect to 35.227.49.80 port 80: Connection refused
-```
+- While changing the number of `replicas`, did you see any error messages on Terminal Window #1. Now, using  the  try the following command o
 
 - If you did see error messages, it's because additional tuning of the containers is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) so that Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
 
