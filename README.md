@@ -1346,13 +1346,17 @@ fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22
 ```
 - Note in the output shown above that under `NODE` we see two different VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes as part of an earlier Lab.
 
-- While changing the number of `replicas`, did you see any error messages on Terminal Window #1. Now, using  the  try the following command o
+- While scaling up the number of `replicas`, did you see any error messages on Terminal Window #1? Probably not. Once all the `pods` in Terminal Window #2 are running, use Terminal Window #3 to execute the following command:
 
-- If you did see error messages, it's because additional tuning of the containers is necessary. We need to introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes) so that Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
+```
+kubectl scale deployment fact --replicas=1
+```
+
+- You should see a few `Oops` messages on Terminal Window #1. We need to perform some tuning of the containers to resolve this problem. Let's introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). With these `probes` Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
 
 - Keep Terminal Windows #1 and #2 running. We will come back to them shortly.
 
-- Let's try to fix the `Connection Refused` issue by amending the existing deployment specifications with the yaml snippet shown below:
+- Let's try to fix the `Oops` issue (note: it's actually a `connection refused` error if you take a peek at the logs) by amending the existing deployment specifications with the yaml snippet shown below. Don't make any changes just yet.
 
 ```
       containers:
@@ -1374,17 +1378,85 @@ fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22
           periodSeconds: 20
 ```
 
-- Here are the steps to follow:
+- If you'd like  to see the complete definition being used by Kubernetes to deploy and maintain `fact` running, you can execute the following commands:
 
 ```
 cd ~
 kubectl get deployment fact -o yaml > fact-deployment.yml
+cat fact-deployment.yml
 ```
 
-- You then need to alter the contents of the `fact-deployment.yml` file to include the yaml snippet shown above. 
-- *However*, since it's very easy to get the yaml formatting wrong, and the purpose of this workshop is not to test your editing skills, let's proceed by using the `fact-deployment-with-readiness-probe.yml` file, available in your home directory, to recreate a working deployment of your `fact` program.
+- You should see an output similar to the example shown below. Note that there is no mention of `probe` in the yaml file shown below: 
 
-- Delete and recreate, using [`fact-deployment-with-readiness-probe.yml`](./fact-deployment-with-readiness-probe.yml), your `fact` deployment using the following commands:
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2020-07-28T13:10:17Z"
+  generation: 21
+  labels:
+    app: fact
+  name: fact
+  namespace: default
+  resourceVersion: "2906667"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/fact
+  uid: 54697525-210c-4cf6-896b-c0c1e1294b6f
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: fact
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: fact
+    spec:
+      containers:
+      - image: rmeira/fact
+        imagePullPolicy: Always
+        name: fact
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-07-28T13:10:17Z"
+    lastUpdateTime: "2020-07-28T13:10:19Z"
+    message: ReplicaSet "fact-786c95bd76" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2020-07-28T18:12:47Z"
+    lastUpdateTime: "2020-07-28T18:12:47Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 21
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
+```
+
+- Let's alter the contents of the `fact-deployment.yml` file to include the `livenessProbe` and  `readinessProbe`. Since it's very easy to get the yaml formatting wrong, and the purpose of this workshop is not to test your editing skills, let's proceed by using the `fact-deployment-with-readiness-probe.yml` file, available in your home directory, to recreate a working deployment of your `fact` program.
+
+- Please execute the following commands:
 
 ```
 kubectl delete deployment fact
@@ -1393,9 +1465,9 @@ kubectl apply -f fact-deployment-with-readiness-probe.yml
 
 - It will take K8s a few seconds to achieve the desired state described in the `fact-deployment-with-readiness-probe.yml`.
 
-- When you will see the `10!` calculations on Terminal Window #1, you can proceed ahead to the next step.
+- When you will see the `dots` flowing on Terminal Window #1, you can proceed ahead to the next step.
 
-- Observe whether the `Connection Refused` issue occurs when scaling up and down the number of pods in your deployment:
+- Observe whether the `Oops` issue occurs when scaling up and down the number of pods in your deployment:
 
 ```
 kubectl scale deployment fact --replicas=20
