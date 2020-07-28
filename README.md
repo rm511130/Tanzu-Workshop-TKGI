@@ -974,7 +974,7 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 - If you did wish to secure your programs with TLS and a Let's Encrypt (CA) Certificate, you would need to follow these [instructions](https://docs.bitnami.com/kubernetes/how-to/secure-kubernetes-services-with-ingress-tls-letsencrypt/).
 
 #
-#### LAB-5D - Using Ingress Controllers
+#### LAB-5D - Using Ingress Controllers & Helm
 ![](./images/lab.png)
 
 - Each one of the apps we are running on your Kubernetes Cluster has been created with a `Service` of the type `LoadBalancer`. You can see this by executing the following command:
@@ -982,7 +982,7 @@ vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   100m         5%     1121Mi          29
 ```
 kubectl get services; echo; kubectl get services -n dotnet-core-welcome
 ```
-- Load Balancers are expensive. Let's take a look at the use of Ingress Controllers instead. Execute the following commands to delete the exposed services of your three Apps:
+- Load Balancers are expensive. Let's take a look at the use of Ingress Controllers instead. Execute the following commands to delete the exposed services of your three Apps. Note: these commands take up to a minute to execute, so be patient.
 
 ```
 kubectl delete service fact petclinic
@@ -1082,9 +1082,10 @@ petclinic                       NodePort       10.100.200.42    <none>          
 nslookup nginx.$user.pks4u.com
 ```
 
-- If the `nslookup` command shown above has returned a valid IP address that maps to your `nginx-ingress-controller`, please take a look at the contents of the following file `~/simple-ingress-4-apps.yml`. You can execute `cat ~/simple-ingress-4-apps.yml` to see the following `ingress` definition:
+- If the `nslookup` command shown above has returned a valid IP address that maps to your `nginx-ingress-controller`, please proceed by creating the following file: `~/simple-ingress-4-apps.yml`. You can execute cut & paste & execute the complete contents of the box below which will result in the creation of the desired `~/simple-ingress-4-apps.yml` `ingress` definition file:
 
 ```
+cat << EOF > ~/simple-ingress-4-apps.yml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -1108,6 +1109,7 @@ spec:
           backend:
             serviceName: dotnet-core-welcome
             servicePort: 5001
+EOF
 ```
 
 - Take a good look at the ingress definition shown above. It's the classical example of `nginx ingress` definition. The contents of `~/simple-ingress-4-apps.yml` are deceivingly simple, and won't actually do what you may expect, but let's give it a try. Execute the following command:
@@ -1122,6 +1124,13 @@ kubectl apply -f ~/simple-ingress-4-apps.yml
 kubectl get ingresses
 ```
 
+- You should see something similar to the example shown below:
+
+```
+NAME               HOSTS   ADDRESS   PORTS   AGE
+workshop-ingress   *                 80      38s
+```
+
 - Now open a browser window and try to access each of the URLs shown below. Please remember to use the correct `UserID` instead of `user1` in the URLs that follow. 
 
 ```
@@ -1130,35 +1139,111 @@ kubectl get ingresses
 - (3) http://nginx.user1.pks4u.com/dotnet-core-welcome
 ```
 
-- You should have seen that the structure of each program - `fact`, `petclinic` and `dotnet` - was such that:
-  - (1) The generic `fact` program message was displayed instead of the `15!` calculation. The `15` parameter was not processed.
+- What did you see?
+  - (1) A generic `fact` program message was displayed instead of the `15!` calculation. The `15` parameter was not processed.
   - (2) `Petclinic` didn't render images properly. All resources that were, for example, at `/resources/images` were not rendered.
   - (3) `Dotnet-core-welcome` was a no-show because the service in the `dotnet-core-welcome` namespace could not be reached by the `workshop-ingress`.
  
-- So let's fix all of these problems with the `ingress` using the [host-based](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/) roouting definition found at `~/ingress-4-apps.yml`. Please execute the following commands:
+- So let's fix all of these problems with the `ingress` using a [host-based](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/) routing definition. Please copy and execute all the content of the following box to create a `~/ingress-4-apps.yml` file.
+
+```
+cat << EOF > ~/ingress-4-apps.yml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fact-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: fact.$user.pks4u.com
+    http:
+      paths:
+      - path: /fact(/|$)(.*)
+        backend:
+          serviceName: fact
+          servicePort: 3000
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: petclinic-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: petclinic.$user.pks4u.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: petclinic
+          servicePort: 8080
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: dotnet-ingress
+  namespace: dotnet-core-welcome
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: dotnet.$user.pks4u.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dotnet-core-welcome
+          servicePort: 5001
+EOF
+sed -i '7s/target: \//target: \/$2/' ~/ingress-4-apps.yml
+```
+
+- The commands shown above are common in the Kubernetes world. Here's what they did:
+  - The `cat << EOF > ~/ingress-4-apps.yml` was followed by the desired contents of the file `~/ingress-4-apps.yml` being created.
+  - Note that `$user` was substituted by its actual value in the file `~/ingress-4-apps.yml`. Use `cat ~/ingress-4-apps.yml` to see the change.
+  - The same environment variable substitution mechanism eliminated the `$2` in line 7, so we used an `sed` command to put it back in place.
+  - Many times, you will also see Kubernetes DevOps using `envsubst` to substitute parameters in yaml files.
+  
+
+- Please execute the following commands to delete the previous ingress definition and to check whether your new `ingresses` have been created:
 
 ```
 kubectl delete ingress workshop-ingress
-kubectl get ingress
-cat ~/ingress-4-apps.yml
-```
-
-- Please execute the following command and note that the `envsubst` command simply replaces `$user` in the yaml file with it's actual value. 
-
-```
-envsubst < ~/ingress-4-apps.yml | kubectl apply -f -
-```
-
-- Please execute the following command to check whether your `ingresses` have been created:
-
-```
 kubectl get ingress; echo; kubectl get ingress -n dotnet-core-welcome
 ```
 
-- As part of the workshop set-up, we preemptively created CNAME DNS entries for you so that `*.userID.pks4u.com` maps to your `ingress` controller at `nginx.userID.pks4u.com`. You can validate this by executing the following commands:
+- You should see results similar to the example shown below:
+
+```
+NAME                HOSTS                       ADDRESS         PORTS   AGE
+fact-ingress        fact.user1.pks4u.com        35.196.218.80   80      7m49s
+petclinic-ingress   petclinic.user1.pks4u.com   35.196.218.80   80      7m49s
+
+NAME             HOSTS                    ADDRESS         PORTS   AGE
+dotnet-ingress   dotnet.user1.pks4u.com   35.196.218.80   80      7m49s
+```
+
+- In the example shown above, what does the `35.196.218.80` address map to? Execute the following command to find out:
+
+```
+kubectl get nodes -o wide
+```
+
+- As part of the workshop set-up, we preemptively created CNAME DNS entries for you so that `*.userID.pks4u.com` maps to your `ingress` controller at `nginx.userID.pks4u.com`. Please validate this by executing the following commands:
 
 ```
 nslookup fact.$user.pks4u.com; nslookup petclinic.$user.pks4u.com; nslookup dotnet.$user.pks4u.com;
+```
+
+- The `nslookup` commands should show you that the following URLs all point to the same `nginx-ingress-controller` service of type `LoadBalancer`. Execute the following command to confirm this:
+
+```
+kubectl get service
 ```
 
 - Let's test again. Please open a browser window and try to access each of the URLs shown below. Please remember to use the correct `UserID` instead of `user1` in the URLs that follow. 
@@ -1172,8 +1257,12 @@ nslookup fact.$user.pks4u.com; nslookup petclinic.$user.pks4u.com; nslookup dotn
 
 - This time around you attained the desired solution:
    - One `ingress` controller which you can see using the following command: `kubectl get pods | grep ingress`
-   - Three `ingresses` all pointing at the same `ingress` controller: `kubectl  get ingresses; echo; kubectl get ingress -n dotnet-core-welcome`
-   - A single `IaaS Load Balancer` instead of three.
+   - Three `ingresses` all pointing at the same `ingress` controller which you can see using the following commands: 
+   ```
+   kubectl  get ingresses; echo; kubectl get ingress -n dotnet-core-welcome
+   nslookup fact.$user.pks4u.com; nslookup petclinic.$user.pks4u.com; nslookup dotnet.$user.pks4u.com;
+   ```
+   - A single `IaaS Load Balancer` instead of three, which you can see using the following command: `kubectl get service`
    
 
 #
@@ -1214,6 +1303,12 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - Now let's scale up and down the number of pods running the `fact` container image.
 
 ![](./images/lab.png)
+
+- Let's perform some set-up work. Please execute the following commands:
+
+```
+cf login -a api.sys.ourpcf.com -u $user -p password
+```
 
 - For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu Workshop VM. Please arrange them side by side, per the example below, keeping all 3 terminal windows simultaneously visible on your screen. 
 - If using PuTTY, you can right-click on the top border of your existing terminal window and use the "Duplicate Session" option. 
