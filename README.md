@@ -865,7 +865,7 @@ cronjob.batch/policy-webhook-cert-manager-cronjob   0 0 1 * *     False     0   
 
 - To see api-versions and api-resources that are also part of your cluster, you can run the following commands:
 
-``
+```
 kubectl api-versions
 kubectl api-resources
 ```
