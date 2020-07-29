@@ -616,8 +616,9 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - There are just two steps necessary to create a K8s cluster on TKGI running on vSphere with NSX-T. Let's go ahead and create a K8s Cluster on TKGI running on vSphere with NSX-T. Please execute the following commands. Please note that our use of the environment variables `$devops` and `$user` will automatically align each command to match your UserID, so you need not make any changes to the commands shown below:
 
 ```
-pks login -a https://api.run.haas-208.pez.pivotal.io:9021 -p password -k -u $devops
-pks create-cluster $user-cluster --plan small --num-nodes 1 -e $user.run.haas-208.pez.pivotal.io
+pks login -a https://api.run.haas-266.pez.pivotal.io:9021 -p password -k -u $devops
+pks plans
+pks create-cluster $user-cluster --plan small --num-nodes 1 -e $user.run.haas-266.pez.pivotal.io
 ```
 
 - That's it. You can check on the status of the `pks create-cluster` process by executing the following command: 
@@ -629,15 +630,15 @@ pks cluster $user-cluster
 - Once you see an output similar to the example shown below, you need only add the appropriate Master Node A-record DNS entry to match its IP address, and the cluster is ready to be used.
 
 ```
-TKGI Version:             1.7.0-build.26
+TKGI Version:             1.8.0-build.16
 Name:                     user2-cluster
-K8s Version:              1.16.7
+K8s Version:              1.17.5
 Plan Name:                small
 UUID:                     115d125a-b387-4005-b36f-28276a08661e
 Last Action:              CREATE
 Last Action State:        succeeded
 Last Action Description:  Instance provisioning completed
-Kubernetes Master Host:   user2.run.haas-208.pez.pivotal.io    <-------+
+Kubernetes Master Host:   user2.run.haas-266.pez.pivotal.io    <-------+
 Kubernetes Master Port:   8443                                         |________  A-Record DNS Entry
 Worker Nodes:             1                                            |
 Kubernetes Master IP(s):  10.195.72.137      <-------------------------+
@@ -700,20 +701,182 @@ pks cluster $user-cluster
 - The `pks cluster` command shows you the real IP address of your `Control Plane (Master Node VM)`.
 - The `kubectl cluster-info` command also informed you that your cluster is using [`CoreDNS`](https://coredns.io/) instead of the older `Kube-dns`. `CoreDNS` is a flexible, high-performance, extensible DNS server used by your Kubernetes cluster. `CoreDNS` listens for service and endpoint events from the Kubernetes API and updates its DNS records as needed. These events are triggered when you create, update or delete Kubernetes services and their associated pods. Like Kubernetes, the `CoreDNS` project is hosted by the [`CNCF`](https://www.cncf.io/).
 
-- Execute the following commands to get an inventory of the API resources and versions, the namespacing and a general report on all resources and their different types. As you will see, your K8s cluster is already quite busy even though you haven't deployed any Apps to it just yet.
+- Execute the following commands to get an inventory of the API resources and versions, the namespacing and a general report on all resources and their different types. As you will see, your K8s cluster is already quite busy even though you haven't deployed any Apps to it just yet. Let's start with namespaces. Please execute the following command:
 
 ```
 kubectl get ns
-kubectl get all --all-namespaces
+```
+- You should see an output similar to the one shown below:
+
+```
+NAME                STATUS   AGE
+default             Active   114m
+kube-node-lease     Active   114m
+kube-public         Active   114m
+kube-system         Active   114m
+pks-system          Active   80m
+vmware-system-tmc   Active   58m
+```
+
+- Let's take a look into at least two of these namespaces: pks-system and vmware-system-tmc. Please execute the following command:
+
+```
+kubectl  get all -n pks-system
+```
+
+- You should see an output similar to the one shown below:
+
+```
+NAME                                                                READY   STATUS      RESTARTS   AGE
+pod/cert-generator-1311f65a5dfa4bf6774ba070152672eacdb3e6b2-48d5n   0/1     Completed   0          84m
+pod/event-controller-6969f56f88-rbhtf                               2/2     Running     0          84m
+pod/fluent-bit-b99hx                                                2/2     Running     0          84m
+pod/kube-state-metrics-7ff66f6cc9-9p2xf                             2/2     Running     0          73m
+pod/metric-controller-5dfd968d6f-dsx74                              1/1     Running     0          84m
+pod/node-exporter-m9sfr                                             1/1     Running     0          84m
+pod/observability-manager-6fd5d796fb-smw6v                          1/1     Running     0          84m
+pod/sink-controller-7799b4f4d7-qq5m4                                1/1     Running     0          84m
+pod/telegraf-7x7vs                                                  1/1     Running     0          84m
+pod/telemetry-agent-778fc8997d-nv8k9                                2/2     Running     0          48m
+pod/validator-5787b98d57-x8kxm                                      1/1     Running     0          84m
+pod/vrops-cadvisor-mnl98                                            1/1     Running     0          52m
+pod/wavefront-collector-6db4f79654-kskkd                            1/1     Running     0          73m
+pod/wavefront-proxy-65695c97dd-bmqw6                                1/1     Running     0          73m
+
+NAME                         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+service/fluent-bit           ClusterIP   10.100.200.226   <none>        24224/TCP           84m
+service/kube-state-metrics   ClusterIP   10.100.200.71    <none>        8080/TCP,8081/TCP   73m
+service/node-exporter        ClusterIP   10.100.200.218   <none>        10536/TCP           84m
+service/validator            ClusterIP   10.100.200.179   <none>        443/TCP             84m
+service/wavefront-proxy      ClusterIP   10.100.200.30    <none>        2878/TCP            73m
+
+NAME                            DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/fluent-bit       1         1         1       1            1           <none>          84m
+daemonset.apps/node-exporter    1         1         1       1            1           <none>          84m
+daemonset.apps/telegraf         1         1         1       1            1           <none>          84m
+daemonset.apps/vrops-cadvisor   1         1         1       1            1           <none>          52m
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/event-controller        1/1     1            1           84m
+deployment.apps/kube-state-metrics      1/1     1            1           73m
+deployment.apps/metric-controller       1/1     1            1           84m
+deployment.apps/observability-manager   1/1     1            1           84m
+deployment.apps/sink-controller         1/1     1            1           84m
+deployment.apps/telemetry-agent         1/1     1            1           48m
+deployment.apps/validator               1/1     1            1           84m
+deployment.apps/wavefront-collector     1/1     1            1           73m
+deployment.apps/wavefront-proxy         1/1     1            1           73m
+
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/event-controller-6969f56f88        1         1         1       84m
+replicaset.apps/kube-state-metrics-7ff66f6cc9      1         1         1       73m
+replicaset.apps/metric-controller-5dfd968d6f       1         1         1       84m
+replicaset.apps/observability-manager-6fd5d796fb   1         1         1       84m
+replicaset.apps/sink-controller-7799b4f4d7         1         1         1       84m
+replicaset.apps/telemetry-agent-778fc8997d         1         1         1       48m
+replicaset.apps/validator-5787b98d57               1         1         1       84m
+replicaset.apps/wavefront-collector-6db4f79654     1         1         1       73m
+replicaset.apps/wavefront-proxy-65695c97dd         1         1         1       73m
+
+NAME                                                                COMPLETIONS   DURATION   AGE
+job.batch/cert-generator-1311f65a5dfa4bf6774ba070152672eacdb3e6b2   1/1           19s        84m
+```
+
+- The results shown above indicate that your cluster is a standard K8s cluster that is running a telemetry agent, wavefront observability agents, metric collection agents, [cadvisor](https://github.com/google/cadvisor), [fluentbit](https://fluentbit.io/), [telegraph](https://www.influxdata.com/integration/kubernetes-monitoring/), etc... 
+
+- Please execute the following command:
+
+```
+kubectl get all -n vmware-system-tmc
+```
+- You should see an output similar to the one shown below:
+
+```
+NAME                                                               READY   STATUS      RESTARTS   AGE
+pod/agent-updater-5449bcbccc-wmvsc                                 1/1     Running     0          77m
+pod/agentupdater-workload-1596060300-vh825                         0/1     Completed   0          30s
+pod/cluster-health-extension-9bffdfbdd-72llq                       1/1     Running     0          76m
+pod/extension-manager-f54954d7f-ktn57                              1/1     Running     0          77m
+pod/extension-updater-59956b797-w5x5w                              1/1     Running     0          77m
+pod/gatekeeper-operator-manager-749c559b7f-vld6l                   1/1     Running     0          76m
+pod/inspection-extension-6d67d6455b-x97t4                          1/1     Running     0          76m
+pod/intent-agent-6b64ccc897-4zkrg                                  1/1     Running     0          76m
+pod/logs-collector-cluster-health-extension-20200729204934-6mh8v   0/1     Completed   0          76m
+pod/logs-collector-extension-manager-20200729204935-gxwxp          0/1     Completed   0          75m
+pod/logs-collector-gatekeeper-operator-20200729204935-whx6r        0/1     Completed   0          75m
+pod/logs-collector-inspection-20200729204935-crgxs                 0/1     Completed   0          75m
+pod/logs-collector-policy-sync-extension-20200729204935-rp4pj      0/1     Completed   0          75m
+pod/logs-collector-tmc-observer-20200729204934-4slzc               0/1     Completed   0          76m
+pod/policy-sync-extension-75745ff84c-48trt                         1/1     Running     0          76m
+pod/policy-webhook-779c6f6c6-c78jp                                 1/1     Running     0          76m
+pod/policy-webhook-779c6f6c6-ttdqd                                 1/1     Running     0          76m
+pod/sync-agent-6b584746f6-5fs87                                    1/1     Running     0          76m
+pod/tmc-observer-5456cbf865-g2b76                                  1/1     Running     0          76m
+
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/extension-manager-service     ClusterIP   10.100.200.159   <none>        443/TCP    77m
+service/extension-updater             ClusterIP   10.100.200.130   <none>        9988/TCP   77m
+service/gatekeeper-operator-service   ClusterIP   10.100.200.238   <none>        443/TCP    76m
+service/inspection-extension          ClusterIP   10.100.200.107   <none>        443/TCP    76m
+service/policy-sync-extension         ClusterIP   10.100.200.40    <none>        443/TCP    76m
+service/policy-webhook-service        ClusterIP   10.100.200.72    <none>        443/TCP    76m
+
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/agent-updater                 1/1     1            1           77m
+deployment.apps/cluster-health-extension      1/1     1            1           76m
+deployment.apps/extension-manager             1/1     1            1           77m
+deployment.apps/extension-updater             1/1     1            1           77m
+deployment.apps/gatekeeper-operator-manager   1/1     1            1           76m
+deployment.apps/inspection-extension          1/1     1            1           76m
+deployment.apps/intent-agent                  1/1     1            1           76m
+deployment.apps/policy-sync-extension         1/1     1            1           76m
+deployment.apps/policy-webhook                2/2     2            2           76m
+deployment.apps/sync-agent                    1/1     1            1           76m
+deployment.apps/tmc-observer                  1/1     1            1           76m
+
+NAME                                                     DESIRED   CURRENT   READY   AGE
+replicaset.apps/agent-updater-5449bcbccc                 1         1         1       77m
+replicaset.apps/cluster-health-extension-9bffdfbdd       1         1         1       76m
+replicaset.apps/extension-manager-f54954d7f              1         1         1       77m
+replicaset.apps/extension-updater-59956b797              1         1         1       77m
+replicaset.apps/gatekeeper-operator-manager-749c559b7f   1         1         1       76m
+replicaset.apps/inspection-extension-6d67d6455b          1         1         1       76m
+replicaset.apps/intent-agent-6b64ccc897                  1         1         1       76m
+replicaset.apps/policy-sync-extension-75745ff84c         1         1         1       76m
+replicaset.apps/policy-webhook-779c6f6c6                 2         2         2       76m
+replicaset.apps/sync-agent-6b584746f6                    1         1         1       76m
+replicaset.apps/tmc-observer-5456cbf865                  1         1         1       76m
+
+NAME                                                               COMPLETIONS   DURATION   AGE
+job.batch/agentupdater-workload-1596060300                         1/1           5s         30s
+job.batch/logs-collector-cluster-health-extension-20200729204934   1/1           29s        76m
+job.batch/logs-collector-extension-manager-20200729204935          1/1           48s        75m
+job.batch/logs-collector-gatekeeper-operator-20200729204935        1/1           57s        75m
+job.batch/logs-collector-inspection-20200729204935                 1/1           27s        75m
+job.batch/logs-collector-policy-sync-extension-20200729204935      1/1           2m28s      75m
+job.batch/logs-collector-tmc-observer-20200729204934               1/1           39s        76m
+
+NAME                                                SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/agentupdater-workload                 */1 * * * *   False     0        34s             77m
+cronjob.batch/policy-webhook-cert-manager-cronjob   0 0 1 * *     False     0        <none>          76m
+```
+
+- The results shown above are specific to Tanzu Mission Control Apps that are installed by default when a `pks create-cluster` command is issued. These TMC Apps allow for the remote monitoring, scanning and policy enforcement operations that can be dictated by your Tanzu Mission Control solution. You will get to interact with TMC in one of the next labs.
+
+- To see api-versions and api-resources that are also part of your cluster, you can run the following commands:
+
+``
 kubectl api-versions
 kubectl api-resources
 ```
 
 - You can learn more about Kubernetes APIs at https://kubernetes.io/docs/reference/kubectl/overview/
 
-- As you issue `kubectl` commands, you can make use the `tab` key to auto-complete commands because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
+- As you issue `kubectl` commands, you can make use the `tab` key to auto-complete commands. This is because we added `source <(kubectl completion bash)` to your `~/.bashrc` file.
 
-- Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Let's take a look at the current capacity of your K8s cluster by executing the following command:
+- Earlier in this lab, you executed the `pks plans` command, so you know the K8s cluster sizing specifications defined by Operations. Operations can define and activate up to 13 different `pks plans` for DevOps to select and use when creating new K8s clusters. 
+
+- Let's take a look at the current capacity of your K8s cluster by executing the following command:
 
 ```
 kubectl top nodes
@@ -727,7 +890,7 @@ vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   429m         21%    2488Mi          64
 ```
 
    - The results shown above indicate that 64% of the 4GB of VM Worker Node Memory are being used. 
-   - You only have one worker node.
+   - You only have one worker node, otherwise more worker nodes would have shown up on the report.
    - The results also show that 21% of 2 vCPUs (2000m) are being consumed.
    
 - You can also execute the following command to see how `pods` in system namespaces are performing:
@@ -841,6 +1004,7 @@ pks cluster $user-cluster
 - As soon as the `External IP` address for the `fact` service is available, no matter whether or not the `pks resize` command is still `in progress`, you can proceed by executing the following command to test your `fact` docker image:
 
 ```
+Ralph  was here
 curl http://<External-IP>/10; echo
 ```
 - You should see the results of the `10!` calculation.
