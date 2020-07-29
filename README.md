@@ -1004,8 +1004,9 @@ pks cluster $user-cluster
 - As soon as the `External IP` address for the `fact` service is available, no matter whether or not the `pks resize` command is still `in progress`, you can proceed by executing the following command to test your `fact` docker image:
 
 ```
-Ralph  was here
-curl http://<External-IP>/10; echo
+export factExtIP=$(kubectl get service fact | grep fact | awk  '{ print $4; }')
+echo $factExtIP
+curl http://$factExtIP/10; echo
 ```
 - You should see the results of the `10!` calculation.
 
@@ -1468,6 +1469,24 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/lab.png)
 
+- Let's start by re-deploying `fact` and exposing it using  a `LoadBalancer` service. Please execute the following commands:
+
+```
+kubectl create deployment fact --image=rmeira/fact
+kubectl get all
+kubectl expose deployment fact --type=LoadBalancer --port=80 --target-port=3000
+kubectl get service fact -w
+```
+- It takes a minute to create a `LoadBalancer` and to expose a K8s service, so let's wait until you see an external IP Address assigned to the `fact` service.
+
+- Please use `CTRL-C` to cancel the `kubectl get service fact -w` command shown above, once you see the External IP Address for the `fact` service. On your screen you should have an output similar to the example shown below:
+
+```
+NAME   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+fact   LoadBalancer   10.100.200.67   <pending>     80:31851/TCP   1s
+fact   LoadBalancer   10.100.200.67   35.229.110.102   80:31851/TCP   45s
+```
+
 - For this Lab you will need to open 3 (three) terminal windows that access your Ubuntu Workshop VM. Please arrange them side by side, per the example below, keeping all 3 terminal windows simultaneously visible on your screen. 
 - If using PuTTY, you can right-click on the top border of your existing terminal window and use the "Duplicate Session" option. 
 - If using a Mac, you can open more terminal windows using ⌘ N, command-N. You will need to use the [`ssh`](https://github.com/rm511130/Tanzu-Workshop-TKGI/blob/master/README.md#if-using-a-mac) command to log into your Ubuntu VM.
@@ -1475,10 +1494,12 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 ![](./images/3-terminals-start.png)
 
 - Let's denominate as Terminal Window #1 the long, narrower terminal window on the right-side of your screen. 
-- Using Terminal Window #1, execute the following command to run `fact` in a never ending loop:
+- Using Terminal Window #1, execute the following commands to run `fact` in a never ending loop:
 
 ```
-while true; do resp=$(curl -s http://fact.$user.pks4u.com/fact/10); echo $resp | awk '{ if (substr($0,1,1)=="C") printf "."; else print "Oops";}'; done;
+export factExtIP=$(kubectl get service fact | grep fact | awk  '{ print $4; }')
+echo $factExtIP
+while true; do resp=$(curl -s http://$factExtIP/10); echo $resp | awk '{ if (substr($0,1,1)=="C") printf "."; else print "Oops";}'; done;
 ```
 - You should see a never ending flow of dots. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service when we scale up or down the number of pods.
 
@@ -1510,17 +1531,21 @@ fact-85774cfbb8-7v7sv  1/1   Running      0       3m29s  10.200.85.20  vm-25ed22
 ```
 - Note in the output shown above that under `NODE` we see two different VM identifiers. That is to be expected given that you resized your K8s cluster to two worker nodes as part of an earlier Lab.
 
-- While scaling up the number of `replicas`, did you see any error messages on Terminal Window #1? Probably not. Once all the `pods` in Terminal Window #2 are running, use Terminal Window #3 to execute the following command:
+- While scaling up the number of `replicas`, did you see any 'Oops' error messages on Terminal Window #1? If you did, it's because network traffic was routed to the new pods before they were ready to respond. 
+
+- Once all the `pods` in Terminal Window #2 are running, use Terminal Window #3 to execute the following command:
 
 ```
 kubectl scale deployment fact --replicas=1
 ```
 
-- You should see a few `Oops` messages on Terminal Window #1. We need to perform some tuning of the containers to resolve this problem. Let's introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). With these `probes` Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
+- You may see a few `Oops` messages on Terminal Window #1. The errors happen when a pod is terminated before it has finished responding to a `curl` command.
+
+- We need to perform some tuning of the containers to resolve these problems. Let's introduce the concept of configuring [Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes). With these `probes` Kubernetes will know to direct traffic to the pods only when they are ready and healthy. Luckily, we created our `fact` program with a `/health` end-point, so we're half-way to a solution.
 
 - Keep Terminal Windows #1 and #2 running. We will come back to them shortly.
 
-- Let's try to fix the `Oops` issue (note: it's actually a `connection refused` error if you take a peek at the logs) by amending the existing deployment specifications with the yaml snippet shown below. Don't make any changes just yet.
+- Let's try to fix the `Oops` issue (note: it's usually a `connection refused` error if you take a peek at the logs) by amending the existing deployment specifications with the yaml snippet shown below. Don't make any changes just yet.
 
 ```
       containers:
@@ -1542,7 +1567,7 @@ kubectl scale deployment fact --replicas=1
           periodSeconds: 20
 ```
 
-- If you'd like  to see the complete definition being used by Kubernetes to deploy and maintain `fact` running, you can execute the following commands:
+- If you'd like to see the current definition being used by Kubernetes to deploy and maintain `fact` running, you can execute the following commands:
 
 ```
 cd ~
@@ -1550,7 +1575,7 @@ kubectl get deployment fact -o yaml > fact-deployment.yml
 cat fact-deployment.yml
 ```
 
-- You should see an output similar to the example shown below. Note that there is no mention of `probe` in the yaml file shown below: 
+- You should see an output similar to the example shown below. Note that there is no mention of `probe`. 
 
 ```
 apiVersion: apps/v1
@@ -1623,15 +1648,14 @@ status:
 - Please execute the following commands:
 
 ```
-kubectl delete deployment fact
 kubectl apply -f fact-deployment-with-readiness-probe.yml
 ```
 
-- It will take K8s a few seconds to achieve the desired state described in the `fact-deployment-with-readiness-probe.yml`.
+- It will take K8s a few seconds to achieve the desired state described in the `fact-deployment-with-readiness-probe.yml`. You will probably see a few `Oops` messages in Terminal Window #1 when the `fact pod` is replaced. 
 
 - When you will see the `dots` flowing on Terminal Window #1, you can proceed ahead to the next step.
 
-- Observe whether the `Oops` issue occurs when scaling up and down the number of pods in your deployment:
+- Now that we have `readinessProbe` and `livenessProbe` in place, observe whether any `Oops` issues occur when scaling up and down the number of pods in your deployment:
 
 ```
 kubectl scale deployment fact --replicas=20
@@ -1645,7 +1669,7 @@ kubectl scale deployment fact --replicas=1
 
 - Clean-up: 
     - We will need three Terminal Windows during the next Lab, so don't close any Terminal Windows just yet.
-    - please use CTRL-C to halt any loops that may still be actively creating output to any of your Terminal Windows. 
+    - please use `CTRL-C` to halt any loops that may still be actively creating output to any of your Terminal Windows. 
     - please execute the following commands:
     
     ```
@@ -1654,7 +1678,7 @@ kubectl scale deployment fact --replicas=1
     ```
 
 **Let's recap:** 
-- The `fact` image deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be amended with a `livenessProbe` and a `readinessProbe` to reduce the impact of scaling horizontally the number of running pods. 
+- The `fact` image deployed with the `kubectl create deployment fact --image=rmeira/fact` command had to be amended with a `livenessProbe` and a `readinessProbe` to reduce the number of network traffic errors observed when scaling horizontally the number of running pods. 
 - Kubernetes developers need to understand their environment quite well from a DevOps perspective when developing more complex, microservices based, distributed systems. Order Entry systems, for example, can't afford to suffer from hiccups when the platform is auto-scaling to handle increases in demand.
 - For the more advanced users, you may wish to experiment with scaling the K8s cluster using the `pks resize <cluster-name> --num-nodes <#>` command while deploying and scaling the `fact` app. Additional commands such as `kubectl drain <node>` and `kubectl uncordon <node>` also demonstrate the power K8s puts at your fingertips for draining workloads from nodes.
 - Advanced workload placement and management using K8s clusters can be a fun area to [explore](https://kubernetes.io/docs/concepts/cluster-administration/manage-deployment/).
