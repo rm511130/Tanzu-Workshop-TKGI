@@ -1682,15 +1682,34 @@ pks get-credentials $user-cluster        # if asked, password = password
 ```
 pks resize $user-cluster --num-nodes 10
 ```
+- The command shown above should have returned the following message:
+
+```
+Error: Please specify a number of workers that is between 1 and 5
+```
+
+- Please execute the following command to get more information about your TKGI platform:
+
+```
+pks plans
+```
 
 ![](./images/peril.png)
 
-- Let's try to delete (*not yours, but*) a colleague's cluster:
-```
-pks delete-cluster user25-cluster   # make sure you know what you are doing before proceeding with this step
-```
+- Please read the next instructions carefully to **avoid deleting your own K8s cluster**.  
 
-- As you can see TKGI Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that was not yours.
+- Let's try to delete a cluster that you do not own. Pick a userID different from yours and try to delete its cluster using the `pks delete-cluster` command. For example:
+```
+pks delete-cluster user2-cluster   # make sure not to use your UserID
+```
+- You should have seen the following message:
+
+```
+Error: Cluster user2-cluster not found
+```
+- The cluster you attempted to delete does exist, but the `devops` user you are logged-in as, only has the rights to manage K8s clusters it has created.
+
+- As you can see, TKGI Administrators have placed guardrails that kept you from making your K8s cluster too big, or from deleting a cluster that is not yours.
 
 - Let's deploy a new App to your `user<#>-cluster`:
 
@@ -1703,11 +1722,12 @@ kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port
 ```
 kubectl get service timer-test -w
 ```
-
-- Using the `External IP` address, execute the following command and leave it running. Use Terminal Window #1 for this step.
+- Once the `External IP` address has been assigned to your `timer-test` service, please execute the following commands on your (hopefully still open) Terminal Window #1:
 
 ```
-while true; do curl http://<External-IP>/5000000000; echo; done
+export timerExtIP=$(kubectl get service timer-test | grep timer | awk  '{ print $4; }')
+echo $timerExtIP
+while true; do curl http://$timerExtIP/5; echo; done
 ```
 - Go back from time to time to this Terminal Window #1 to see how your `timer-test` is responding. 
 - Check with other colleagues, that are also part of this workshop, whether they have started their `timer-test`.
@@ -1724,10 +1744,10 @@ pks clusters
 ```
 - When logged-in with the scope of a TKGI Administrator, you can see and manage all K8s Clusters created via the TKGI Control Plane. Please make sure not to delete or resize any clusters.
 
-- We have a `shared-cluster` that has not been used in any labs. Execute the following command to learn more about this `shared-cluster`:
+- We have a `shared-cluster` that has not yet been used in any labs. Execute the following command to learn more about this `shared-cluster`:
 
 ```
-pks get-credentials shared-cluster                 
+printf 'password\n' | pks get-credentials shared-cluster               
 ```
 - If asked for a password, use `password`. Please continue with the following commands:
 
@@ -1769,13 +1789,15 @@ kubectl expose deployment timer-test --type=LoadBalancer --port=80 --target-port
 - Wait until you have an `External IP` assigned to your service:
 
 ```
-watch kubectl get service timer-test -n $namespace
+kubectl get service timer-test -n $namespace -w
 ```
 
-- Once you have an `External IP` for your service, use `CRTL-C` to stop the `watch` loop and proceed with the following command using the `Externam IP` address assigned to your `timer-test` service:
+- Once you have an `External IP` for your service, use `CRTL-C` to stop the `watch` loop and proceed by executing the following commands:
 
 ```
-while true; do curl http://<External IP>/5000000000; echo; done
+export timerExtIP=$(kubectl get service timer-test -n $namespace | grep timer | awk  '{ print $4; }')
+echo $timerExtIP
+while true; do curl http://$timerExtIP/5; echo; done
 ```
 
 - As more of your colleagues start their `timer-test` programs in their respective namespaces, you will start to see why namespace-based isolation of workloads is called soft-isolation.
@@ -1785,8 +1807,8 @@ while true; do curl http://<External IP>/5000000000; echo; done
 **Let's recap:** 
 - TKGI allows for isolation of workloads in a multi-tenant environment where users such as `devops1` have `management` scope to create and manage their own K8s clusters within the limits set by the operators who set up the TKGI control plane. 
 - TKGI enables the separation of responsibilities between DevOps and Ops, without the risk of allowing DevOps to overconsume resources beyond what is approved or available.
-- K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users to specific namespaces.
-- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the flexibility to set CPU and Memory limits for workloads, but the sharing and utilization of resources has to be monitored carefully.
+- K8s roles and rolebindings are an effective way to limit the scope of control for an individual or a group of users, to specific namespaces.
+- K8s namespaces share Master Nodes, Worker Nodes, and Networking, so they can expose workloads to noisy-neighbor effects. K8s has the features to set CPU and Memory limits for workloads, but the sharing and utilization of resources has to be monitored carefully.
 
 Congratulations, you have completed LAB-7.
 
