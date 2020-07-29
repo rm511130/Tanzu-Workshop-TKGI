@@ -1436,21 +1436,27 @@ kubectl get service
 
 - Let's clean your K8s cluster. We will use two different methods. 
 
-- Method 1: execute the following commands to delete the `Petclinic` deployment and service:
+- Method 1: execute the following commands to delete the `petclinic` and `fact` deployments, services and ingresses:
 
 ```
-kubectl delete deployment petclinic
-kubectl delete service petclinic 
-kubectl delete ingress petclinic-ingress
+kubectl delete deployment petclinic fact
+kubectl delete service petclinic fact
+kubectl delete ingress petclinic-ingress fact-ingress
 ```
 
-- Method 2: delete the namespace where the `.Net Core Welcome` deployment and service were created:
+- Method 2: delete the namespace where the `.Net Core Welcome` deployment and service were created. Please execute the following command:
 
 ```
 kubectl delete ns dotnet-core-welcome
 ```
 
-- Note: we left the `fact` deployment, pod, service, and the `fact-ingress` running because they will be used in the next Lab.
+- We can also uninstall the helm chart for the nginx ingress controller using the `helm uninstall` command. Please execute the following commands:
+
+```
+kubectl get deployments
+helm uninstall nginx-ingress
+kubectl get deployments
+```
 
 **Let's recap:**
 - You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
@@ -1460,7 +1466,6 @@ kubectl delete ns dotnet-core-welcome
 Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-5.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
-
 
 -----------------------------------------------------
 ### LAB-6: Scaling an App on Kubernetes
