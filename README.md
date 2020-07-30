@@ -93,7 +93,7 @@ VMware is your trusted partner to help address all of these challenges.
 -----------------------------------------------------
 ## Guidelines & Conventions for this Workshop 
 
-_- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKGI‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKGI used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see reminants of the PKS name. For example: the PKS CLI (Command Line Interface)._
+_- TKG / TKG Plus / TKGI are product names aligned to how VMware names all its products in compute, networking and other areas. The ‘i’ in ‘TKGI‘ stands for ‘integrated‘, given the integrated operating system lifecycle management and software defined networking components that are core to the product value. TKGI used to be called PKS (Pivotal Kubernetes Service), so throughout this workshop you will see remnants of the PKS name. For example: the PKS CLI (Command Line Interface)._
 
 - This self-paced workshop includes presentations, videos, demos and hands-on labs.
 - The labs are interdependent and must be executed in order.
@@ -317,14 +317,14 @@ source ./tweaking_Index.cshtml_and_Program.cs.sh
 dotnet run
 ```
 
-- Once you see in `Content root path: /home/ubuntu/dotnet` in your logs on the termional screen, you can proceed to test your `.NET Core Welcome` MVC program.
+- Once you see in `Content root path: /home/ubuntu/dotnet` in your logs on the terminal screen, you can proceed to test your `.NET Core Welcome` MVC program.
 
 - To test, open a browser to access the following URL. Remember to use the proper FQDN that corresponds to your UserID: e.g. `user11` should use `http://user11.pks4u.com:5001`.
 
 ```
 http://user1.pks4u.com:5001
 ```
-- If you see a `Welcome` page, your .NET App is running and you have a good .NET Core example to work with.
+- If you see a `Welcome` page, your .NET App is running, and you have a good .NET Core example to work with.
 
 - You can use `CRTL-C` on your Ubuntu VM to cancel out of the `.NET Core Welcome` program.
 
@@ -475,7 +475,7 @@ docker build -t dotnet-core-welcome -f Dockerfile .
 docker run -d -p 5001:5001 --name dotnet-core-welcome dotnet-core-welcome
 ```
 
-- It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by openning a browser to access the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
+- It may take a few seconds, but you should be able to access your `.NET Core Welcome` App by opening a browser to access the following URL. Please make sure to edit the `<userID#>` and replace it with the appropriate UserID you claimed at the beginning of the workshop.
 
 ```
 http://<userID#>.pks4u.com:5001
@@ -696,7 +696,7 @@ nslookup $user-cluster-k8s.pks4u.com
 pks cluster $user-cluster
 ```
 
-- The `kubectl cluster-info` command relays back to you information about the the diagram shown above. You have a Load Balancer entry point that allows `kubectl` commands to get through to the `API Server` (Process) in your cluster's `Control Plane (Master Node VM)` using `https` over `port 8443`. 
+- The `kubectl cluster-info` command relays back to you information about the diagram shown above. You have a Load Balancer entry point that allows `kubectl` commands to get through to the `API Server` (Process) in your cluster's `Control Plane (Master Node VM)` using `https` over `port 8443`. 
 - The IP address you obtained by executing the `nslookup` command, is the IP address of the Load Balancer.
 - The `pks cluster` command shows you the real IP address of your `Control Plane (Master Node VM)`.
 - The `kubectl cluster-info` command also informed you that your cluster is using [`CoreDNS`](https://coredns.io/) instead of the older `Kube-dns`. `CoreDNS` is a flexible, high-performance, extensible DNS server used by your Kubernetes cluster. `CoreDNS` listens for service and endpoint events from the Kubernetes API and updates its DNS records as needed. These events are triggered when you create, update or delete Kubernetes services and their associated pods. Like Kubernetes, the `CoreDNS` project is hosted by the [`CNCF`](https://www.cncf.io/).
@@ -944,7 +944,7 @@ Last Action State:        in progress
 **Let's recap:** 
 - You created a TKGI Kubernetes Cluster on vSphere and NSX-T using 2 simple steps. 
 - You logged into the TKGI Control Plane as a DevOps user, and scaled an existing cluster.
-- You executed a few new `kubectl` commands against your cluster as a DevOps user with **TKGI Manager** privileges. Your peers also executed the same commands, but note that you only saw your `userID-cluster` and they only saw their `userID-clusters`. Later on in this workshop you will execute commands as a **TKGI Administrator** and this will allow you to see all the `userID-clusters` running on the TKGI Platform.
+- You executed a few new `kubectl` commands against your cluster as a DevOps user with **TKGI Manager** privileges. Your peers also executed the same commands but note that you only saw your `userID-cluster` and they only saw their `userID-clusters`. Later on in this workshop you will execute commands as a **TKGI Administrator**, and this will allow you to see all the `userID-clusters` running on the TKGI Platform.
 - Even though cluster resizing is taking place as you read these words, we're not going to worry about it. TKGI knows what to do. We're just going to continue with Lab-4 and the deployment of Apps to your K8s cluster.
 
 Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI) with an "X" in the appropriate column.
@@ -1072,7 +1072,7 @@ vm-0c3e6eaf-b5dc-4bd4-7cd6-d5cec23121b8   338m         16%    2252Mi          58
 vm-57da0f21-d1ee-4a70-6c37-2276ba0920e4   83m          4%     1083Mi          28%
 ```
 
-- Comparing the results shown above with the previous `kubectl top nodes` output, we can see that the 2nd VM Worker Node has grown its memory utilization from `20%` to `28%`. This change indicates that the single `pod` running the `Petclinic` App was allocated to run in the 2nd VM Worker Node. We can confirm this by executing the following commmand:
+- Comparing the results shown above with the previous `kubectl top nodes` output, we can see that the 2nd VM Worker Node has grown its memory utilization from `20%` to `28%`. This change indicates that the single `pod` running the `Petclinic` App was allocated to run in the 2nd VM Worker Node. We can confirm this by executing the following command:
 
 ```
 kubectl get pods -o json | grep 'nodeName\|\"name\"' | grep 'fact\"\|nic\"\|ome\"\|vm' 
@@ -1305,7 +1305,7 @@ workshop-ingress   *                 80      38s
 ```
 
 - What did you see?
-  - (1) A generic `fact` program message was displayed instead of the `15!` calculation. The `15` parameter was not processed.
+  - (1) A generic `fact` program message was displayed instead of the `15!` calculation. The `15` was not processed.
   - (2) `Petclinic` didn't render images properly. All resources that were, for example, at `/resources/images` were not rendered.
   - (3) `Dotnet-core-welcome` was a no-show because the service in the `dotnet-core-welcome` namespace could not be reached by the `workshop-ingress`.
  
@@ -1461,7 +1461,7 @@ kubectl get deployments
 **Let's recap:**
 - You deployed the `fact`, `petclinic` and `.NET Core Welcome` images to your K8s cluster and tested to make sure they were working.
 - The `Nginx Ingress Controller` is an effective way of decreasing the number of `Load Balancers` required to expose services.
-- If you scope your App, Pod, Deployment, Replicaset and Service to a given namespace, it's easy to delete all the obejcts by just deleting the namespace.
+- If you scope your App, Pod, Deployment, Replicaset and Service to a given namespace, it's easy to delete all the objects by just deleting the namespace.
 
 Congratulations, you have deployed a GO App, Java/Spring Boot App and a .NET Core App to a K8s cluster, and completed LAB-5.
 
@@ -1499,14 +1499,14 @@ fact   LoadBalancer   10.100.200.67   35.229.110.102   80:31851/TCP   45s
 ![](./images/3-terminals-start.png)
 
 - Let's denominate as Terminal Window #1 the long, narrower terminal window on the right-side of your screen. 
-- Using Terminal Window #1, execute the following commands to run `fact` in a never ending loop:
+- Using Terminal Window #1, execute the following commands to run `fact` in a never-ending loop:
 
 ```
 export factExtIP=$(kubectl get service fact | grep fact | awk  '{ print $4; }')
 echo $factExtIP
 while true; do resp=$(curl -s http://$factExtIP/10); echo $resp | awk '{ if (substr($0,1,1)=="C") printf "."; else print "Oops";}'; done;
 ```
-- You should see a never ending flow of dots. This will be our _canary query_. It will help us determine if Kubermetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service when we scale up or down the number of pods.
+- You should see a never-ending flow of dots. This will be our _canary query_. It will help us determine if Kubernetes is properly orchestrating the deployment of additional containers, and linking them to the `fact` service when we scale up or down the number of pods.
 
 - Let's denominate as Terminal Window #2 the top, wider terminal window.
 - Using Terminal Window #2, execute the following command in order to keep an eye on your pods:
@@ -1867,7 +1867,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Your K8s cluster communicates often through a secure connection with the TMC SaaS Service. Your cluster collects data about its health and capacity, and ships it to TMC. It also polls TMC for any administrative activities it may need to carry out on the cluster. For example, TMC Administrators may define network policies or require compliance scans that need to be applied or executed on your cluster.
 
-- Ask the worshop facilitator to show you your cluster attached to TMC, it's status, namespaces, workloads, scanning, etc...
+- Ask the workshop facilitator to show you your cluster attached to TMC, it's status, namespaces, workloads, scanning, etc...
 
 - TMC is a powerful tool so if you'd like to dive deeper, please consider our [TMC HOL (Hands-on Labs)](https://docs.hol.vmware.com/HOL-2020/hol-2032-01-cna_html_en/).
 
@@ -1875,7 +1875,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 - TMC is a leap forward in simplification and breadth of control for the world of Kubernetes.
 - TMC allows you to visualize in a single location all the K8s clusters your enterprise is using across datacenters and the public cloud.
 - TMC does not request or store any PHI (Protected Health Information).
-- TMC allows you to create, upgraded, delete K8s clusters on AWS and vShere, and soon on all Public IaaS.
+- TMC allows you to create, upgraded, delete K8s clusters on AWS and vSphere, and soon on all Public IaaS.
 
 Congratulations, you have completed LAB-8.
 
