@@ -1382,6 +1382,12 @@ kubectl delete ingress workshop-ingress
 kubectl get ingress; echo; kubectl get ingress -n dotnet-core-welcome
 ```
 
+- Now please execute the following command to create the new ingresses:
+
+```
+kubectl apply -f ingress-4-apps.yml
+```
+
 - You should see results similar to the example shown below:
 
 ```
