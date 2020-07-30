@@ -1863,12 +1863,11 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Whether you are creating a new TKGI K8s Cluster or just using one, there's no action necessary to have your K8s cluster show up in Tanzu Mission Control. This is because Platform Operations has already performed the necessary set-up to guarantee that every PKS K8s cluster will come with the necessary TMC agents.
 
-- Your K8s cluster communicates often through a secure connection with the TMC SaaS Service. Your cluster collects data about its health and capacity, and ships it to TMC. It also polls TMC for any activities administrative activities it may need to carry out on the cluster. For example, TMC Administrators may define network policies or require compliance scans that need to be applied or executed on your cluster.
+![](./images/tmc-and-pks.gif)
 
+- Your K8s cluster communicates often through a secure connection with the TMC SaaS Service. Your cluster collects data about its health and capacity, and ships it to TMC. It also polls TMC for any administrative activities it may need to carry out on the cluster. For example, TMC Administrators may define network policies or require compliance scans that need to be applied or executed on your cluster.
 
-
-
-- Once the connection has been verified the presenter will be able to demo you your cluster attached to TMC.
+- Ask the worshop facilitator to show you your cluster attached to TMC, it's status, namespaces, workloads, etc...
 
 **Let's recap:** 
 - TMC is a leap forward in simplification and breadth of control for the world of Kubernetes.
