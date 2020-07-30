@@ -1915,21 +1915,56 @@ kubectl create namespace wavefront
 
 - Now ask Tim Davis to invite you to join your Wavefront Observability Account.
 
+![](./images/lb1.png)
 
+- Tim will have to type your e-mail address and click a couple of times, as depicted below:
 
-- Once you have your API Token copied, please add it to your Workshop VM environment as shown in the example below. Please make sure too use your API Token and not the one shown below:
+![](./images/lb2.png)
+
+- Shortly after that, you will receive an e-mail:
+
+![](./images/lb3.png)
+
+- Create your password to access your Wavefront account:
+
+![](./images/lb4.png)
+
+- Once you have logged in, click on the `cog` at the top right-hand side of your screen:
+
+![](./images/lb5.png)
+
+- Click on your e-mail address, then on `API Access`, and finally on `Generate`:
+
+![](./images/lb6.png)
+
+- Provide a name for your API Token, and copy it by clicking on the clipboard icon:
+
+![](./images/lb7.png)
+
+- Once you have your API Token copied, please add it to your Workshop VM environment as shown in the example below. Please make sure to use your API Token and not the one shown below:
 
 ```
 export my_wavefront_api_token=b72b40e2-f69e-44eb-8b08-330ab467d365
 ```
+- Use the following command to check whether the environment variable matches your API Token:
 
-- Now please execute the following command: 
+```
+echo $my_wavefront_api_token
+```
+
+- Now please execute the following command to install all the necessary Wavefront agents and establish a connection. This will take a couple of minutes.
 
 ```
 helm install wavefront wavefront/wavefront --set wavefront.url=https://longboard.wavefront.com --namespace wavefront --set wavefront.token=$my_wavefront_api_token --set clusterName=$user-cluster
 ```
 
-- Now ask the workshop organizer to show your cluster data on Wavefront.
+- Back on your Wavefront UI, click on `Integrations` and then on `Kubernetes` as shown below:
+
+![](./images/lb8.png)
+
+- Click on `Dashboards` and then on `Kubernetes Summary` as shown below:
+
+![](./images/lb9.png)
 
 
 **Let's recap:** 
