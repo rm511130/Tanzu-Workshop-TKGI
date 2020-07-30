@@ -1379,7 +1379,7 @@ sed -i '7s/target: \//target: \/$2/' ~/ingress-4-apps.yml
 
 ```
 kubectl delete ingress workshop-ingress
-kubectl apply -f ingress-4-apps.yml
+kubectl apply -f ~/ingress-4-apps.yml
 kubectl get ingress; echo; kubectl get ingress -n dotnet-core-welcome
 ```
 
