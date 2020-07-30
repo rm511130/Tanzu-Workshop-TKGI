@@ -2077,8 +2077,9 @@ watch cf service shared-db
 
 ```
 cf bs $user-fact shared-db
-cf ssh $user-dotnet -c 'for i in {2..30}; do kill -9 $i; done'
-cf logs $user-dotnet --recent
+cf scale $user-fact -f -m 128M -i 6 -k 512M
+cf ssh $user-fact -i 5 -c 'for i in {2..30}; do kill -9 $i; done'
+cf logs $user-fact --recent
 cf marketplace
 ```
 
