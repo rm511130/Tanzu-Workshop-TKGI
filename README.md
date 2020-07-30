@@ -2061,7 +2061,7 @@ cd ~/dotnet; sed -i "s/5001/8080/g" ~/dotnet/Program.cs; cf push $user-dotnet -b
 
 ```
 cd ~/fact
-cf scale $user-fact -f -m 64M -i 6 -k 512M
+cf scale $user-fact -f -m 128M -i 6 -k 512M
 cf map-route $user-fact apps.ourpcf.com --hostname $user-factorial
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
 cf v3-zdt-push $user-fact | awk 'NR>1 { print $0 }'
@@ -2077,7 +2077,6 @@ watch cf service shared-db
 
 ```
 cf bs $user-fact shared-db
-cf scale $user-fact -f -m 128M -i 6 -k 512M
 cf ssh $user-fact -i 5 -c 'for i in {2..30}; do kill -9 $i; done'
 cf logs $user-fact --recent
 cf marketplace
