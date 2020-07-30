@@ -1861,24 +1861,13 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Let's start this lab by looking at a [short 4-minute demo of TMC](https://bcove.video/2VCXSmk)
 
-- In order to attach your `user<#>-cluster` to Tanzu Mission Control you will need a YAML file.
+- Whether you are creating a new TKGI K8s Cluster or just using one, there's no action necessary to have your K8s cluster show up in Tanzu Mission Control. This is because Platform Operations has already performed the necessary set-up to guarantee that every PKS K8s cluster will come with the necessary TMC agents.
 
-- Your unique YAML file can be found in the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). Scroll to the right and look under column R for your YAML file information.
+- Your K8s cluster communicates often through a secure connection with the TMC SaaS Service. Your cluster collects data about its health and capacity, and ships it to TMC. It also polls TMC for any activities administrative activities it may need to carry out on the cluster. For example, TMC Administrators may define network policies or require compliance scans that need to be applied or executed on your cluster.
 
-- Please execute the following commands to focus back on your individual k8s cluster:
 
-```
-pks login -a https://api.pks.pks4u.com:9021 -p password -k -u $devops      # user the appropriate devops<#>
-pks clusters
-pks get-credentials $user-cluster
-```
-- If asked for a password, use `password`. 
 
-- Please continue with the command you obtained from column R of the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI). The command is very similar to the one shown below:
 
-```
-# kubectl apply -f 'https://tanzupaorg.tmc.cloud.vmware.com/installer?<use your assigned code from spreadsheet>' 
-```
 - Once the connection has been verified the presenter will be able to demo you your cluster attached to TMC.
 
 **Let's recap:** 
