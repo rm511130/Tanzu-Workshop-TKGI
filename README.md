@@ -1958,6 +1958,24 @@ echo $my_wavefront_api_token
 helm install wavefront wavefront/wavefront --set wavefront.url=https://longboard.wavefront.com --namespace wavefront --set wavefront.token=$my_wavefront_api_token --set clusterName=$user-cluster
 ```
 
+- You should see an output similar to the one shown below:
+
+```
+NAME: wavefront
+LAST DEPLOYED: Thu Jul 30 04:05:16 2020
+NAMESPACE: wavefront
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Wavefront is setup and configured to collect metrics from your Kubernetes cluster.  You
+should see metrics flowing within a few minutes.
+
+You can visit this dashboard in Wavefront to see your Kubernetes metrics:
+
+https://longboard.wavefront.com/dashboard/integration-kubernetes-summary
+```
+
 - Back on your Wavefront UI, click on `Integrations` and then on `Kubernetes` as shown below:
 
 ![](./images/lb8.png)
