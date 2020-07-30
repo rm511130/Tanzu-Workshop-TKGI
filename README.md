@@ -2065,6 +2065,7 @@ cf scale $user-fact -f -m 64M -i 6 -k 512M
 cf map-route $user-fact apps.ourpcf.com --hostname $user-factorial
 sed -i 's/Calculating Factorial/(v2) The Factorial of/g' fact.go
 cf v3-zdt-push $user-fact | awk 'NR>1 { print $0 }'
+cf cs p.mysql db-small shared-db
 cf bs $user-fact shared-db
 cf ssh $user-fact -i 5 -c 'for i in {2..30}; do kill -9 $i; done'
 cf logs $user-fact --recent
