@@ -1889,7 +1889,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 ![](./images/from_monitoring_to_observability.png)
 
-- Please watch this [6 minutes video](https://www.youtube.com/watch?v=nZnbdNHFNyU) to better understand Tanzu Observability by Wavefront.
+- Please watch this [presentation and demo video](https://drive.google.com/file/d/1PW_WWUBKYJQjA6mBclEfJ7EEawzOz8H2/view) to better understand Tanzu Observability by Wavefront. This video is a recording of a recent presentation and demo delivered to CareSource.
 
 ![](./images/lab.png)
 
@@ -1951,6 +1951,14 @@ export my_wavefront_api_token=b72b40e2-f69e-44eb-8b08-330ab467d365
 ```
 echo $my_wavefront_api_token
 ```
+- Let's make sure there are no left-overs from previously applied Wavefront agents. Please execute the following commands:
+
+```
+kubectl delete clusterrole wavefront-collector
+kubectl delete clusterrolebindings.rbac.authorization.k8s.io wavefront-collector
+kubectl delete deployments.apps wavefront-collector wavefront-proxy -n pks-system
+kubectl delete service wavefront-proxy -n pks-system
+```
 
 - Now please execute the following command to install all the necessary Wavefront agents and establish a connection. This will take a couple of minutes.
 
@@ -1980,15 +1988,20 @@ https://longboard.wavefront.com/dashboard/integration-kubernetes-summary
 
 ![](./images/lb8.png)
 
-- Click on `Dashboards` and then on `Kubernetes Summary` as shown below:
+- Click on `Dashboards` and then on `Kubernetes Summary` as shown below. You can also come back to this page and select other dashboards for more detailed K8s metrics:
 
 ![](./images/lb9.png)
+
+- Click on the top left-hand side, as indicated by the arrow, to find your cluster name, and you will start to see your cluster metrics slowly flowing in and populating the various dashboards:
+
+![](./images/lb10.png)
 
 
 **Let's recap:** 
 - Tanzu Observability by Wavefront is often referred to as *TO*.
 - TO requires the execution of a simple helm chart to integrate with any K8s cluster.
-- Wavefront provides a SaaS based approach to handle terabytes of data in the most cost-effective way.
+- Wavefront provides a SaaS based approach to handle petabytes of data in the most cost-effective way.
+- There's a lot more to Wavefront, so please do make sure to view the video of the recent [Wavefront presentation and demo.](https://drive.google.com/file/d/1PW_WWUBKYJQjA6mBclEfJ7EEawzOz8H2/view?usp=sharing)
 
 Congratulations, you have completed LAB-9.
 
@@ -1998,13 +2011,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-10: A quick look at [TAS (Tanzu Application Service)](https://cloud.vmware.com/tanzu-application-service) 
 
-- CareSource already has Tanzu Applicatin Service (TAS) ready and in-production. During this workshop you will interact with a TAS environment so you can understand:
-   - Why do developers love TAS? (Spoiler: because it is simple to use, fast, scalable, stable and secure).
-   - When to use TAS vs. TKGI? (Spoiler: when developing use TAS vs. when a vendor, such as confluent, delivers containerized solutions).
-   - And is the really a  question of TAS vs. TKGI? (Spoiler: TAS is a PaaS and TKGI is a CaaS. TAS-4-K8s is TAS running on TKG).
-- A bit more on why developers love TAS: there are no IP addresses, no complex YAML files, no need to understand load balancing, routing, SSL certificates, or specifics of any given private or public IaaS. TAS is all about getting from source code to production via a simple `cf push`. TAS manages the creation and orchestration of containers for the Developer, Operations and InfoSec.
-- Operators love TAS because it is self-monitoring and self-healing. Through TAS, Ops can enforce policies, carry out updates/upgrades of O/S and middleware layers, add database and other services to the developer's marketplace, expand the environment horizontally and vertically, while maintaining high-availability. 
-- TAS effectively simplifies and streamlines developer and operator tasks, enabling productivity, while enforcing security best practices and development techniques that deliver significant gains in speed to market.  
+- You may know TAS by its older name: Pivotal Cloud Foundry.
 
 ![](./images/ezgif-7-05118e39b3ee.gif)
 
@@ -2012,9 +2019,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Before getting to Lab-10 we worked on creating clusters, docker images, uploading images to a registry, scanning them, configuring yaml files and finally running the container images on K8s clusters. 
 
-- Let's go back to our original three Apps and accomplish more (n.b. we'll explain in a second) by doing less. 
-
-- Please execute the following commands:
+- Let's go back to our original three Apps and accomplish the same results on TAS. Please execute the following commands:
 
 ```
 cf login -a api.sys.ourpcf.com -p password -u $user
@@ -2022,6 +2027,7 @@ cd ~/fact;             cf push $user-fact
 cd ~/spring-petclinic; cf push $user-pets
 cd ~/dotnet; sed -i "s/5001/8080/g" ~/dotnet/Program.cs; cf push $user-dotnet -b dotnet_core_buildpack
 ```
+
 - And you're done:
    - You have all three Apps running in containers that are guaranteed to be safe from known CVEs at the O/S, FileSystem Stack, and Middleware layers.
    - All three Apps have SSL (encrypted), protected FQDN (human readable URLs), load-balanced routes.
@@ -2089,7 +2095,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 We covered a lot of ground today. Lots of new concepts and hopefully lots of valuable learning opportunities. We've only scratched the surface. VMware has a robust set of services and documented best practices to help you get started with greenfield projects and/or brownfield modernizations from old architectures to modern cloud native solutions.
 
-Thank you for your time and attention. Please take 30 seconds to provide us some [feedback](https://forms.gle/AQU3Ky3bfduB2c7y6).
+Thank you for your time and attention.
 
 
 
