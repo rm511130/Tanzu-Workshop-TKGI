@@ -1861,18 +1861,21 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 
 - Let's start this lab by looking at a [short 4-minute demo of TMC](https://bcove.video/2VCXSmk)
 
-- Whether you are creating a new TKGI K8s Cluster or just using one, there's no action necessary to have your K8s cluster show up in Tanzu Mission Control. This is because Platform Operations has already performed the necessary set-up to guarantee that every PKS K8s cluster will come with the necessary TMC agents.
+- Whether you are creating a new TKGI K8s Cluster or just using one, there's no action necessary to have your K8s cluster show up in Tanzu Mission Control. This is because Platform Operations has already performed the necessary set-up to guarantee that every PKS K8s cluster will come with the necessary TMC agents. In the animation shown below, you can observe how a Platform Operator collects a TMC API Token and applies it to the TKGI/PKS Ops Manager Tile. 
 
 ![](./images/tmc-and-pks.gif)
 
 - Your K8s cluster communicates often through a secure connection with the TMC SaaS Service. Your cluster collects data about its health and capacity, and ships it to TMC. It also polls TMC for any administrative activities it may need to carry out on the cluster. For example, TMC Administrators may define network policies or require compliance scans that need to be applied or executed on your cluster.
 
-- Ask the worshop facilitator to show you your cluster attached to TMC, it's status, namespaces, workloads, etc...
+- Ask the worshop facilitator to show you your cluster attached to TMC, it's status, namespaces, workloads, scanning, etc...
+
+- TMC is a powerful tool so if you'd like to dive deeper, please consider our [TMC HOL (Hands-on Labs)](https://docs.hol.vmware.com/HOL-2020/hol-2032-01-cna_html_en/).
 
 **Let's recap:** 
 - TMC is a leap forward in simplification and breadth of control for the world of Kubernetes.
-- TMC allows you to visualize in a single location all the K8s clusters your enterprise is using.
-- TMC allows you to create, upgraded, delete K8s clusters on AWS, and soon on all Public IaaS.
+- TMC allows you to visualize in a single location all the K8s clusters your enterprise is using across datacenters and the public cloud.
+- TMC does not request or store any PHI (Protected Health Information).
+- TMC allows you to create, upgraded, delete K8s clusters on AWS and vShere, and soon on all Public IaaS.
 
 Congratulations, you have completed LAB-8.
 
@@ -1882,7 +1885,7 @@ Please update the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d
 -----------------------------------------------------
 ### LAB-9: A quick look at [Tanzu Observability by Wavefront](https://cloud.vmware.com/tanzu-observability) 
 
-- Observability goes beyond the scope of Tanzu Mission Control, so VMware has Tanzu Observability by Wavefront.
+- Observability goes beyond the scope of Tanzu Mission Control, so VMware includes Tanzu Observability by Wavefront in its family of products.
 
 ![](./images/from_monitoring_to_observability.png)
 
@@ -1909,12 +1912,21 @@ helm repo add wavefront https://wavefronthq.github.io/helm/
 helm repo update
 kubectl create namespace wavefront
 ```
-- For the next command you will need your individual `Helm` command which can be found under Column S of the [Workshop Google Sheet](https://docs.google.com/spreadsheets/d/17AG0H2_zJNXWIP8ZOsXjjlPCPKwhskRTg5bgkRR4maI).
 
-- The command you shoud copy-&-past-&-execute should look like the example shown below:
+- Now ask Tim Davis to invite you to join your Wavefront Observability Account.
+
+
+
+- Once you have your API Token copied, please add it to your Workshop VM environment as shown in the example below. Please make sure too use your API Token and not the one shown below:
 
 ```
-# helm install wavefront wavefront/wavefront --set wavefront.url=https://surf.wavefront.com --namespace wavefront --set wavefront.token=<your-own-wavefront-token> --set clusterName=user1-cluster
+export my_wavefront_api_token=b72b40e2-f69e-44eb-8b08-330ab467d365
+```
+
+- Now please execute the following command: 
+
+```
+helm install wavefront wavefront/wavefront --set wavefront.url=https://longboard.wavefront.com --namespace wavefront --set wavefront.token=$my_wavefront_api_token --set clusterName=$user-cluster
 ```
 
 - Now ask the workshop organizer to show your cluster data on Wavefront.
